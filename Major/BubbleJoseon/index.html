@@ -1,0 +1,1016 @@
+
+<!DOCTYPE html><html><head><title>bubleheap_han</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">--><script src="./javascripts/d3.v3.min.js" charset="utf-8"></script><script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script><script src="./data/data_colorin_new.js"></script>
+<style type="text/css">
+      body {
+    margin: 0;
+}
+
+#header{
+    height:5px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 10px;
+    color:whitesmoke;
+    padding: 0.5%;
+    font-family: sans-serif;
+}
+
+#left {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:20.1%;
+    height:960px;
+    background-clip: content-box;
+}
+
+
+#section {
+    position:relative;
+    float:right;
+    overflow:hidden;
+    width:79.9%;
+    height:960px;
+    background-clip: content-box;
+}
+
+
+#footer {
+    height:20px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 20px;
+    color:whitesmoke;
+    padding: 0.5%;
+    font-family: sans-serif;
+}
+
+p {
+    padding: 0%;
+    margin: 0%;
+}
+
+.bar-input
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color: #666;
+     top: 10px;
+     height: 30px;
+     width: 30px;
+     border: 0;
+     border-radius: 30px;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+.bar-input:checked::before
+{
+     position: absolute;
+     font: 20px/1 'Open Sans', sans-serif;
+     left: 10px;
+     top: 5px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+.bar-input:hover
+{
+     background-color: #f7f7f7;
+}
+.bar-input:checked
+{
+     background-color: #f1f1f1;
+}
+
+
+.bar-input2
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color: #666;
+     top: 10px;
+     height: 30px;
+     width: 30px;
+     border: 0;
+     border-radius: 30px;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+.bar-input2:checked::before
+{
+     position: absolute;
+     font: 20px/1 'Open Sans', sans-serif;
+     left: 10px;
+     top: 5px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+.bar-input2:hover
+{
+     background-color: #f7f7f7;
+}
+.bar-input2:checked
+{
+     background-color: #f1f1f1;
+}
+
+label
+{
+     cursor: pointer;
+} 
+
+    </style>
+    </head><body><div id="header"></div><div id="left"><form name='test'>
+
+<label class="bar-label2" style="left: 5%; top: 90px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="State_affairs" value="State_affairs"> 국정안건</label>
+<label class="bar-label2" style="left: 5%; top: 125px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="Royal_family" value="Royal_family"> 왕가안건</label>
+<label class="bar-label2" style="left: 5%; top: 160px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="Diplomacy" value="Diplomacy"> 외교안건</label>
+<label class="bar-label2" style="left: 5%; top: 195px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="Politics" value="Politics"> 정책안건</label>
+<label class="bar-label2" style="left: 5%; top: 230px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="Custom" value="Custom"> 의복안건</label>
+<label class="bar-label2" style="left: 5%; top: 265px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input2" type="radio" name="mode2" id="All_category" value="All_category" checked> 모든안건(국정+왕가+외교+정책+의복)</label>
+
+<label class="bar-label" style="left: 5%; top: 550px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="legend1" value="kinship" checked> 촌수관계 기준</label>
+<label class="bar-label" style="left: 5%; top: 585px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="legend2" value="familyrelation"> 혈연관계 기준</label>
+<label class="bar-label" style="left: 5%; top: 620px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="legend3" value="norelation"> 색상을 동일하게</label>
+
+
+</form></div><div id="section"><script>$(document).ready(function () {
+
+
+
+    var width = $(window).width()   //윈도우 넓이
+
+
+    var height = $(window).height()   //윈도우 높이
+
+
+
+
+
+
+    //왼쪽 프레임
+    var svgleft = d3.select("#left")
+            .append("svg")
+            .attr("width", width * 0.201)
+            .attr("height", 960)
+
+    svgleft.append("line").attr("x1", width * 0.2).attr("y1", 0).attr("x2", width * 0.2).attr("y2", 1000).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    // svgleft.append("rect")
+    //         .attr("class", "category_rect")
+    //         .attr("x", (width * 0.008))
+    //         .attr("y", 10)
+    //         .attr("width", (width * 0.184))
+    //         .attr("height", 35)
+    //         .attr("fill", "white")
+    //         .style("stroke", "#C2C1C1")
+    //         .style("stroke-width", 1)
+    //         .attr("rx", 20)
+    //         .attr("ry", 20)
+
+    // svgleft.append("text")
+    //         .text("조선 시대 인물 관계 시각화")
+    //         .attr("x", (width * 0.1))
+    //         .attr("y", 37)
+    //         .attr("text-anchor", "middle")
+    //         .attr("font-family", "Helvetica Neue")
+    //         .attr("font-size", "25px")
+    //         .attr("fill", "#666666")
+    //         .attr("font-weight", "bold")
+
+    svgleft.append("image")
+            .attr("xlink:href", "images/title.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 0)
+            .attr("width", width * 0.195)
+            .attr("height", 60)
+
+
+
+    svgleft.append("text")
+            .text("안건 선택")
+            .attr("x", width * 0.015)
+            .attr("y", 80)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 325).attr("x2", width * 0.20).attr("y2", 325).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("안건 정보")
+            .attr("x", width * 0.015)
+            .attr("y", 360)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+
+    svgleft.append("rect")
+            .attr("class", "category_rect")
+            .attr("x", (width * 0.018))
+            .attr("y", 380)
+            .attr("width", (width * 0.0015))
+            .attr("height", 20)
+            .attr("fill", "#1180C3")
+
+
+    svgleft.append("text")
+            .attr("class", "info_default_text")
+            .text("안건 분류")
+            .attr("x", (width * 0.025))
+            .attr("y", 398)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("text")
+            .attr("class", "info1_text")
+            .text(": 모든 안건")
+            .attr("x", (width * 0.105))
+            .attr("y", 398)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("rect")
+            .attr("class", "category_rect")
+            .attr("x", (width * 0.018))
+            .attr("y", 410)
+            .attr("width", (width * 0.0015))
+            .attr("height", 20)
+            .attr("fill", "#1180C3")
+
+
+    svgleft.append("text")
+            .attr("class", "info_default_text")
+            .text("총인물")
+            .attr("x", (width * 0.025))
+            .attr("y", 428)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("text")
+            .attr("class", "info2_text")
+            .text(": 98")
+            .attr("x", (width * 0.105))
+            .attr("y", 428)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("rect")
+            .attr("class", "category_rect")
+            .attr("x", (width * 0.018))
+            .attr("y", 440)
+            .attr("width", (width * 0.0015))
+            .attr("height", 20)
+            .attr("fill", "#1180C3")
+
+
+    svgleft.append("text")
+            .attr("class", "info_default_text")
+            .text("혈연 관계")
+            .attr("x", (width * 0.025))
+            .attr("y", 458)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("text")
+            .attr("class", "info3_text")
+            .text(": 81")
+            .attr("x", (width * 0.105))
+            .attr("y", 458)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("rect")
+            .attr("class", "category_rect")
+            .attr("x", (width * 0.018))
+            .attr("y", 470)
+            .attr("width", (width * 0.0015))
+            .attr("height", 20)
+            .attr("fill", "#1180C3")
+
+
+    svgleft.append("text")
+            .attr("class", "info_default_text")
+            .text("비혈연 관계")
+            .attr("x", (width * 0.025))
+            .attr("y", 488)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("text")
+            .attr("class", "info4_text")
+            .text(": 17")
+            .attr("x", (width * 0.105))
+            .attr("y", 488)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 510).attr("x2", width * 0.20).attr("y2", 510).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("색상 선택")
+            .attr("x", width * 0.015)
+            .attr("y", 545)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 680).attr("x2", width * 0.20).attr("y2", 680).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .attr("class", "legend_image_text")
+            .text("색상 범례 (촌수관계 기준)")
+            .attr("x", width * 0.015)
+            .attr("y", 715)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("image")
+            .attr("class", "legend_image")
+            .attr("xlink:href", "images/legend1.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 740)
+            .attr("width", width * 0.195)
+            .attr("height", 50)
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 815).attr("x2", width * 0.20).attr("y2", 815).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("유사도 범례")
+            .attr("x", width * 0.015)
+            .attr("y", 850)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("image")
+            .attr("xlink:href", "images/similarity.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 860)
+            .attr("width", width * 0.195)
+            .attr("height", 80)
+
+
+
+
+
+
+
+    var svgSection = d3.select('#section').append('svg')
+            .attr('width', width * 0.799)
+            .attr('height', 960)
+            .append("g");
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/person_circle2.png")
+            .attr("x", width * 0.01)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 33)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.008)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 35)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.01)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 33)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_personal)
+
+    //Show_popup()
+
+    function Show_popup_personal() {
+        window.open("https://mr-seongmin.github.io/MyWebsite/Seongmin/");
+    }
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/info_circle2.png")
+            .attr("x", width * 0.04)
+            .attr("y", 10)
+            .attr("width", 60)
+            .attr("height", 35)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.038)
+                        .attr("y", 9)
+                        .attr("width", 66)
+                        .attr("height", 37)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.04)
+                        .attr("y", 10)
+                        .attr("width", 60)
+                        .attr("height", 35)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_information)
+
+    function Show_popup_information() {
+        window.open("http://sillok.history.go.kr/main/main.do");
+    }
+
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/mail_circle2.png")
+            .attr("x", width * 0.07)
+            .attr("y", 10)
+            .attr("width", 60)
+            .attr("height", 35)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.068)
+                        .attr("y", 9)
+                        .attr("width", 66)
+                        .attr("height", 37)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.07)
+                        .attr("y", 10)
+                        .attr("width", 60)
+                        .attr("height", 35)
+                        .style("cursor", "default")
+            })
+            //.on("click", Show_popup_author)
+
+    function Show_popup_author() {
+        window.open("");
+    }
+
+
+
+    var similarityrate = ["0%", "20%", "40%", "60%", "80%", "100%"]
+
+
+    for (var k = 0; k < 6; k++) {
+        svgSection.append("text").text(similarityrate[k]).attr("x", (((width * 0.8) / 6) * k) + (width * 0.085)).attr("y", 450 / 4).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
+    }
+
+    svgSection.append("line").attr("x1",  width * 0.02).attr("y1", 490).attr("x2", width * 0.8).attr("y2", 490).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+
+    for (var k = 0; k < 6; k++) {
+        svgSection.append("line").attr("x1", (((width * 0.8) / 6) * k) + (width * 0.065)).attr("y1", 70).attr("x2", (((width * 0.8) / 6) * k) + (width * 0.065)).attr("y2", 900).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+    }
+
+
+    svgSection.append("text")
+            .attr("class", "default_year")
+            .text("1450 ~ 1488 모든 안건")
+            .attr("x", width * 0.79)
+            .attr("y", 50)
+            .attr("text-anchor", "end")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "40px")
+            .attr("fill", "#C2C1C1")
+
+    svgSection.append("text")
+            .attr("class", "default_name")
+            .text("중심 인물: 서거정")
+            .attr("x", width * 0.79)
+            .attr("y", 940)
+            .attr("text-anchor", "end")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "40px")
+            .attr("fill", "#C2C1C1")
+
+    //초기 데이터
+
+    //Section 디폴트 노드
+
+
+    svgSection.append("circle")
+            .attr("class", "default_circle")
+            .attr("cx", width * 0.783)
+            .attr("cy", 490)
+            .attr("r", 25)
+            .style("fill", "#DF013A")
+            .attr("stroke", "#6E6E6E")
+            .attr("stroke-width", "2px")
+
+
+    svgSection.append("text")
+            .attr("class", "default_text")
+            .text("서거정")
+            .attr("x", width * 0.783)
+            .attr("y", 496)
+            .attr("text-anchor", "middle")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "white")
+            .attr("stroke", "#777")
+            .attr("stroke-width", "1px")
+            .style("font-weight", "")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .text("서거정")
+                        .attr("x", width * 0.783)
+                        .attr("font-size", "25px")
+                        .style("font-weight", "bold")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .text("서거정")
+                        .attr("x", width * 0.783)
+                        .attr("font-size", "20px")
+                        .style("font-weight", "")
+            })
+
+
+    //Section first veiw data
+
+    var data = All_category
+
+
+    var NodeGroup = svgSection.append("g");
+
+    var SectionxScale = d3.scale.linear()
+            .domain([-1, 1])
+            .range([(((width * 0.8) / 6) * 0) + (width * 0.065), (((width * 0.8) / 6) * 5) + (width * 0.065)])
+
+    var SectionyScale = d3.scale.linear()
+            .domain([-9, 9])
+            .range([800, 180])
+
+    NodeGroup.selectAll(".person_circle")
+            .data(data)
+            .enter()
+            .append("circle")
+            .attr("class", "person_circle")
+            .attr("cx", function (d) {
+                return SectionxScale(d.x)
+            })
+            .attr("cy", function (d) {
+                return SectionyScale(d.y)
+            })
+            .attr("r", function (d) {
+                return ((d.grade * 1.3) + 0.1)
+            })
+            .style("fill", function (d) {
+                if (d.r == 96 && d.g == 96 && d.b == 96) {
+                    return "rgb(" + d.r + "," + d.g + "," + d.b + ")"
+                } else {
+                    return "rgb(" + d.r + "," + (d.g * 1.2) + "," + (d.b * 1.2) + ")"
+                }
+            })
+            .attr("stroke", "black")
+            .attr("stroke-width", "2px")
+            .attr("opacity", 0.7)
+
+
+    NodeGroup.selectAll(".person_text")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("class", "person_text")
+            .text(function (d) {
+                return d.name_kr
+            })
+            .attr("x", function (d) {
+                return SectionxScale(d.x)
+            })
+            .attr("y", function (d) {
+                return SectionyScale(d.y) + 4
+            })
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "13px")
+            .attr("fill", "white")
+            .style("font-weight", "")
+            .attr("stroke", function (d) {
+                if (d.r == 96 && d.g == 96 && d.b == 96) {
+                    return "#424242"
+                } else {
+                    return "#902203"
+                }
+            })
+            .attr("stroke-width", "0.9px")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("font-size", "17px")
+                        .text(function (d) {
+                            return d.name_kr
+                        })
+                        .style("font-weight", "bold")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("font-size", "13px")
+                        .text(function (d) {
+                            return d.name_kr
+                        })
+                        .style("font-weight", "")
+            })
+
+
+    //함수
+
+    d3.selectAll(".bar-input2").on("change", change2);
+
+    //transitionUigram();
+
+    function change2() {
+        if (this.value === "State_affairs") makeSelection(0, State_affairs, '국정 안건', "#State_affairs", ": 국정 안건", ": 34", ": 28", ": 6");
+        else if (this.value === "Royal_family") makeSelection(1, Royal_family, '왕가 안건', "#Royal_family", ": 왕가 안건", ": 19", ": 15", ": 4");
+        else if (this.value === "Diplomacy") makeSelection(2, Diplomacy, '외교 안건', "#Diplomacy", ": 외교 안건", ": 6", ": 4", ": 2");
+        else if (this.value === "Politics") makeSelection(3, Politics, '정책 안건', "#Politics", ": 정책 안건", ": 9", ": 8", ": 1");
+        else if (this.value === "Custom") makeSelection(4, Custom, '의복 안건', "#Custom", ": 의복 안건", ": 25", ": 19", ": 6");
+        else if (this.value === "All_category") makeSelection(5, All_category, '모든 안건', "#All_category", ": 모든 안건", ": 98", ": 81", ": 17");
+    }
+
+    
+    function makeSelection(i, nodedata, text, recid, info1, info2, info3, info4) { 
+
+            document.getElementById('legend1').checked = true;
+
+            kinship();
+            
+            var default_yeartext = svgSection.selectAll(".default_year")
+
+
+            default_yeartext.transition()
+                    .duration(2000)
+                    .attr("class", "default_year")
+                    .text("1450 ~ 1488 "+ info1.replace(": ",""))
+                    .attr("x", width * 0.79)
+                    .attr("y", 50)
+                    .attr("text-anchor", "end")
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "40px")
+                    .attr("fill", "#C2C1C1")
+
+            data = nodedata;
+
+
+            var circle = NodeGroup.selectAll(".person_circle")
+                    .data(data)
+
+            circle.enter()
+                    .append("circle")
+                    .attr("class", "person_circle")
+                    .attr("cx", function (d) {
+                        return SectionxScale(d.x)
+                    })
+                    .attr("cy", function (d) {
+                        return SectionyScale(d.y)
+                    })
+                    .attr("r", function (d) {
+                        return ((d.grade * 1.3) + 0.1)
+                    })
+                    .style("fill", function (d) {
+                        if (d.r == 96 && d.g == 96 && d.b == 96) {
+                            return "rgb(" + d.r + "," + d.g + "," + d.b + ")"
+                        } else {
+                            return "rgb(" + d.r + "," + (d.g * 1.2) + "," + (d.b * 1.2) + ")"
+                        }
+                    })
+                    .attr("stroke", "black")
+                    .attr("stroke-width", "2px")
+                    .attr("opacity", 0.7)
+
+
+            circle.transition()
+                    .duration(2000)
+                    .attr("cx", function (d) {
+                        return SectionxScale(d.x)
+                    })
+                    .attr("cy", function (d) {
+                        return SectionyScale(d.y)
+                    })
+                    .attr("r", function (d) {
+                        return ((d.grade * 1.3) + 0.1)
+                    })
+                    .style("fill", function (d) {
+                        if (d.r == 96 && d.g == 96 && d.b == 96) {
+                            return "rgb(" + d.r + "," + d.g + "," + d.b + ")"
+                        } else {
+                            return "rgb(" + d.r + "," + (d.g * 1.2) + "," + (d.b * 1.2) + ")"
+                        }
+                    })
+                    .attr("stroke", "black")
+                    .attr("stroke-width", "2px")
+                    .attr("opacity", 0.7)
+
+
+            circle.exit().remove()
+
+            var text = NodeGroup.selectAll(".person_text")
+                    .data(data)
+
+            text.enter()
+                    .append("text")
+                    .attr("class", "person_text")
+                    .text(function (d) {
+                        return d.name_kr
+                    })
+                    .attr("x", function (d) {
+                        return SectionxScale(d.x)
+                    })
+                    .attr("y", function (d) {
+                        return SectionyScale(d.y) + 4
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "13px")
+                    .attr("font-weight", "")
+                    .attr("fill", "white")
+                    .attr("stroke", function (d) {
+                        if (d.r == 96 && d.g == 96 && d.b == 96) {
+                            return "#424242"
+                        } else {
+                            return "#902203"
+                        }
+                    })
+                    .attr("stroke-width", "0.9px")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("font-size", "17px")
+                                .text(function (d) {
+                                    return d.name_kr
+                                })
+                                .attr("font-weight", "bold")
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("font-size", "13px")
+                                .text(function (d) {
+                                    return d.name_kr
+                                })
+                                .attr("font-weight", "")
+                    })
+
+
+            text.transition()
+                    .duration(2000)
+                    .text(function (d) {
+                        return d.name_kr
+                    })
+                    .attr("x", function (d) {
+                        return SectionxScale(d.x)
+                    })
+                    .attr("y", function (d) {
+                        return SectionyScale(d.y) + 4
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "13px")
+                    .attr("font-weight", "")
+                    .attr("fill", "white")
+                    .attr("stroke", function (d) {
+                        if (d.r == 96 && d.g == 96 && d.b == 96) {
+                            return "#424242"
+                        } else {
+                            return "#902203"
+                        }
+                    })
+                    .attr("stroke-width", "0.9px")
+
+            text.exit().remove()
+
+
+            var info1text = svgleft.selectAll(".info1_text")
+
+            info1text.transition()
+                    .duration(2000)
+                    .attr("class", "info1_text")
+                    .text(info1)
+                    .attr("x", (width * 0.105))
+                    .attr("y", 398)
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "20px")
+                    .attr("fill", "#666666")
+
+            var info2text = svgleft.selectAll(".info2_text")
+
+            info2text.transition()
+                    .duration(2000)
+                    .attr("class", "info2_text")
+                    .text(info2)
+                    .attr("x", (width * 0.105))
+                    .attr("y", 428)
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "20px")
+                    .attr("fill", "#666666")
+
+            var info3text = svgleft.selectAll(".info3_text")
+
+            info3text.transition()
+                    .duration(2000)
+                    .attr("class", "info3_text")
+                    .text(info3)
+                    .attr("x", (width * 0.105))
+                    .attr("y", 458)
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "20px")
+                    .attr("fill", "#666666")
+
+            var info4text = svgleft.selectAll(".info4_text")
+
+            info4text.transition()
+                    .duration(2000)
+                    .attr("class", "info4_text")
+                    .text(info4)
+                    .attr("x", (width * 0.105))
+                    .attr("y", 488)
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "20px")
+                    .attr("fill", "#666666")
+
+            // var target = $("input:radio[name='mode']:checked").val();   //var radioVal = $('input[name="radioTxt"]:checked').val();
+            // if (target == "norelation") norelation();
+            // else if (target == "familyrelation") familyrelation();
+            // else if (target == "kinship") kinship();
+
+            // function change2(target) {
+            //     if (target == "norelation") norelation();
+            //     else if (target == "familyrelation") familyrelation();
+            //     else if (target == "kinship") kinship();
+            // }
+
+            // change2(target);
+
+    }
+
+    //단어 수에 따른 변화
+
+    d3.selectAll(".bar-input").on("change", change);
+
+    //transitionUigram();
+
+    function change() {
+        if (this.value === "norelation") norelation();
+        else if (this.value === "familyrelation") familyrelation();
+        else if (this.value === "kinship") kinship();
+    }
+
+    function norelation() {
+        NodeGroup.selectAll(".person_circle").data(data).transition().duration(2000).style("fill", "#B7CAF7");
+
+        NodeGroup.selectAll(".person_text").data(data).transition().duration(2000).attr("stroke", "#424242");
+
+        svgleft.selectAll(".legend_image_text").remove();
+        svgleft.selectAll(".legend_image").remove();
+
+        svgleft.append("image")
+            .attr("class", "legend_image")
+            .attr("xlink:href", "images/legend3.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 740)
+            .attr("width", width * 0.195)
+            .attr("height", 50)
+
+        svgleft.append("text")
+            .attr("class", "legend_image_text")
+            .text("색상 범례 (색상을 동일하게)")
+            .attr("x", width * 0.015)
+            .attr("y", 715)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+    }
+
+
+    function familyrelation() {
+        NodeGroup.selectAll(".person_circle").data(data).transition().duration(2000).style("fill", function (d) {
+            if (d.r == 96 && d.g == 96 && d.b == 96) {
+                return "rgb(" + d.r + "," + d.g + "," + d.b + ")"
+            } else {
+                return "rgb(255,190,190)"
+            }
+        })
+
+        NodeGroup.selectAll(".person_text").data(data).transition().duration(2000).attr("stroke", function (d) {
+            if (d.r == 96 && d.g == 96 && d.b == 96) {
+                return "#424242"
+            } else {
+                return "#902203"
+            }
+        })
+
+        svgleft.selectAll(".legend_image_text").remove();
+        svgleft.selectAll(".legend_image").remove();
+
+        svgleft.append("image")
+            .attr("class", "legend_image")
+            .attr("xlink:href", "images/legend2.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 740)
+            .attr("width", width * 0.195)
+            .attr("height", 50)
+
+        svgleft.append("text")
+            .attr("class", "legend_image_text")
+            .text("색상 범례 (혈연관계 기준)")
+            .attr("x", width * 0.015)
+            .attr("y", 715)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+    }
+
+    function kinship() {
+        NodeGroup.selectAll(".person_circle").data(data).transition().duration(2000).style("fill", function (d) {
+            if (d.r == 96 && d.g == 96 && d.b == 96) {
+                return "rgb(" + d.r + "," + d.g + "," + d.b + ")"
+            } else {
+                return "rgb(" + d.r + "," + (d.g * 1.2) + "," + (d.b * 1.2) + ")"
+            }
+        });
+
+        NodeGroup.selectAll(".person_text").data(data).transition().duration(2000).attr("stroke", function (d) {
+            if (d.r == 96 && d.g == 96 && d.b == 96) {
+                return "#424242"
+            } else {
+                return "#902203"
+            }
+        })
+
+
+        svgleft.selectAll(".legend_image_text").remove();
+        svgleft.selectAll(".legend_image").remove();
+
+        svgleft.append("text")
+            .attr("class", "legend_image_text")
+            .text("색상 범례 (촌수관계 기준)")
+            .attr("x", width * 0.015)
+            .attr("y", 715)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "21px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("image")
+            .attr("class", "legend_image")
+            .attr("xlink:href", "images/legend1.png")
+            .attr("x", width * 0.0025)
+            .attr("y", 740)
+            .attr("width", width * 0.195)
+            .attr("height", 50)
+    }
+
+
+
+
+})
+</script></div><div id="footer"><p>&copy; 2019 Made by <a onclick="window.open(this.href); return false;" href="https://seongmin-mun.github.io/MyWebsite/Seongmin/index.html" style="color:white;">Seongmin Mun</a>, <a onclick="window.open(this.href); return false;" href="https://hyojie.github.io/" style="color:white;">Hyoji Ha</a> and Gyeongcheol Choi</p></div></body></html>

@@ -1,0 +1,572 @@
+
+<!--이전 조사 시각화-->
+
+<!DOCTYPE html><html><head><title>bubleheap_han</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">-->
+  <link href="images/Logo.png" rel="shortcut icon">
+  <title>RhapVis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="data/data.js" charset="utf-8"></script>
+  <!--<script src="stylesheets/style.css" charset="utf-8"></script>-->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+  <script src="./javascripts/d3.v3.min.js" charset="utf-8"></script>
+  <script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script>
+  <style type="text/css">
+<style type="text/css">
+      body {
+    margin: 0;
+}
+
+#header{
+    height:30px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 10px;
+    color:whitesmoke;
+    padding: 0.5%;
+    font-family: sans-serif;
+}
+
+#left {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:20.1%;
+    height:940px;
+    background-clip: content-box;
+}
+
+
+#section {
+    position:relative;
+    float:right;
+    overflow:hidden;
+    width:79.9%;
+    height:940px;
+    background-clip: content-box;
+}
+
+
+#footer {
+    height:20px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 20px;
+    color:whitesmoke;
+    padding: 0.5%;
+    font-family: sans-serif;
+}
+
+p {
+    padding: 0%;
+    margin: 0%;
+}
+
+.bar-input
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color: #666;
+     top: 10px;
+     height: 30px;
+     width: 30px;
+     border: 0;
+     border-radius: 30px;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+.bar-input:checked::before
+{
+     position: absolute;
+     font: 20px/1 'Open Sans', sans-serif;
+     left: 10px;
+     top: 5px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+.bar-input:hover
+{
+     background-color: #f7f7f7;
+}
+.bar-input:checked
+{
+     background-color: #f1f1f1;
+}
+
+
+.bar-input2
+{
+     -webkit-appearance: none;
+     -moz-appearance: none;
+     appearance: none;
+     display: inline-block;
+     position: relative;
+     background-color: #f1f1f1;
+     color: #666;
+     top: 10px;
+     height: 30px;
+     width: 30px;
+     border: 0;
+     border-radius: 30px;
+     cursor: pointer;     
+     margin-right: 7px;
+     outline: none;
+}
+.bar-input2:checked::before
+{
+     position: absolute;
+     font: 20px/1 'Open Sans', sans-serif;
+     left: 10px;
+     top: 5px;
+     content: '\02143';
+     transform: rotate(40deg);
+}
+.bar-input2:hover
+{
+     background-color: #f7f7f7;
+}
+.bar-input2:checked
+{
+     background-color: #f1f1f1;
+}
+
+label
+{
+     cursor: pointer;
+} 
+select#op_method {
+   width: 80%;
+   height: 30px;
+   padding-left: 5%;
+   font-size: 17px;
+   border-radius: 3px;
+   position: absolute;
+   top: 50px; 
+   left: 10%;
+   background: white; 
+}
+
+select#op_size {
+   width: 80%;
+   height: 30px;
+   padding-left: 5%;
+   font-size: 17px;
+   border-radius: 3px;
+   position: absolute;
+   top: 150px; 
+   left: 10%;
+   background: white; 
+}
+
+select#node_color {
+   width: 80%;
+   height: 30px;
+   padding-left: 5%;
+   font-size: 17px;
+   border-radius: 3px;
+   position: absolute;
+   top: 680px; 
+   left: 10%;
+   background: white; 
+}
+
+    </style>
+    </head><body><div id="header"></div><div id="left"><form name='test'>
+
+        <select id="op_method">
+        <option value="svd" selected="selected">SVD</option>
+        <option value="ppmi">PPMI</option>
+        <option value="sgns">SGNS</option>
+        <option value="glove">GloVe</option>
+        </select>
+
+        <select id="op_size">
+        <option id="nomal_size" value="nomal" selected="selected">Default</option>
+        <option id="frequncy_size" value="frequncy">Frequncy</option>
+        </select>
+        
+        <label class="bar-label" style="left: 10%; top: 250px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window1" value="window1" checked> Window1</label>
+        <label class="bar-label" style="left: 10%; top: 285px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window2" value="window2" > Window2</label>
+        <label class="bar-label" style="left: 10%; top: 320px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window3" value="window3" > Window3</label>
+        <label class="bar-label" style="left: 10%; top: 355px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window4" value="window4" > Window4</label>
+        <label class="bar-label" style="left: 10%; top: 390px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window5" value="window5" > Window5</label>
+        <label class="bar-label" style="left: 10%; top: 425px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window6" value="window6" > Window6</label>
+        <label class="bar-label" style="left: 10%; top: 460px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window7" value="window7" > Window7</label>
+        <label class="bar-label" style="left: 10%; top: 495px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window8" value="window8" > Window8</label>
+        <label class="bar-label" style="left: 10%; top: 530px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window9" value="window9" > Window9</label>
+        <label class="bar-label" style="left: 10%; top: 565px; position: absolute; color:#666666; font-size:17px;";><input class="bar-input" type="radio" name="mode" id="window10" value="window10" > Window10</label>
+
+        <select id="node_color">
+        <option id="nomal_color" value="nomal" selected="selected">Default</option>
+        <option id="class_color" value="class">Class</option>
+        </select>
+
+
+</form></div><div id="section"><script>$(document).ready(function () {
+
+
+
+    var width = $(window).width()   //윈도우 넓이
+
+
+    var height = $(window).height()   //윈도우 높이
+
+    var svghead = d3.select("#header")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 30)
+
+    svghead.append("text")
+            .text("Evaluation for Postposition in Korean")
+            .attr("x", width * 0.01)
+            .attr("y", 25)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "25px")
+            .attr("fill", "white")
+            .attr("font-weight", "bold")
+
+
+
+    //왼쪽 프레임
+    var svgleft = d3.select("#left")
+            .append("svg")
+            .attr("width", width * 0.201)
+            .attr("height", 940)
+
+    svgleft.append("text")
+            .text("Select Method")
+            .attr("x", width * 0.02)
+            .attr("y", 35)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "25px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 100).attr("x2", width * 0.20).attr("y2", 100).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("Node Size")
+            .attr("x", width * 0.02)
+            .attr("y", 135)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "25px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 200).attr("x2", width * 0.20).attr("y2", 200).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("Select Window Size")
+            .attr("x", width * 0.02)
+            .attr("y", 240)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "25px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 620).attr("x2", width * 0.20).attr("y2", 620).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    svgleft.append("text")
+            .text("Node Color")
+            .attr("x", width * 0.02)
+            .attr("y", 660)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "25px")
+            .attr("fill", "#666666")
+            .attr("font-weight", "bold")
+
+    svgleft.append("line").attr("x1", 0).attr("y1", 730).attr("x2", width * 0.20).attr("y2", 730).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+
+
+    svgleft.append("line").attr("x1", width * 0.1985).attr("y1", 0).attr("x2", width * 0.1985).attr("y2", 940).attr("stroke-width", "1px").attr("stroke", "#C2C1C1")
+
+    var svgSection = d3.select('#section').append('svg')
+            .attr('width', width * 0.799)
+            .attr('height', 940)
+            .append("g");
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/person_circle2.png")
+            .attr("x", width * 0.01)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 33)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.008)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 35)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.01)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 33)
+                        .style("cursor", "default")
+            })
+            //.on("click", Show_popup_personal)
+
+    //Show_popup()
+
+    function Show_popup_personal() {
+        window.open("http://stat34.github.io/Seongmin/");
+    }
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/info_circle2.png")
+            .attr("x", width * 0.04)
+            .attr("y", 10)
+            .attr("width", 60)
+            .attr("height", 35)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.038)
+                        .attr("y", 9)
+                        .attr("width", 66)
+                        .attr("height", 37)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.04)
+                        .attr("y", 10)
+                        .attr("width", 60)
+                        .attr("height", 35)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_information)
+
+    function Show_popup_information() {
+        window.open("http://sillok.history.go.kr/main/main.do");
+    }
+
+
+    svgSection.append("image")
+            .attr("xlink:href", "images/mail_circle2.png")
+            .attr("x", width * 0.07)
+            .attr("y", 10)
+            .attr("width", 60)
+            .attr("height", 35)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.068)
+                        .attr("y", 9)
+                        .attr("width", 66)
+                        .attr("height", 37)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.07)
+                        .attr("y", 10)
+                        .attr("width", 60)
+                        .attr("height", 35)
+                        .style("cursor", "default")
+            })
+            //.on("click", Show_popup_author)
+
+    function Show_popup_author() {
+        window.open("/author");
+    }
+
+
+    d3.selectAll(".bar-input").on("change", drawdatabywindow);
+
+    function drawdatabywindow() {
+        if (this.value == "window1") drawdata(analyzed_data, "window1");
+        else if (this.value == "window2") drawdata(analyzed_data, "window2");
+        else if (this.value == "window3") drawdata(analyzed_data, "window3");
+        else if (this.value == "window4") drawdata(analyzed_data, "window4");
+        else if (this.value == "window5") drawdata(analyzed_data, "window5");
+        else if (this.value == "window6") drawdata(analyzed_data, "window6");
+        else if (this.value == "window7") drawdata(analyzed_data, "window7");
+        else if (this.value == "window8") drawdata(analyzed_data, "window8");
+        else if (this.value == "window9") drawdata(analyzed_data, "window9");
+        else if (this.value == "window10") drawdata(analyzed_data, "window10");
+    }
+
+
+    drawdata(analyzed_data,"window1");
+
+
+    function drawdata(data_origin, window) {
+
+        document.getElementById('nomal_size').selected = true;
+        document.getElementById('nomal_color').selected = true;
+
+        svgSection.selectAll(".circletext").remove();
+        svgSection.selectAll(".circledot").remove();
+
+        var data = [];
+
+        for (var i = 0; i < analyzed_data.length ; i++) {
+            if (analyzed_data[i].windowsize === window) {
+                data.push(analyzed_data[i]);
+            }
+        }
+
+        var w = width*0.80;
+        var h = 950;
+        var padding = 70;
+
+        console.log(data_origin)
+
+
+        var xScale = d3.scale.linear()
+            .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.x; })])
+            .range([padding+170, w - (padding-20) ]);
+
+
+        var yScale = d3.scale.linear()
+             .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.y; })])
+             .range([h - padding, padding]);
+
+        var xrangev = (((w - (padding-20))-(padding+30)) * 0.1)
+        var yrangev = (((h - padding)-(padding)) * 0.1)
+
+        //line
+        for(var i = 0; i < 11; i++){
+            svgSection.append("line").attr('class', "svgsection_Line").attr("x1", 100+(xrangev*i)).attr("y1", padding).attr("x2", 100+(xrangev*i)).attr("y2", h - padding).attr("stroke-width", 1).attr("stroke", "gray").style("stroke-dasharray", ("9,9")).attr("opacity", 0.6);;
+            svgSection.append("line").attr('class', "svgsection_Line").attr("x1", padding+30).attr("y1", 70+(yrangev*i)).attr("x2", w - (padding-20)).attr("y2", 70+(yrangev*i)).attr("stroke-width", 1).attr("stroke", "gray").style("stroke-dasharray", ("9,9")).attr("opacity", 0.6);;
+        }
+
+                                 //Define X axis
+        var xAxis = d3.svg.axis()
+              .scale(xScale)
+              .orient("bottom")
+              .ticks(10);
+
+            //Define Y axis
+        var yAxis = d3.svg.axis()
+              .scale(yScale)
+              .orient("left")
+              .ticks(10);
+
+        for(var i = 0; i < data.length; i++){
+
+            svgSection.append("text")
+                .attr("class","circletext")
+                .attr("id","circletext"+i)
+               .text(data[i].casemarker+data[i].pos)
+               .attr("x", xScale(data[i].x)+10)
+               .attr("y", yScale(data[i].y))
+               .attr("font-family", "sans-serif")
+               .attr("font-size", "15px")
+               .attr("fill", "rgb(51,51,51)")
+               .attr("opacity", 0.8);
+        }
+
+        for(var i = 0; i < data.length; i++){
+
+
+            svgSection.append("circle")
+                .attr("class","circledot")
+               .attr("cx", xScale(data[i].x))
+               .attr("cy", yScale(data[i].y))
+               .attr("r", 7)
+               .attr("opacity", 0.8)
+
+        }
+
+        d3.selectAll("#node_color").on("change", change);
+
+        function change() {
+            if (this.value == "nomal") nodecolor_df();
+            else if (this.value === "class") nodecolor_color();
+        }
+
+        function nodecolor_df() {
+
+            d3.selectAll(".circledot")
+                    .data(data)
+                    .attr("fill", "rgb(51,51,51)")
+                                 
+        }
+
+        function nodecolor_color() {
+
+            var CM_name = ["JKS","JKC","JKG","JKO","JKB","JKV","JKQ","JX","JC"];
+            var CM_color = ["#AA3939", "#AA6539", "#AA7D39", "#AA9839", "#A6A938", "#779D34", "#277553", "#27576B", "#"];
+            
+            d3.selectAll(".circledot")
+                    .data(data)
+                    .attr("fill", function (d) {
+                        if (d.pos == CM_name[0]) {
+                            return CM_color[0]
+                        } else if (d.pos == CM_name[1]) {
+                            return CM_color[1]
+                        } else if (d.pos == CM_name[2]) {
+                            return CM_color[2]
+                        } else if (d.pos == CM_name[3]) {
+                            return CM_color[3]
+                        } else if (d.pos == CM_name[4]) {
+                            return CM_color[4]
+                        } else if (d.pos == CM_name[5]) {
+                            return CM_color[5]
+                        } else if (d.pos == CM_name[6]) {
+                            return CM_color[6]
+                        } else if (d.pos == CM_name[7]) {
+                            return CM_color[7]
+                        } else if (d.pos == CM_name[8]) {
+                            return CM_color[8]
+                        }
+                    })              
+        }
+
+
+        d3.selectAll("#op_size").on("change", change_size);
+
+        function change_size() {
+            if (this.value == "nomal") nodesize_df();
+            else if (this.value === "frequncy") nodesize_frequncy();
+        }
+
+        function nodesize_df() {
+
+            d3.selectAll(".circledot")
+                    .data(data)
+                    .attr("r", 7)
+                                 
+        }
+
+        function nodesize_frequncy() {
+
+            d3.selectAll(".circledot")
+                    .data(data)
+                    .attr("r", function (d) {
+                        var size = (d.wordfrequncy/100000) * 6
+                        if (size <= 7) {
+                            return 7
+                        } else {
+                            return size
+                        }
+                    })            
+        }
+
+        
+    }
+
+
+
+
+})
+</script></div><div id="footer"><p>&copy;</p></div></body></html>

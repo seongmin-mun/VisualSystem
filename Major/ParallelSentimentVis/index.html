@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Visualizing Movie Sentiment data - Effect on Total Sales each Movie - Seongmin Mun</title>
+    <link rel="stylesheet" type="text/css" href="parallel/parallel_final.css" />
+  </head>
+  <body>
+  <div id="header">
+    <div id="apps-size" class="apps-size">
+      <!--<a href="https://twitter.com/SensorTower" class="twitter-follow-button" data-show-count="false">Follow @SensorTower</a>-->
+      <button id="dark-theme" onmouseover="this.style.cursor='pointer'">Black Background</button><button id="light-theme" onmouseover="this.style.cursor='pointer'" disabled="disabled">White Background</button><br>
+      <span>Total Counts:</span>
+      <strong id="rendered-count"></strong>/<strong id="selected-count"></strong><!--<strong id="data-count"></strong>-->
+      <div class="fillbar"><div id="selected-bar"><div id="rendered-bar">&nbsp;</div></div></div>
+      <strong style="display:none" id="opacity"></strong>
+    </div>
+    <div style="min-width:540px; width:540px;">
+      <h1 class="header-top">Visualizing Movie Sentiment data</h1>
+      <br>
+      <span class="header-top"></span>
+      <!--<span class="header-top">Improve the search visibility and downloads of your App with </span> <strong><a href="https://sensortower.com" style="color:blue">Sensor Tower</a></strong>-->
+    </div>
+
+    <div style="clear:both;"></div>
+  </div>
+  <div id="chart">
+    <canvas id="background"></canvas>
+    <canvas id="foreground"></canvas>
+    <canvas id="highlight"></canvas>
+    <svg></svg>
+  </div>
+  <div id="wrap">
+    <div class="third">
+      <div class="little-box">
+        <h3>Controls:</h3>
+        <button title="Remove selected data" id="remove-filters" onmouseover="this.style.cursor='pointer'" enabled="enabled">Reset button</button>
+        <p>
+          <strong>Filter</strong>: Drag along an axis<br>
+          <strong>Remove Filter</strong>: Click the axis background<br>
+          <strong>Drag Filter</strong> to help visualize the relation
+          <strong style="color:#060708;">——————</strong> : Average line<br>
+        </p>
+        <h3>Project Abstract:</h3>
+        <p>
+          This project organized by <strong>Seongmin Mun</strong>, Hyoji Ha, and Kyungwon Lee.
+      </div>
+    </div>
+    <div  class="third">
+      <small>
+        <!--Last rendered <strong id="render-speed"></strong> lines-->
+      </small>
+      <h3>All Movie Genre:</h3><button id="unselect-all" onmouseover="this.style.cursor='pointer'">Unselect All Genre</button><button id="select-all" disabled="disabled" onmouseover="this.style.cursor='pointer'">Select All Categories</button>
+      <p id="legend">
+      </p>
+    </div>
+    <div class="third">
+      <div id="sorted-by"></div>
+      <h3>Sample of 25 Movie: <input type="text" id="search" placeholder="Search Movie..."></input></h3>
+      <p id="category-list">
+      </p>
+    </div>
+  </div>
+  </body>
+  <!--<div id="credits">
+    Credits, etc:
+      Adapted from an <a href="http://bl.ocks.org/d/3267951/">example</a> by <a href="https://github.com/syntagmatic">Kai Chang</a>. 
+      Released under the <a href="http://opensource.org/licenses/bsd-3-clause">BSD License</a>.
+  </div>-->
+  <script src="parallel/d3.v2_final.js"></script>
+  <script src="parallel/underscore_final.js"></script>
+  <script src="parallel/parallel_final.js"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+</html>

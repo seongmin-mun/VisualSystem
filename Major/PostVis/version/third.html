@@ -1,0 +1,1263 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>PostVis.ko</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">-->
+    <script src="./javascripts/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v4.js"></script>
+    <script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script>
+    <script src="./data/vis-data.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+        #header{
+            height:50px;
+            background-color:#00cec9;
+            clear:both;
+        }
+
+        #left {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:14%;
+            height:920px;
+            padding: 0.5%;
+            background-color:whitesmoke;
+            background-clip: content-box;
+        }
+
+        #left_up {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:340px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        #left_middle {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:270px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        #left_bottom {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:295px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        p#left_option {
+            text-align: left;
+            font-family: Open Sans;
+            font-size: 1.5em;
+            color: #666666;
+            font-weight: bold;
+            padding-top: 4%;
+            padding-bottom: 4%;
+            padding-left: 5%;
+            margin: 0;
+        }
+
+        p#right_option {
+            text-align: left;
+            font-family: Open Sans;
+            font-size: 1.6em;
+            color: #666666;
+            font-weight: bold;
+            padding-top: 3%;
+            padding-bottom: 3%;
+            padding-left: 5%;
+            margin: 0;
+        }
+
+
+        #section {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:67%;
+            height:920px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        #right {
+            position:relative;
+            float:right;
+            overflow:hidden;
+            width:19%;
+            height:920px;
+            padding: 0.5%;
+            background-color:whitesmoke;
+            background-clip: content-box;
+        }
+
+        #right_up {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:100px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        #right_middle {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:350px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+        #right_bottom {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:100%;
+            height:455px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+
+        #footer {
+            height:10px;
+            background-color:#717171;
+            clear:both;
+        }
+
+        select#op_method { /*text-align-last:center;*/
+           width: 90%;
+           height: 30px;
+           font-size: 17px;
+           border-radius: 3px; 
+           position: relative;
+           left:5%;
+           background: white; 
+        }
+
+        select#op_window {
+           width: 90%;
+           height: 30px;
+           font-size: 17px;
+           border-radius: 3px; 
+           position: relative;
+           left:5%;
+           background: white; 
+        }
+
+        select#op_node_size {
+           width: 90%;
+           height: 30px;
+           font-size: 17px;
+           border-radius: 3px; 
+           position: relative;
+           left:5%;
+           background: white; 
+        }
+
+        select#op_node_color {
+           width: 90%;
+           height: 30px;
+           font-size: 17px;
+           border-radius: 3px; 
+           position: relative;
+           left:5%;
+           background: white;
+        }
+
+        #container_leftmiddle { 
+            border:2px solid #ccc; 
+            width:90%; 
+            height: 200px; 
+            position: absolute;
+            left: 5%;
+            overflow-y: scroll;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-radius: 10px;
+            background: white;
+        }
+
+        #container_leftbottom { 
+            border:2px solid #ccc; 
+            width:90%; 
+            height: 220px; 
+            position: absolute;
+            left: 5%;
+            overflow-y: scroll;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-radius: 10px;
+            background: white;
+        }
+
+        #container_rightbottom { 
+            border:2px solid #ccc; 
+            width:92.5%; 
+            height: 385px; 
+            position: absolute;
+            left: 5%;
+            overflow-y: scroll;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-radius: 10px;
+            background: white;
+        }
+
+        .CB_leftmiddle{
+            position: relative;
+            left:5%;
+        }
+
+        .CB_leftbottom{
+            position: relative;
+            left:5%;
+        }
+
+        .networklinks line {
+          stroke: #999;
+          stroke-opacity: 0.6;
+        }
+
+        .networknodes circle {
+          stroke: #666666;
+          stroke-width: 1.5px;
+        }
+
+        .table-cont{
+          /**make table can scroll**/
+          max-height: 200px;
+          overflow: auto;
+          /** add some style**/
+          /*padding: 2px;*/
+          background: #ddd;
+          margin: 20px 10px;
+          box-shadow: 0 0 1px 3px #ddd;
+        }
+        thead{
+          background-color: #ddd;
+        }
+
+        div.tooltip { /* 툴팁 스타일 */
+            position: absolute;
+            text-align: left;
+            padding: 5px;
+            font-size: 17px;
+            background-color: #efefef;
+            border: solid 1px #cecece;
+            border-radius: 8px;
+            box-shadow: 0 3px 5px 0 #dfdfdf;
+            pointer-events: none;
+        }
+
+    </style>
+    </head>
+    <body>
+        <div id="header">
+        </div>
+        <div id="left">
+            <div id="left_up">
+                <p id="left_option">Select Method</p>
+                <select id="op_method">
+                <option value="svd" selected="selected">SVD</option>
+                <option value="ppmi_svd">PPMI_SVD</option>
+                <option value="sgns">SGNS</option>
+                <!--<option value="glove">GloVe</option>-->
+                </select>
+                <p id="left_option">Select Window</p>
+                <select id="op_window">
+                    <option value="window1" selected="selected">Window : 1</option>
+                    <option value="window2">Window : 2</option>
+                    <option value="window3">Window : 3</option>
+                    <option value="window4">Window : 4</option>
+                    <option value="window5">Window : 5</option>
+                    <option value="window6">Window : 6</option>
+                    <option value="window7">Window : 7</option>
+                    <option value="window8">Window : 8</option>
+                    <option value="window9">Window : 9</option>
+                    <option value="window10">Window : 10</option>
+                </select>
+                <p id="left_option">Node Size</p>
+                <select id="op_node_size">
+                    <option id="frequncy_size" value="frequncy" selected="selected">Frequncy</option>
+                    <option id="nomal_size" value="nomal">Default</option>
+                </select>
+                <p id="left_option">Node Color</p>
+                <select id="op_node_color">
+                    <option id="class_color" value="class" selected="selected">Class</option>
+                    <option id="nomal_color" value="nomal">Default</option>
+                </select>
+            </div>
+            <div id="left_middle">
+                <p id="left_option">Select Types</p>
+                <div id="container_leftmiddle">
+                    
+                </div>
+            </div>
+            <div id="left_bottom">
+                <p id="left_option">Select Tokens</p>
+                <div id="container_leftbottom">
+
+                </div>
+            </div>
+        </div>
+        <div id="section">
+            <script>$(document).ready(function () {
+
+                var typeslist = ['JKS','JKC','JKG','JKO','JKB','JKV','JKQ','JX','JC'];
+
+                var typesname = ['Subjective Case Marker','Complement Case Marker','Genitive Case Marker','Object Case Marker','Adverbial Case Marker','Vocative Case Marker','Citation Case Marker','Auxiliary Postposition','Connective Postposition'];
+
+                //$("#container_leftmiddle").append("<input class='CB_leftmiddle' type='checkbox' value='"+typeslist[0]+"' id='CB_leftmiddle_"+0+"' checked/> <label class='CB_leftmiddle'>"+typeslist[0]+"</label></br>");
+                for(var i = 0 ; i < typeslist.length; i++){
+                    $("#container_leftmiddle").append("<input class='CB_leftmiddle' type='checkbox' value='"+typeslist[i]+"' id='CB_leftmiddle_"+i+"' /> <label class='CB_leftmiddle'>"+typeslist[i]+" ("+typesname[i]+")</label></br>");
+                }
+
+                var tokenslist = ['이/JKS','가/JKS','께서/JKS','서/JKS','이서/JKS','이/JKC','가/JKC','의/JKG','을/JKO','를/JKO','ᆯ/JKO','에/JKB','으로/JKB','에서/JKB','로/JKB','에게/JKB','과/JKB','와/JKB','처럼/JKB','보다/JKB','서/JKB','로서/JKB','으로써/JKB','으로서/JKB','로부터/JKB','한테/JKB','으로부터/JKB','에다/JKB','같이/JKB','만큼/JKB','하고/JKB','에게서/JKB','에서부터/JKB','께/JKB','로써/JKB','더러/JKB','랑/JKB','대로/JKB','한테서/JKB','에다가/JKB','루/JKB','보고/JKB','서부터/JKB','으루/JKB','하구/JKB','아/JKV','야/JKV','여/JKV','이여/JKV','고/JKQ','라고/JKQ','이라고/JKQ','하고/JKQ','는/JX','은/JX','도/JX','만/JX','까지/JX','ᆫ/JX','부터/JX','나/JX','이나/JX','밖에/JX','마다/JX','뿐/JX','야/JX','이란/JX','대로/JX','조차/JX','란/JX','마저/JX','요/JX','두/JX','다/JX','이야말로/JX','이야/JX','나마/JX','야말로/JX','다가/JX','는커녕/JX','이나마/JX','치고/JX','은커녕/JX','따라/JX','거나/JX','과/JC','와/JC','이나/JC','나/JC','하고/JC','랑/JC','이랑/JC'];
+
+                var tokenslist_eng = ['i/JKS','ka/JKS','kkeyse/JKS','se/JKS','ise/JKS','i/JKC','ka/JKC','uy/JKG','ul/JKO','lul/JKO','l/JKO','ey/JKB','ulo/JKB','eyse/JKB','lo/JKB','eykey/JKB','kwa/JKB','wa/JKB','chelem/JKB','pota/JKB','se/JKB','lose/JKB','ulosse/JKB','ulose/JKB','lopwuthe/JKB','hanthey/JKB','ulopwuthe/JKB','eyta/JKB','kathi/JKB','mankhum/JKB','hako/JKB','eykeyse/JKB','eysepwuthe/JKB','kkey/JKB','losse/JKB','tele/JKB','lang/JKB','taylo/JKB','hantheyse/JKB','eytaka/JKB','lwu/JKB','poko/JKB','sepwuthe/JKB','ulwu/JKB','hakwu/JKB','a/JKV','ya/JKV','ye/JKV','iye/JKV','ko/JKQ','lako/JKQ','ilako/JKQ','hako/JKQ','nun/JX','un/JX','to/JX','man/JX','kkaci/JX','n/JX','pwuthe/JX','na/JX','ina/JX','pakkey/JX','mata/JX','ppwun/JX','ya/JX','ilan/JX','taylo/JX','cocha/JX','lan/JX','mace/JX','yo/JX','twu/JX','ta/JX','iyamallo/JX','iya/JX','nama/JX','yamallo/JX','taka/JX','nunkhenyeng/JX','inama/JX','chiko/JX','unkhenyeng/JX','ttala/JX','kena/JX','kwa/JC','wa/JC','ina/JC','na/JC','hako/JC','lang/JC','ilang/JC']
+
+                //$("#container_leftbottom").append("<input class='CB_leftbottom' type='checkbox' value='"+tokenslist[0]+"' id='CB_leftbottom_"+0+"' checked/> <label class='CB_leftbottom'>"+tokenslist_eng[0]+"</label></br>");
+                for(var i = 0 ; i < tokenslist.length; i++){
+                    $("#container_leftbottom").append("<input class='CB_leftbottom' type='checkbox' value='"+tokenslist[i]+"' id='CB_leftbottom_"+i+"' /> <label class='CB_leftbottom'>"+tokenslist[i]+" ("+tokenslist_eng[i]+")</label></br>");
+                }
+
+                var width = $(window).width()   //윈도우 넓이
+                var height = $(window).height()   //윈도우 높이
+
+                var svgheader = d3.select("#header")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", 50)
+
+                svgheader.append("image")
+                    .attr("xlink:href", "images/person.png")
+                    .attr("x", width * 0.92)
+                    .attr("y", 12.5)
+                    .attr("width", 60)
+                    .attr("height", 27)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.919)
+                                .attr("y", 10.5)
+                                .attr("width", 64)
+                                .attr("height", 32)
+                                .style("cursor", "pointer")
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.92)
+                                .attr("y", 12.5)
+                                .attr("width", 60)
+                                .attr("height", 29)
+                                .style("cursor", "default")
+                    })
+                    .on("click", Show_popup_personal);
+
+                //Show_popup()
+
+                function Show_popup_personal() {
+                    window.open("https://mr-seongmin.github.io/MyWebsite/Seongmin/");
+                }
+
+                svgheader.append("image")
+                    .attr("xlink:href", "images/question.png")
+                    .attr("x", width * 0.94)
+                    .attr("y", 12)
+                    .attr("width", 60)
+                    .attr("height", 29)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.938)
+                                .attr("y", 10)
+                                .attr("width", 68)
+                                .attr("height", 34)
+                                .style("cursor", "pointer")
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.94)
+                                .attr("y", 12)
+                                .attr("width", 60)
+                                .attr("height", 29)
+                                .style("cursor", "default")
+                    })
+
+                svgheader.append("image")
+                    .attr("xlink:href", "images/impact.png")
+                    .attr("x", width * 0.96)
+                    .attr("y", 12)
+                    .attr("width", 60)
+                    .attr("height", 29)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.958)
+                                .attr("y", 10)
+                                .attr("width", 68)
+                                .attr("height", 34)
+                                .style("cursor", "pointer")
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("x", width * 0.96)
+                                .attr("y", 12)
+                                .attr("width", 60)
+                                .attr("height", 29)
+                                .style("cursor", "default")
+                    })
+
+                svgheader.append("text")
+                        .text("PostVis.ko")
+                        .attr("x", width * 0.01)
+                        .attr("y", 35)
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("font-size", "30px")
+                        .attr("fill", "white")
+
+
+                var CM_name = ["JKS","JKC","JKG","JKO","JKB","JKV","JKQ","JX","JC"];
+                var CM_color = ["#AA3939", "#AA6539", "#AA7D39", "#AA9839", "#A6A938", "#779D34", "#277553", "#27576B", "#9440B6"];
+
+
+                //중앙 분포 시각화
+                var svgSection = d3.select('#section').append('svg')
+                        .attr('width', width * 0.66)
+                        .attr('height', 905)
+                        .call(d3.zoom().on("zoom", function () {
+                           svgSection.attr("transform", d3.event.transform)
+                        }))
+                        .append("g");
+
+
+                var svgright_up = d3.select("#right_up")
+                        .append("svg")
+                        .attr("width", width * 0.18)
+                        .attr("height", 40)
+
+                svgright_up.append("rect")
+                        .attr("class", "svgleft_rect")
+                        .attr("x", width * 0.005)
+                        .attr("y", 0)
+                        .attr("width", (width * 0.17))
+                        .attr("height", 40)
+                        .attr("rx", 6)
+                        .attr("ry", 6)
+                        .attr("fill", "white")
+                        .attr('stroke', '#C2C1C1')
+                        .attr('stroke-width', '2')
+
+                var svgright_middle = d3.select("#right_middle")
+                        .append("svg")
+                        .attr("width", width * 0.18)
+                        .attr("height", 290)
+
+                svgright_middle.append("rect")
+                        .attr("class", "svgleft_rect")
+                        .attr("x", width * 0.005)
+                        .attr("y", 0)
+                        .attr("width", (width * 0.17))
+                        .attr("height",290)
+                        .attr("rx", 6)
+                        .attr("ry", 6)
+                        .attr("fill", "white")
+                        .attr('stroke', '#C2C1C1')
+                        .attr('stroke-width', '2')
+
+                var NodeGroup = svgSection.append("g");
+
+                var div_inner = d3.select("#section").append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+
+
+                firstdrawdata();
+
+                d3.selectAll("#op_method").on("change", changedrawdata);
+                d3.selectAll("#op_window").on("change", changedrawdata);
+
+                d3.selectAll("#op_node_size").on("change", change_size);
+                d3.selectAll("#op_node_color").on("change", change_color);
+
+                d3.selectAll("#container_leftmiddle").on("change", changedrawdata);
+                d3.selectAll("#container_leftbottom").on("change", changedrawdata);
+
+
+                function change_color() {
+                    if (this.value == "nomal") nodecolor_df();
+                    else if (this.value === "class") nodecolor_color();
+                }
+
+                function nodecolor_df() {
+                    NodeGroup.selectAll(".nodedot").data(data).transition().duration(2000).attr("fill", "rgb(51,51,51)")
+                }
+
+                function nodecolor_color() {
+                    
+                    NodeGroup.selectAll(".nodedot").data(data).transition().duration(2000)
+                            .attr("fill", function (d) {
+                                if (d.pos == CM_name[0]) {
+                                    return CM_color[0]
+                                } else if (d.pos == CM_name[1]) {
+                                    return CM_color[1]
+                                } else if (d.pos == CM_name[2]) {
+                                    return CM_color[2]
+                                } else if (d.pos == CM_name[3]) {
+                                    return CM_color[3]
+                                } else if (d.pos == CM_name[4]) {
+                                    return CM_color[4]
+                                } else if (d.pos == CM_name[5]) {
+                                    return CM_color[5]
+                                } else if (d.pos == CM_name[6]) {
+                                    return CM_color[6]
+                                } else if (d.pos == CM_name[7]) {
+                                    return CM_color[7]
+                                } else if (d.pos == CM_name[8]) {
+                                    return CM_color[8]
+                                }
+                            })              
+                }
+
+                function change_size() {
+                    if (this.value == "nomal") nodesize_df();
+                    else if (this.value === "frequncy") nodesize_frequncy();
+                }
+
+                function nodesize_df() {
+                    NodeGroup.selectAll(".nodedot").data(data).transition().duration(2000).attr("r", 7); 
+                }
+
+                function nodesize_frequncy() {
+                    NodeGroup.selectAll(".nodedot").data(data).transition().duration(2000).attr("r", function (d) {
+                                var size = (d.wordfrequncy/100000) * 6
+                                if (size <= 7) {
+                                    return 7
+                                } else {
+                                    return size
+                                }
+                            })            
+                }
+
+                function opacity_over(data,input) {
+                    NodeGroup.selectAll(".nodetext")
+                                .data(data)
+                                .attr("opacity", function (d) {
+                                    if (d.casemarker_eng == input.casemarker_eng) {
+                                        return 1
+                                    } else {
+                                        return d.opacity_value
+                                    }
+                                }) 
+                    
+                    NodeGroup.selectAll(".nodedot")
+                                .data(data)
+                                .attr("opacity", function (d) {
+                                    if (d.casemarker_eng == input.casemarker_eng) {
+                                        return 1
+                                    } else {
+                                        return d.opacity_value
+                                    }
+                                })           
+                }
+
+                function opacity_out(data) {
+                    NodeGroup.selectAll(".nodetext")
+                                .data(data)
+                                .attr("opacity", function (d) {
+                                    return d.opacity_value
+                                });
+                    NodeGroup.selectAll(".nodedot")
+                                .data(data)
+                                .attr("opacity", function (d) {
+                                    return d.opacity_value
+                                });           
+                }
+
+
+
+                function firstdrawdata() {
+
+                    //선택 옵션 확인
+                    var selected_method = $( "#op_method" ).val();
+                    var selected_window = $( "#op_window" ).val();
+                    var selected_node_size = $( "#op_node_size" ).val();
+                    var selected_node_color = $( "#op_node_color" ).val();
+
+                    console.log(selected_method);
+                    console.log(selected_window);
+                    console.log(selected_node_size);
+                    console.log(selected_node_color);
+
+                    var data = [];
+
+                    for (var i = 0; i < analyzed_data.length ; i++) {
+                        var each = {
+                                opacity_value: []
+                            };
+                        if (analyzed_data[i].test === selected_method && analyzed_data[i].windowsize === selected_window) {
+                            each.opacity_value.push(0.7);
+                            var settings = $.extend({}, each, analyzed_data[i]);
+                            data.push(settings);
+                        }
+
+                        
+                    }
+
+                    // var datanetwork = [];
+
+                    // for (var i = 0; i < analyzed_data.length ; i++) {
+                    //     var each = {
+                    //             opacity_value: []
+                    //         };
+                    //     if (analyzed_data[i].test === selected_method && analyzed_data[i].windowsize === selected_window && analyzed_data[i].casemarker === "로" && analyzed_data[i].pos === "JKB") {
+                    //         datanetwork.push(analyzed_data[i]);
+                    //     }
+
+                        
+                    // }
+
+                    // console.log(datanetwork);
+
+                    // var networkword = datanetwork.casemarker+"/"+datanetwork.casemarker_eng;
+                    // drawnetworkinfo(networkword);
+                    // drawnetwork(datanetwork);
+                    // drawtable(datanetwork);
+
+                    var w = width*0.66;
+                    var h = 920;
+                    var padding = 50;
+
+                    var xScale = d3.scale.linear()
+                        .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.x; })])
+                        .range([0+padding, w-padding]);
+
+                    var yScale = d3.scale.linear()
+                         .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.y; })])
+                         .range([h-padding, 0+padding]);
+
+                    // //노드와 텍스트가 그룹으로 선택 되려면 데이터를 전송하고 그룹으로 묶어 변수를 생성한다. 그리고 생성한 변수에 노드와 텍스트를 생성하면 된다.
+                    // https://stackoverflow.com/questions/47385361/how-to-select-a-specific-d3-node-group-element
+                    // NodeGroup = NodeGroup.selectAll(null)  
+                    //         .data(data)
+                    //         .enter()
+                    //         .append("g");
+
+                    NodeGroup.selectAll(".nodedot").data(data)
+                            .enter()
+                            .append("circle")
+                            .attr("class", "nodedot")
+                            .attr("id", "nodegroup")
+                            .attr("cx", function (d) {
+                                return xScale(d.x)
+                            })
+                            .attr("cy", function (d) {
+                                return yScale(d.y)
+                            })
+                            .attr("r", function (d) {
+                                var size = (d.wordfrequncy/100000) * 6
+                                if (size <= 7) {
+                                    return 7
+                                } else {
+                                    return size
+                                }
+                            })  
+                            .attr("fill", function (d) {
+                                if (d.pos == CM_name[0]) {
+                                    return CM_color[0]
+                                } else if (d.pos == CM_name[1]) {
+                                    return CM_color[1]
+                                } else if (d.pos == CM_name[2]) {
+                                    return CM_color[2]
+                                } else if (d.pos == CM_name[3]) {
+                                    return CM_color[3]
+                                } else if (d.pos == CM_name[4]) {
+                                    return CM_color[4]
+                                } else if (d.pos == CM_name[5]) {
+                                    return CM_color[5]
+                                } else if (d.pos == CM_name[6]) {
+                                    return CM_color[6]
+                                } else if (d.pos == CM_name[7]) {
+                                    return CM_color[7]
+                                } else if (d.pos == CM_name[8]) {
+                                    return CM_color[8]
+                                }
+                            }) 
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "1px")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer")
+                            .on('click', function(d) {
+                                drawnetworkinfo(d.casemarker+"/"+d.casemarker_eng)
+                                drawnetwork(d);
+                                drawtable(d);
+                            })
+                            .on("mouseover", function (d) { 
+                                d3.select(this)
+                                    .attr("stroke", "black")
+                                    .attr("stroke-width", "1px")
+                                    .attr("opacity", 1)
+                            })
+                            .on("mouseout", function (d) {d3.select(this)
+                                    .attr("stroke", "black")
+                                    .attr("stroke-width", "1px")
+                                    .attr("opacity", function (d) {
+                                        return d.opacity_value
+                                    }); 
+                            })
+                            .on("mouseenter", function (d) {
+                                div_inner.transition()        
+                                    .duration(200)      
+                                    .style("opacity", 0.85);      
+                                div_inner.html("<strong>Selected Case Marker</strong><br/><h5>("+d.test+","+d.windowsize+")</h5><h5>Name_kr : "+d.casemarker + "<h5/><h5>Name_eng : "  + d.casemarker_eng.split("/")[0]+ "<h5/><h5>POS : "  + d.pos+ "<h5/><h5>POS_kr : "  + d.detail_kr+ "<h5/><h5>POS_eng : "  + d.detail+ "<h5/><h5>POS_eng : "  + d.detail_eng+ "<h5/><h5>Frequency : "  + d.wordfrequncy+"<h5/>")  
+                                    .style("right", "20px")     
+                                    .style("top", "20px");
+                            })
+                            .on("mouseleave", function () {
+                                div_inner.transition()        
+                                    .duration(500)      
+                                    .style("opacity", 0);
+                            });
+                        
+
+
+                    NodeGroup.selectAll(".nodetext")
+                            .data(data)
+                            .enter()
+                            .append("text")
+                            .attr("class", "nodetext")
+                            .attr("id", "nodegroup")
+                            .text(function (d) {
+                                return d.casemarker+"/"+d.casemarker_eng;
+                            })
+                            .attr("x", function (d) {
+                                return xScale(d.x) + 10
+                            })
+                            .attr("y", function (d) {
+                                return yScale(d.y) + 7
+                            })
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "15px")
+                            .attr("fill", "rgb(51,51,51)")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer")
+                            .on('click', function(d) {
+                                drawnetworkinfo(d.casemarker+"/"+d.casemarker_eng)
+                                drawnetwork(d);
+                                drawtable(d);
+                            })
+                            .on("mouseover", function () {
+                                d3.select(this)
+                                        .attr("font-size", "17px")
+                                        .attr("opacity", 1);
+                            })
+                            .on("mouseout", function (d) {
+                                d3.select(this)
+                                        .attr("font-size", "15px")
+                                        .attr("opacity", function (d) {
+                                            return d.opacity_value
+                                        });
+                            })
+                            .on("mouseenter", function (d) {
+                                console.log(w);
+                                div_inner.transition()        
+                                    .duration(200)      
+                                    .style("opacity", 0.85);      
+                                div_inner.html("<strong>Selected Case Marker</strong><br/><h5>("+d.test+","+d.windowsize+")</h5><h5>Name_kr : "+d.casemarker + "<h5/><h5>Name_eng : "  + d.casemarker_eng.split("/")[0]+ "<h5/><h5>POS : "  + d.pos+ "<h5/><h5>POS_kr : "  + d.detail_kr+ "<h5/><h5>POS_eng : "  + d.detail+ "<h5/><h5>POS_eng : "  + d.detail_eng+ "<h5/><h5>Frequency : "  + d.wordfrequncy+"<h5/>")   
+                                    .style("right", "20px")    
+                                    .style("top", "20px");
+                            })
+                            .on("mouseleave", function () {
+                                div_inner.transition()        
+                                    .duration(500)      
+                                    .style("opacity", 0);
+                            });
+
+                    return data;
+
+                }       
+
+
+                function changedrawdata() {
+
+                    console.log("change");
+
+                    svgright_up.selectAll(".selectword").remove();
+                    $('#mytable').empty();
+                    svgright_middle.selectAll(".networklinks").remove();
+                    svgright_middle.selectAll(".networknodes").remove();
+
+                    document.getElementById('frequncy_size').selected = true;
+                    document.getElementById('class_color').selected = true;
+
+                    //선택 옵션 확인
+                    var selected_method = $( "#op_method" ).val();
+                    var selected_window = $( "#op_window" ).val();
+                    var selected_node_size = $( "#op_node_size" ).val();
+                    var selected_node_color = $( "#op_node_color" ).val();
+
+                    var tokens = checkbox1();
+                    var types = checkbox2();
+
+                    function checkbox1() {
+                
+                        var data_checkbox_1 = []
+                        for(var i = 0; i < typeslist.length; i++){
+                        if(checkedeachValue('CB_leftmiddle_'+i)!=='null'){
+                          data_checkbox_1.push(checkedeachValue('CB_leftmiddle_'+i));
+                        }
+                        }
+                        return data_checkbox_1;
+                    }
+
+                    function checkbox2() {
+                
+                        var data_checkbox_2 = []
+                        for(var i = 0; i < tokenslist.length; i++){
+                        if(checkedeachValue('CB_leftbottom_'+i)!=='null'){
+                          data_checkbox_2.push(checkedeachValue('CB_leftbottom_'+i));
+                        }
+                        }
+                        console.log(data_checkbox_2);
+                        return data_checkbox_2;
+                    }
+
+                    function checkedeachValue(checkeddata){
+                        var value;
+                        var checkedValue = document.querySelector('#'+checkeddata+':checked');
+                        if(checkedValue == null){
+                          value = "null";
+                        } else {
+                          value = checkedValue.value;
+                        }
+                        return value;
+                    }
+
+                    var data = [];
+
+                    for (var i = 0; i < analyzed_data.length ; i++) {
+                        var each = {
+                                opacity_value: []
+                            };
+                        if (analyzed_data[i].test === selected_method && analyzed_data[i].windowsize === selected_window) {
+                            if(tokens.length > 0 == true && types.length > 0 == false){
+                                var checkedtoken = false;
+                                for(var j = 0; j < tokens.length ; j++){
+                                    if(analyzed_data[i].pos == tokens[j]){
+                                        checkedtoken = true;
+                                    }
+                                }
+                                if(checkedtoken == true){
+                                    each.opacity_value.push(1);
+                                } else {
+                                    each.opacity_value.push(0.1);
+                                }
+                            } else if (tokens.length > 0 == false && types.length > 0 == true){
+                                var checkedtype = false;
+
+                                for(var k = 0; k < types.length ; k++){
+                                    var casetype = types[k].split("/")[0];
+                                    var postype = types[k].split("/")[1];
+                                    if(analyzed_data[i].casemarker == casetype && analyzed_data[i].pos == postype){
+                                        checkedtype = true;
+                                    }
+                                }
+                                if(checkedtype == true){
+                                    each.opacity_value.push(1);
+                                } else {
+                                    each.opacity_value.push(0.1);
+                                }
+                            } else if(tokens.length > 0 == true && types.length > 0 == true){
+                                var checked = false;
+                                for(var j = 0; j < tokens.length ; j++){
+                                    for(var k = 0; k < types.length ; k++){
+                                        var casetype = types[k].split("/")[0];
+                                        var postype = types[k].split("/")[1];
+                                        if(analyzed_data[i].pos == tokens[j] && analyzed_data[i].casemarker == casetype && analyzed_data[i].pos == postype){
+                                            checked = true;
+                                        }
+                                    }
+                                }
+                                if(checked == true){
+                                    each.opacity_value.push(1);
+                                } else {
+                                    each.opacity_value.push(0.2);
+                                }
+                            } else if(tokens.length > 0 == false && types.length > 0 == false){
+                                each.opacity_value.push(0.7);
+                            }
+                            var settings = $.extend({}, each, analyzed_data[i]);
+                            data.push(settings);
+                        }
+
+                        
+                    }
+
+                    // var data = [];
+
+                    // for (var i = 0; i < analyzed_data.length ; i++) {
+                    //     if (analyzed_data[i].test === selected_method && analyzed_data[i].windowsize === selected_window) {
+                    //         data.push(analyzed_data[i]);
+                    //     }
+                    // }
+
+                    var w = width*0.66;
+                    var h = 920;
+                    var padding = 50;
+
+                    var xScale = d3.scale.linear()
+                        .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.x; })])
+                        .range([0+padding, w-padding]);
+
+                    var yScale = d3.scale.linear()
+                         .domain([d3.min(data, function(d) { return d.y; }), d3.max(data, function(d) { return d.y; })])
+                         .range([h-padding, 0+padding]);
+
+                    var circle = NodeGroup.selectAll(".nodedot")
+                    .data(data);
+
+                    circle.enter()
+                            .append("circle")
+                            .attr("class", "nodedot")
+                            .attr("id", "nodegroup")
+                            .attr("cx", function (d) {
+                                return xScale(d.x)
+                            })
+                            .attr("cy", function (d) {
+                                return yScale(d.y)
+                            })
+                            .attr("r", function (d) {
+                                var size = (d.wordfrequncy/100000) * 6
+                                if (size <= 7) {
+                                    return 7
+                                } else {
+                                    return size
+                                }
+                            })  
+                            .attr("fill", function (d) {
+                                if (d.pos == CM_name[0]) {
+                                    return CM_color[0]
+                                } else if (d.pos == CM_name[1]) {
+                                    return CM_color[1]
+                                } else if (d.pos == CM_name[2]) {
+                                    return CM_color[2]
+                                } else if (d.pos == CM_name[3]) {
+                                    return CM_color[3]
+                                } else if (d.pos == CM_name[4]) {
+                                    return CM_color[4]
+                                } else if (d.pos == CM_name[5]) {
+                                    return CM_color[5]
+                                } else if (d.pos == CM_name[6]) {
+                                    return CM_color[6]
+                                } else if (d.pos == CM_name[7]) {
+                                    return CM_color[7]
+                                } else if (d.pos == CM_name[8]) {
+                                    return CM_color[8]
+                                }
+                            }) 
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "1px")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer");
+                            
+
+
+                    circle.transition()
+                            .duration(2000)
+                            .attr("cx", function (d) {
+                                return xScale(d.x)
+                            })
+                            .attr("cy", function (d) {
+                                return yScale(d.y)
+                            })
+                            .attr("r", function (d) {
+                                var size = (d.wordfrequncy/100000) * 6
+                                if (size <= 7) {
+                                    return 7
+                                } else {
+                                    return size
+                                }
+                            })  
+                            .attr("fill", function (d) {
+                                if (d.pos == CM_name[0]) {
+                                    return CM_color[0]
+                                } else if (d.pos == CM_name[1]) {
+                                    return CM_color[1]
+                                } else if (d.pos == CM_name[2]) {
+                                    return CM_color[2]
+                                } else if (d.pos == CM_name[3]) {
+                                    return CM_color[3]
+                                } else if (d.pos == CM_name[4]) {
+                                    return CM_color[4]
+                                } else if (d.pos == CM_name[5]) {
+                                    return CM_color[5]
+                                } else if (d.pos == CM_name[6]) {
+                                    return CM_color[6]
+                                } else if (d.pos == CM_name[7]) {
+                                    return CM_color[7]
+                                } else if (d.pos == CM_name[8]) {
+                                    return CM_color[8]
+                                }
+                            }) 
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "1px")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer");
+                            
+
+
+                    circle.exit().remove()
+
+
+                    var text = NodeGroup.selectAll(".nodetext")
+                    .data(data);
+
+                    text.enter()
+                            .append("text")
+                            .attr("class", "nodetext")
+                            .attr("id", "nodegroup")
+                            .text(function (d) {
+                                return d.casemarker+"/"+d.casemarker_eng;
+                            })
+                            .attr("x", function (d) {
+                                return xScale(d.x) + 10
+                            })
+                            .attr("y", function (d) {
+                                return yScale(d.y) + 7
+                            })
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "15px")
+                            .attr("fill", "rgb(51,51,51)")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer");
+                            
+
+
+                    text.transition()
+                            .duration(2000)
+                            .text(function (d) {
+                                return d.casemarker+"/"+d.casemarker_eng;
+                            })
+                            .attr("x", function (d) {
+                                return xScale(d.x) + 10
+                            })
+                            .attr("y", function (d) {
+                                return yScale(d.y) + 7
+                            })
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "15px")
+                            .attr("fill", "rgb(51,51,51)")
+                            .attr("opacity", function (d) {
+                                return d.opacity_value
+                            })
+                            .style("cursor", "pointer");
+                            
+
+                    text.exit().remove()
+
+                    return data;
+                }     
+
+
+                function drawnetworkinfo(data) {
+                    svgright_up.selectAll(".selectword").remove();
+                    svgright_up.append("text")
+                        .attr("class", "selectword")
+                        .text(data)
+                        .attr("x", width * 0.012)
+                        .attr("y", 28)
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("font-size", "20px")
+                        .attr("fill", "#666666");
+                }
+
+
+                function drawtable(data){
+                    $('#mytable').empty();
+                    for(var k = 0 ; k < data.links.length; k++){
+                      $("#mytable").append("<tr style='padding: 0px;'><td>"+data.links[k].target.id.split("/")[0]+"</td><td>"+data.links[k].target_eng.split("/")[0]+"</td><td>"+data.links[k].target_eng.split("/")[1]+"</td><td>"+data.links[k].value+"</td><td>"+data.nodes[k].frequncy+"</td><td>"+data.nodes[k].pos_detail+"</td><td>"+data.nodes[k].pos_detail_kr+"</td></tr>");
+                    }
+                }
+
+                function drawnetwork(data){
+
+                    svgright_middle.selectAll(".networklinks").remove();
+                    svgright_middle.selectAll(".networknodes").remove();
+                                
+                    //https://bl.ocks.org/heybignick/3faf257bbbbc7743bb72310d03b86ee8
+                
+                    var simulation = d3.forceSimulation()
+                        .force("link", d3.forceLink().id(function(d) { return d.id; }).distance(function (d) { return 80}))
+                        .force("charge", d3.forceManyBody())
+                        .force("center", d3.forceCenter(width * 0.14 / 2, 290 / 2));
+
+
+                    var link = svgright_middle.append("g")
+                          .attr("class", "networklinks")
+                        .selectAll("line")
+                        .data(data.links)
+                        .enter().append("line")
+                          .attr("stroke-width", function(d) { return Math.sqrt(d.value*7); });
+
+                      var node = svgright_middle.append("g")
+                          .attr("class", "networknodes")
+                        .selectAll("g")
+                        .data(data.nodes)
+                        .enter().append("g")
+                        
+                      var circles = node.append("circle")
+                          .attr("r", function(d) {
+                                var size = d.frequncy/1000
+                                if(15 < size){
+                                  return 15;
+                                } else if (size < 5){
+                                    return 5;
+                                } else {
+                                    return size;
+                                }
+                            })
+                          .attr("fill", function (d) {
+                                if (d.pos == CM_name[0]) {
+                                    return CM_color[0]
+                                } else if (d.pos == CM_name[1]) {
+                                    return CM_color[1]
+                                } else if (d.pos == CM_name[2]) {
+                                    return CM_color[2]
+                                } else if (d.pos == CM_name[3]) {
+                                    return CM_color[3]
+                                } else if (d.pos == CM_name[4]) {
+                                    return CM_color[4]
+                                } else if (d.pos == CM_name[5]) {
+                                    return CM_color[5]
+                                } else if (d.pos == CM_name[6]) {
+                                    return CM_color[6]
+                                } else if (d.pos == CM_name[7]) {
+                                    return CM_color[7]
+                                } else if (d.pos == CM_name[8]) {
+                                    return CM_color[8]
+                                } else {
+                                    return '#C2C1C1'
+                                }
+                            }) 
+                          .call(d3.drag()
+                              .on("start", dragstarted)
+                              .on("drag", dragged)
+                              .on("end", dragended));
+
+                      var lables = node.append("text")
+                          .text(function(d) {
+                            return d.id;//.split("/")[0]+"/"+d.id_eng;
+                          })
+                          .attr('x', 6)
+                          .attr('y', 3);
+
+                      node.append("title")
+                          .text(function(d) { return d.id; });
+
+                      simulation
+                          .nodes(data.nodes)
+                          .on("tick", ticked);
+
+                      simulation.force("link")
+                          .links(data.links);
+
+                      function ticked() {
+                        link
+                            .attr("x1", function(d) { return d.source.x; })
+                            .attr("y1", function(d) { return d.source.y; })
+                            .attr("x2", function(d) { return d.target.x; })
+                            .attr("y2", function(d) { return d.target.y; });
+
+                        node
+                            .attr("transform", function(d) {
+                              return "translate(" + d.x + "," + d.y + ")";
+                            })
+                      }
+
+                    function dragstarted(d) {
+                      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+                      d.fx = d.x;
+                      d.fy = d.y;
+                    }
+
+                    function dragged(d) {
+                      d.fx = d3.event.x;
+                      d.fy = d3.event.y;
+                    }
+
+                    function dragended(d) {
+                      if (!d3.event.active) simulation.alphaTarget(0);
+                      d.fx = null;
+                      d.fy = null;
+                    }
+                }
+
+
+
+                })
+            </script>
+        </div>
+        <div id="right">
+            <div id="right_up">
+                <p id="right_option">Selected Node</p>
+            </div>
+            <div id="right_middle">
+                <p id="right_option">Force Directed Graph</p>
+            </div>
+            <div id="right_bottom">
+                <p id="right_option">Nearest Words</p>
+                <div id="container_rightbottom">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id_kr</th>
+                                <th>Id_eng</th>
+                                <th>POS</th>
+                                <th>Similarity</th>
+                                <th>Frequency</th>
+                                <th>POS_eng</th>
+                                <th>POS_kr</th>
+                            </tr>
+                        </thead>
+                        <tbody id="mytable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+        </div>
+    </body>
+</html>

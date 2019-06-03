@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>PostVis.ko</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="./javascripts/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./javascripts/d3.v4.js"></script>
+    <script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script>
+    <script src="./data/PostVisData.js" charset="utf-8"></script><!--SGNSdata1, vis-data-->
+    <script src="./data/Sentence.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./stylesheets/PostVis.css">
+    </head>
+    <body>
+        <div id="header">
+            <div id="header_in">
+                <p id="header_p">PostVis.ko
+                <img src="images/impact.png" id="header_img" align="right"><img src="images/question.png" alt="question" id="header_img" align="right"><img src="images/person.png" alt="person" id="header_img" alt="Developer_homepage" align="right" onclick="javascript:newin=window.open('about:blank');newin.location.href='https://mr-seongmin.github.io/MyWebsite/Seongmin/';"></p>
+            </div>
+        </div>
+        <div id="left">
+            <div id="left_up">
+                <p id="left_option">Select Method</p>
+                <select id="op_method">
+                    <!-- <option value="sgns" selected="selected">SGNS</option> -->
+                    <option value="svd" selected="selected">SVD</option>
+                    <option value="ppmi_svd">PPMI_SVD</option>
+                    <option value="sgns">SGNS</option>
+                <!--<option value="glove">GloVe</option>-->
+                </select>
+                <p id="left_option">Window Size</p>
+                <select id="op_window">
+                    <option value="window1" selected="selected">Window : 1</option>
+                    <option value="window2">Window : 2</option>
+                    <option value="window3">Window : 3</option>
+                    <option value="window4">Window : 4</option>
+                    <option value="window5">Window : 5</option>
+                    <option value="window6">Window : 6</option>
+                    <option value="window7">Window : 7</option>
+                    <option value="window8">Window : 8</option>
+                    <option value="window9">Window : 9</option>
+                    <option value="window10">Window : 10</option>
+                </select>
+                <p id="left_option">Node Size</p>
+                <select id="op_node_size">
+                    <option id="frequncy_size" value="frequncy" selected="selected">Frequency</option>
+                    <option id="nomal_size" value="nomal">Default</option>
+                </select>
+                <p id="left_option">Node Color</p>
+                <select id="op_node_color">
+                    <option id="class_color" value="class" selected="selected">Class</option>
+                    <option id="nomal_color" value="nomal">Default</option>
+                </select>
+            </div>
+            <div id="left_middle">
+                <p id="left_option">Select Types</p>
+                <div id="container_leftmiddle">
+                    
+                </div>
+            </div>
+            <div id="left_bottom">
+                <p id="left_option">Select Tokens</p>
+                <div id="container_leftbottom">
+
+                </div>
+            </div>
+        </div>
+        <div id="section">
+            <div id="section_top">
+                <p id="section_top_p">Distribution Map with T-SNE</p>
+            </div>
+            <div id="section_middle">
+                <p id="section_middle_p">Concordance Table</p>
+            </div>
+            <div id="section_bottom">
+                <div id="container_section_bottom">
+                    <table class="table" style="margin-bottom: 0px;">
+                        <thead>
+                            <tr>
+                                <th>Num</th>
+                                <th>Id_kr</th>
+                                <th>Id_eng</th>
+                                <th>Sentence</th>
+                                <th>Lexeme With POS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="concordancetable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div id="right_up">
+                <p id="right_option">Selected Node</p>
+                <select id="op_casemarker">
+                <option id="이/JKS" value="의/JKG" selected="selected">의/JKG (uy/JKG)</option>
+                </select>
+            </div>
+            <div id="right_middle">
+                <p id="right_option">Force Directed Graph</p>
+            </div>
+            <div id="right_bottom">
+                <p id="right_option">Nearest Words</p>
+                <div id="container_rightbottom">
+                    <table class="table" style="margin-bottom: 0px;">
+                        <thead>
+                            <tr>
+                                <th>Num</th>
+                                <th>Id_kr</th>
+                                <th>Id_eng</th>
+                                <th>POS</th>
+                                <th>Similarity</th>
+                                <th>Frequency</th>
+                                <th>POS_eng</th>
+                                <th>POS_kr</th>
+                            </tr>
+                        </thead>
+                        <tbody id="similaritytable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+        </div>
+        <script src="./javascripts/PostVis.js" charset="utf-8"></script>
+    </body>
+</html>
+

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="images/Logo.png" rel="shortcut icon">
+  <title>RhapVis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="data/data3.js" charset="utf-8"></script>
+  <!--<script src="stylesheets/style.css" charset="utf-8"></script>-->
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400' rel='stylesheet' type='text/css'>
+  <script src="javascripts/d3.v3.min.js" charset="utf-8"></script>
+  <script type="javascripts/d3.v3.js" charset="utf-8"></script>
+  <script src="javascripts/jquery.min.js" charset="utf-8"></script>
+  <style type="text/css">
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+#header {
+    height:80px;
+    background-color:rgb(51,51,51);
+}
+
+
+#left {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:28%;
+    height:620px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#section {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:68%;
+    height:620px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+select#inds {
+   width: 80%;
+   height: 30px;
+   padding-left: 5%;
+   font-size: 17px;
+   border-radius: 3px;
+   position: absolute;
+   top: 392px; 
+   left: 10%;
+   background: white; 
+}
+
+select#inds_size {
+   width: 80%;
+   height: 30px;
+   padding-left: 5%;
+   font-size: 17px;
+   border-radius: 3px;
+   position: absolute;
+   top: 312px; 
+   left: 10%;
+   background: white; 
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+
+div.tooltip { 
+    position: absolute;
+    text-align: left;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #efefef;
+    border: solid 1px #cecece;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 #dfdfdf;
+    pointer-events: none;
+}
+
+</style>
+</head>
+<body>
+<body><div id="header"><script>$(document).ready(function () {
+
+var width = $(window).width()
+
+var height = $(window).height()
+
+var svgheader = d3.select("#header")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", 80)
+
+svgheader.append("text")
+    .text("RhapVis")
+    .attr("x", (width * 0.03))
+    .attr("y", 60)
+    .attr("text-anchor", "start")
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "50px")
+    .attr("fill", "white")
+    .attr("font-weight", "bold")
+
+svgheader.append("text")
+    .text("PCA")
+    .attr("x", (width * 0.93))
+    .attr("y", 60)
+    .attr("text-anchor", "start")
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "30px")
+    .attr("fill", "white")
+    .attr("font-weight", "bold")
+    .style("cursor", "default")
+    .on("mouseover", function () {
+                d3.select(this)
+                        .attr("fill", "#B2D8E1")
+                        .attr("font-size", "35px")
+                        .style("cursor", "pointer")
+            })
+    .on("mouseout", function () {
+        d3.select(this)
+                .attr("fill", "white")
+                .attr("font-size", "30px")
+                .style("cursor", "default")
+    })
+    .on("click", Show_popup)
+
+    function Show_popup() {
+        window.open("http://ressources.modyco.fr/sm/RhapVis/PCA.html");
+    }
+
+
+})
+
+</script></div><div id="left">
+<select id="inds_size">
+        <option value="pauses" selected="selected">pauses</option>
+        <option value="overlaps">overlaps</option>
+        <option value="euh">euh</option>
+        <option value="prom">prom</option>
+        <option value="PI">PI</option>
+        <option value="PA">PA</option>
+</select>
+<select id="inds">
+        <option value="subgenre" selected="selected">subgenre</option>
+        <option value="interactivity">interactivity</option>
+        <option value="social_context">social_context</option>
+        <option value="event_structure">event_structure</option>
+        <option value="channel">channel</option>
+        <option value="planning_type">planning_type</option>
+</select>
+<form id="xaxis">
+<label class="bar-label" style="left: 11%; top: 70px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="pauses" checked> Pauses</label>
+<label class="bar-label" style="left: 11%; top: 102px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="overlaps"> Overlaps</label>
+<label class="bar-label" style="left: 11%; top: 134px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="euh"> Euh</label>
+<label class="bar-label" style="left: 11%; top: 166px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="prom"> Prom</label>
+<label class="bar-label" style="left: 11%; top: 198px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="PI"> PI</label>
+<label class="bar-label" style="left: 11%; top: 230px; position: absolute; font-size: 1em;";><input id="xbar-input" class="xbar-input" type="radio" name="mode" value="PA"> PA</label>
+</form>
+<form id="yaxis">
+<label class="bar-label" style="left: 54%; top: 70px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="pauses"> Pauses</label>
+<label class="bar-label" style="left: 54%; top: 102px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="overlaps" checked> Overlaps</label>
+<label class="bar-label" style="left: 54%; top: 134px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="euh"> Euh</label>
+<label class="bar-label" style="left: 54%; top: 166px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="prom"> Prom</label>
+<label class="bar-label" style="left: 54%; top: 198px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="PI"> PI</label>
+<label class="bar-label" style="left: 54%; top: 230px; position: absolute; font-size: 1em;";><input id="ybar-input" class="ybar-input" type="radio" name="mode" value="PA"> PA</label>
+</form>
+<script>$(document).ready(function () {
+
+var width = $(window).width()
+
+var height = $(window).height()
+
+var svgleft = d3.select("#left")
+            .append("svg")
+            .attr("width", width * 0.28)
+            .attr("height", 620)
+
+    svgleft.append("text")
+            .text("X-axis")
+            .attr("class", "svgleft_text")
+            .attr("x", (width * 0.02))
+            .attr("y", 35)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "30px")
+            .attr("fill", "rgb(51,51,51)")
+            .attr("font-weight", "bold")
+
+    svgleft.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", (width * 0.02))
+            .attr("y", 45)
+            .attr("width", (width * 0.11))
+            .attr("height", 200)
+            .attr("fill", "white")
+
+
+    // for (var i = 0; i < axisvar.length; i++) {
+    //     svgleft.append("text")
+    //         .text(axisvar[i])
+    //         .attr("class", "svgleft_text")
+    //         .attr("x", (width * 0.03))
+    //         .attr("y", 70+(32*i))
+    //         .attr("text-anchor", "right")
+    //         .attr("font-family", "Open Sans")
+    //         .attr("font-size", "20px")
+    //         .attr("fill", "rgb(51,51,51)")
+    // }
+
+
+    svgleft.append("text")
+            .text("Y-axis")
+            .attr("class", "svgleft_text")
+            .attr("x", (width * 0.15))
+            .attr("y", 35)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "30px")
+            .attr("fill", "rgb(51,51,51)")
+            .attr("font-weight", "bold")
+
+    svgleft.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", (width * 0.15))
+            .attr("y", 45)
+            .attr("width", (width * 0.11))
+            .attr("height", 200)
+            .attr("fill", "white")
+
+
+    svgleft.append("text")
+            .text("Node size")
+            .attr("class", "svgleft_text")
+            .attr("x", (width * 0.02))
+            .attr("y", 285)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "30px")
+            .attr("fill", "rgb(51,51,51)")
+            .attr("font-weight", "bold")
+
+
+    svgleft.append("text")
+            .text("Color legend")
+            .attr("class", "svgleft_text")
+            .attr("x", (width * 0.02))
+            .attr("y", 365)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "30px")
+            .attr("fill", "rgb(51,51,51)")
+            .attr("font-weight", "bold")
+
+
+    svgleft.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", width * 0.02)
+            .attr("y", 420)
+            .attr("width", width * 0.24)
+            .attr("height", 170)
+            .attr("fill", "white")
+
+    //section부분
+    var svgsection = d3.select("#section")
+        .append("svg")
+        .attr("width", width*0.68)
+        .attr("height", 620)        
+
+    svgsection.append("rect")
+        .attr("class", "svgleft_rect")
+        .attr("x", width * 0.02)
+        .attr("y", 20)
+        .attr("width", width * 0.64)
+        .attr("height", 580)
+        .attr("fill", "white")
+
+    var div_node = d3.select("#section").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+    d3.selectAll("#xaxis").on("change", changeaxis);
+    d3.selectAll("#yaxis").on("change", changeaxis);
+
+    changeaxis()
+
+    function changeaxis() {
+
+        svgsection.selectAll("#xLabel").remove();
+        svgsection.selectAll("#yLabel").remove();
+        
+        console.log("x : "+$( "input#xbar-input:checked" ).val());
+        console.log("y : "+$( "input#ybar-input:checked" ).val());
+
+        var x_value = $( "input#xbar-input:checked" ).val();
+        var y_value = $( "input#ybar-input:checked" ).val();
+
+        var plotdata =[];
+        
+        for (var i = 0; i < anne.length; i++) {
+            if(x_value=='pauses'){
+                x = anne[i].pauses;
+            } else if (x_value=='overlaps'){
+                x = anne[i].overlaps;
+            } else if (x_value=='euh'){
+                x = anne[i].euh;
+            } else if (x_value=='prom'){
+                x = anne[i].prom;
+            } else if (x_value=='PI'){
+                x = anne[i].PI;
+            } else if (x_value=='PA'){
+                x = anne[i].PA;
+            }
+
+            if(y_value=='pauses'){
+                y = anne[i].pauses;
+            } else if (y_value=='overlaps'){
+                y = anne[i].overlaps;
+            } else if (y_value=='euh'){
+                y = anne[i].euh;
+            } else if (y_value=='prom'){
+                y = anne[i].prom;
+            } else if (y_value=='PI'){
+                y = anne[i].PI;
+            } else if (y_value=='PA'){
+                y = anne[i].PA;
+            }
+
+            var each = {
+                x: x,
+                y: y,
+                pauses: anne[i].pauses,
+                overlaps: anne[i].overlaps,
+                euh: anne[i].euh,
+                prom: anne[i].prom,
+                PI: anne[i].PI,
+                PA: anne[i].PA,
+                name: anne[i].name,
+                subgenre: anne[i].subgenre,
+                interactivity: anne[i].interactivity,
+                social_context: anne[i].social_context,
+                event_structure: anne[i].event_structure,
+                channel: anne[i].channel,
+                planning_type: anne[i].planning_type,
+            };
+
+            plotdata.push(each);
+            
+        }
+
+        draw(plotdata);
+
+        svgsection.append('text')
+            .attr({'id': 'xLabel', 'x': width*0.6, 'y': 590, 'text-anchor': 'middle'})
+            .text('X axis : '+x_value);
+
+        svgsection.append('text')
+            .attr('transform', 'translate(-60, 330)rotate(-90)')
+            .attr({'id': 'yLabel', 'x': 200, 'y': 110, 'text-anchor': 'middle'})
+            .text('Y axis : '+y_value);
+        
+    }
+
+
+    
+
+    d3.selectAll("#inds").on("change", change);
+
+    function change() {
+        if (this.value == "subgenre") subgenre();
+        else if (this.value === "interactivity") interactivity();
+        else if (this.value === "social_context") social_context();
+        else if (this.value === "event_structure") event_structure();
+        else if (this.value === "channel") channel();
+        else if (this.value === "planning_type") planning_type();
+    }
+    //기본 범례 표시
+    subgenre();
+
+    //왼쪽 하단 색상 변경 관련 함수
+    function subgenre() {
+        svgleft.selectAll(".legend").remove();
+        var subgenre_name = ["argumentation","description","narrative","oratory","procedural"];
+        var subgenre_color = ["#6BC600", "#AACA00", "#CEB100", "#D27500", "#D90008"];
+
+    for (var i = 0; i < subgenre_name.length; i++) {
+        legendgenerate(i,subgenre_name,subgenre_color,'subgenre');
+    }
+    
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.subgenre == subgenre_name[0]) {
+                    return subgenre_color[0]
+                } else if (d.subgenre == subgenre_name[1]) {
+                    return subgenre_color[1]
+                } else if (d.subgenre == subgenre_name[2]) {
+                    return subgenre_color[2]
+                } else if (d.subgenre == subgenre_name[3]) {
+                    return subgenre_color[3]
+                } else if (d.subgenre == subgenre_name[4]) {
+                    return subgenre_color[4]
+                }
+            })
+                        
+    }
+
+    function interactivity() {
+        svgleft.selectAll(".legend").remove();
+        var interactivity_name = ["interactive","non-interactive","semi-interactive"];
+        var interactivity_color = ["#6BC600", "#CEB100", "#D90008"];
+        for (var i = 0; i < interactivity_name.length; i++) {
+        legendgenerate(i,interactivity_name,interactivity_color,interactivity);
+    }
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.interactivity == interactivity_name[0]) {
+                    return interactivity_color[0]
+                } else if (d.interactivity == interactivity_name[1]) {
+                    return interactivity_color[1]
+                } else if (d.interactivity == interactivity_name[2]) {
+                    return interactivity_color[2]
+                } 
+            })
+    }
+
+    function social_context() {
+        svgleft.selectAll(".legend").remove();
+        var social_context_name = ["private","public"];
+        var social_context_color = ["#6BC600", "#D90008"];
+        for (var i = 0; i < social_context_name.length; i++) {
+        legendgenerate(i,social_context_name,social_context_color,social_context);
+    }
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.social_context == social_context_name[0]) {
+                    return social_context_color[0]
+                } else if (d.social_context == social_context_name[1]) {
+                    return social_context_color[1]
+                } 
+            })
+    }
+
+    function event_structure() {
+        svgleft.selectAll(".legend").remove();
+        var event_structure_name = ["dialogue","monologue"];
+        var event_structure_color = ["#6BC600", "#D90008"];
+        for (var i = 0; i < event_structure_name.length; i++) {
+        legendgenerate(i,event_structure_name,event_structure_color,event_structure);
+    }
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.event_structure == event_structure_name[0]) {
+                    return event_structure_color[0]
+                } else if (d.event_structure == event_structure_name[1]) {
+                    return event_structure_color[1]
+                } 
+            })
+    }
+
+    function channel() {
+        svgleft.selectAll(".legend").remove();
+        var channel_name = ["broadcasting","face-to-face"];
+        var channel_color = ["#6BC600", "#D90008"];
+        for (var i = 0; i < channel_name.length; i++) {
+        legendgenerate(i,channel_name,channel_color,channel);
+    }
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.channel == channel_name[0]) {
+                    return channel_color[0]
+                } else if (d.channel == channel_name[1]) {
+                    return channel_color[1]
+                } 
+            })
+    }
+
+    function planning_type() {
+        svgleft.selectAll(".legend").remove();
+        var planning_type_name = ["planned","semi-spontaneous","spontaneous"];
+        var planning_type_color = ["#6BC600", "#CEB100", "#D90008"];
+        for (var i = 0; i < planning_type_name.length; i++) {
+        legendgenerate(i,planning_type_name,planning_type_color,planning_type);
+    }
+    d3.selectAll(".circledot")
+            .data(anne)
+            .attr("fill", function (d) {
+                if (d.planning_type == planning_type_name[0]) {
+                    return planning_type_color[0]
+                } else if (d.planning_type == planning_type_name[1]) {
+                    return planning_type_color[1]
+                } else if (d.planning_type == planning_type_name[2]) {
+                    return planning_type_color[2]
+                } 
+            })
+    }
+
+    function legendgenerate(i,data_name,data_color,classtype) {
+        
+        svgleft.append("text")
+            .text(data_name[i])
+            .attr("class", "legend")
+            .attr("x", (width * 0.055))
+            .attr("y", 451+(30*i))
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "1.5em")
+            .attr("fill", "rgb(51,51,51)")
+
+
+        svgleft.append("rect")
+            .attr("class", "legend")
+            .attr("x", (width * 0.03))
+            .attr("y", 435+(30*i))
+            .attr("stroke", "")
+            .attr("stroke-width", "0.7px")
+            .attr("rx", 1)
+            .attr("ry", 1)
+            .attr("width", (width * 0.015))
+            .attr("height", (width * 0.015))
+            .attr("fill", data_color[i])
+
+    }
+
+
+
+    d3.selectAll("#inds_size").on("change", change_si);
+
+    function change_si() {
+        if (this.value == "pauses") pauses();
+        else if (this.value === "overlaps") overlaps();
+        else if (this.value === "euh") euh();
+        else if (this.value === "prom") prom();
+        else if (this.value === "PI") PI();
+        else if (this.value === "PA") PA();
+    }
+    //기본 크기 표시
+    pauses();
+
+    function pauses() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(200)
+            .attr("r", function (d) {
+                var nodesize = d.pauses * 20;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+    }
+
+    function overlaps() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(200)
+            .attr("r", function (d) {
+                var nodesize = d.overlaps * 100;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+            
+    }
+
+    function euh() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(200)
+            .attr("r", function (d) {
+                var nodesize = d.euh * 40;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+    }
+
+    function prom() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(200)
+            .attr("r", function (d) {
+                var nodesize = d.prom * 5;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+    }
+
+    function PI() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(200)
+            .attr("r", function (d) {
+                var nodesize = d.PI * 20;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+    }
+
+    function PA() {
+    d3.selectAll(".circledot")
+            .data(anne)
+            .transition()
+            .duration(300)
+            .attr("r", function (d) {
+                var nodesize = d.PA * 6;
+                if(nodesize>=4){
+                    return nodesize
+                } else {
+                    return 4;
+                }
+            })
+    }
+
+
+
+
+
+
+    function draw(data) {
+
+        var w = width*0.68;
+            var h = 620;
+            var ypadding = 100;
+            var padding = 70;
+
+        svgsection.selectAll(".axis").remove();
+        svgsection.selectAll(".circledot").remove();
+        svgsection.selectAll(".circletext").remove();
+        svgsection.selectAll(".svgsection_Line").remove();
+
+        var xScale = d3.scale.linear()
+            .domain([0, d3.max(data, function(d) { return d.x; })])
+            .range([padding+30, w - (padding-20) ]);
+
+        var yScale = d3.scale.linear()
+             .domain([0, d3.max(data, function(d) { return d.y; })])
+             .range([h - padding, padding]);
+
+        var xrangev = (((w - (padding-20))-(padding+30)) * 0.1)
+        var yrangev = (((h - padding)-(padding)) * 0.1)
+
+        //line
+        for(var i = 0; i < 11; i++){
+            svgsection.append("line").attr('class', "svgsection_Line").attr("x1", 100+(xrangev*i)).attr("y1", padding).attr("x2", 100+(xrangev*i)).attr("y2", h - padding).attr("stroke-width", 1).attr("stroke", "gray").style("stroke-dasharray", ("9,9")).attr("opacity", 0.6);;
+            svgsection.append("line").attr('class', "svgsection_Line").attr("x1", padding+30).attr("y1", 70+(yrangev*i)).attr("x2", w - (padding-20)).attr("y2", 70+(yrangev*i)).attr("stroke-width", 1).attr("stroke", "gray").style("stroke-dasharray", ("9,9")).attr("opacity", 0.6);;
+        }
+
+                                 //Define X axis
+        var xAxis = d3.svg.axis()
+              .scale(xScale)
+              .orient("bottom")
+              .ticks(10);
+
+            //Define Y axis
+        var yAxis = d3.svg.axis()
+              .scale(yScale)
+              .orient("left")
+              .ticks(10);
+
+        for(var i = 0; i < data.length; i++){
+
+            svgsection.append("text")
+                .attr("class","circletext")
+                .attr("id","circletext"+i)
+               .text(data[i].name)
+               .attr("x", xScale(data[i].x)+10)
+               .attr("y", yScale(data[i].y))
+               .attr("font-family", "sans-serif")
+               .attr("font-size", "11px")
+               .attr("fill", "rgb(51,51,51)")
+               .attr("opacity", 0.7);
+        }
+
+        for(var i = 0; i < data.length; i++){
+
+
+            svgsection.append("circle")
+                .attr("class","circledot")
+               .attr("cx", xScale(data[i].x))
+               .attr("cy", yScale(data[i].y))
+               .attr("r", 7)
+               .attr("opacity", 0.6)
+               .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("opacity", 0.9)
+                            .attr("stroke","black")
+
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("opacity", 0.6)
+                            .attr("stroke","none")
+
+                })
+                .on("mouseenter", (function (i) {
+                    return (function () {
+                        div_node.transition()
+                                .duration(100)
+                                .style('opacity', .9);
+                        div_node.html('<strong> #' + data[i].name + '</strong>' + '<br/>' + 'pauses : ' + data[i].pauses + '<br/>' + 'overlaps : ' + data[i].overlaps + '<br/>' + 'euh : ' + data[i].euh + '<br/>' + 'prom : ' + data[i].prom + '<br/>' + 'PI : ' + data[i].PI + '<br/>'  + 'PA : ' + data[i].PA + ' ')
+                                .style('left', (d3.event.pageX) - (w*0.41) + 'px')
+                                .style('top', (d3.event.pageY) - 145 + 'px');
+                    })
+                })(i))
+                .on("mouseleave", function () {
+                    div_node.transition()
+                            .duration(100)
+                            .style('opacity', 0);
+                });
+
+        }
+
+
+
+        // svgsection.selectAll("circle")
+        //        .data(data)
+        //        .enter()
+        //        .append("circle")
+        //        .attr("cx", function(d) {
+        //             return xScale(d.x);
+        //             console.log(d)
+        //        })
+        //        .attr("cy", function(d) {
+        //             return yScale(d.y);
+        //        });
+
+        svgsection.append("g")
+                .attr("class", "axis")
+                .attr("transform", "translate(0," + (h - padding) + ")")
+                .call(xAxis);
+            
+            //Create Y axis
+        svgsection.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(" + ypadding + ",0)")
+            .call(yAxis);
+
+        var sect = document.getElementById("inds");
+        var section = sect.options[sect.selectedIndex].value;
+
+        changecolor()
+
+    function changecolor() {
+        if (section == "subgenre") subgenre();
+        else if (section === "interactivity") interactivity();
+        else if (section === "social_context") social_context();
+        else if (section === "event_structure") event_structure();
+        else if (section === "channel") channel();
+        else if (section === "planning_type") planning_type();
+    }
+
+    var sect_s = document.getElementById("inds_size");
+    var section_s = sect_s.options[sect_s.selectedIndex].value;
+
+    changesize()
+
+    function changesize() {
+        if (section_s == "pauses") pauses();
+        else if (section_s === "overlaps") overlaps();
+        else if (section_s === "euh") euh();
+        else if (section_s === "prom") prom();
+        else if (section_s === "PI") PI();
+        else if (section_s === "PA") PA();
+    }
+
+    
+               
+
+               
+
+    }
+
+
+})
+
+</script></div><div id="section"></div></body></html>

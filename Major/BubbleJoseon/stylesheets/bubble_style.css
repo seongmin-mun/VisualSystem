@@ -1,0 +1,170 @@
+body {
+    margin: 0;
+}
+
+
+#header {
+    height:50px;
+    background-color:rgb(51,51,51);
+}
+
+#left {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:18%;
+    height:620px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+
+#section {
+    background-color:#F1F1F1;
+    position:relative;
+    float:right;
+    overflow:hidden;
+    width:78%;
+    height:620px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+
+#footer {
+    height:20px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 20px;
+    color:whitesmoke;
+    padding: 0.5%;
+    font-family: sans-serif;
+}
+
+p {
+    padding: 0%;
+    margin: 0%;
+}
+
+
+.bar-input {
+    cursor: pointer;
+}
+
+.bar-label {
+    cursor: pointer;
+}
+
+
+/*#footer {*/
+/*background-color:#F1F1F1;*/
+/*position:relative;*/
+/*bottom:0;*/
+/*float:right;*/
+/*overflow:hidden;*/
+/*width:78%;*/
+/*height:75px;*/
+/*padding: 1%;*/
+/*background-clip: content-box;*/
+/*}*/
+
+/*a {*/
+/*color: #00B7FF;*/
+/*}*/
+
+
+
+/*!*슬라이더*!*/
+
+
+/*.d3slider {*/
+/*z-index: 2;*/
+/*height: 90%;*/
+/*background: none;*/
+/*stroke: #000000;*/
+/*stroke-width: 0.7;*/
+/*}*/
+
+/*.d3slider-rect-range {*/
+/*fill: white;*/
+/*stroke: #000000;*/
+/*stroke-width: 1;*/
+/*}*/
+
+/*.d3slider-rect-value {*/
+/*fill: white;*/
+/*stroke: none;*/
+/*stroke: #000000;*/
+/*stroke-width: 1;*/
+/*}*/
+
+/*.d3slider-axis {*/
+/*position: relative;*/
+/*z-index: 1;*/
+/*cursor: pointer;*/
+/*}*/
+
+/*.d3slider-axis path {*/
+/*display: none;*/
+/*fill: none;*/
+/*stroke: #000;*/
+/*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.d3slider-axis line {*/
+/*fill: none;*/
+/*stroke: #000;*/
+/*shape-rendering: crispEdges;*/
+/*}*/
+
+/*.d3slider text {*/
+/*font: 12px sans-serif;*/
+/*fill: black;*/
+/*}*/
+
+/*.tick.minor text {*/
+/*display: none;*/
+
+/*}*/
+
+/*.tick line {*/
+/*stroke-width: 1;*/
+/*}*/
+/*.tick.minor line {*/
+/*stroke-width: 1;*/
+/*stroke: #bbb;*/
+/*}*/
+
+/*.dragger rect {*/
+/*fill: white;*/
+/*stroke: none;*/
+/*z-index: 3;*/
+/*}*/
+
+/*.dragger line {*/
+/*stroke: #aa0000;*/
+/*fill: none;*/
+/*}*/
+
+/*.dragger-outer {*/
+/*fill: #fff;*/
+/*stroke: #000;*/
+/*}*/
+
+/*.dragger-inner {*/
+/*fill: #2E2E2E;*/
+/*stroke: none;*/
+/*}*/
+
+/*.min-marker line {*/
+/*stroke: #aa0000;*/
+/*fill: none;*/
+/*}*/
+
+/*.overlay {*/
+/*fill: none;*/
+/*pointer-events: all;*/
+/*z-index: 1;*/
+/*}*/
