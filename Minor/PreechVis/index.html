@@ -1,0 +1,4246 @@
+
+<!DOCTYPE html><html><head><title>PreechVis (Visual Analysis for the U.S. President Speech)</title><link rel="stylesheet" href="stylesheets/Frame_MWE.css"><script src="javascripts/d3.v3.min.js" charset="utf-8"></script><script src="javascripts/jquery-1.12.0.min.js" charset="utf-8"></script><script src="javascripts/d3.layout.cloud.js" charset="utf-8"></script><script src="javascripts/colorbrewer.v1.min.js" charset="utf-8"></script><script src="javascripts/rangy-textrange.js" charset="utf-8"></script><script src="data/Article.js"></script><script src="data/ArticleByIssue.js"></script><script src="data/MW_Data.js"></script><script src="data/POS_Data.js"></script><script src="data/Information.js"></script><script src="data/POSElement.js"></script></head><body><div id="header"></div><div id="left"></div><div id="section"><form>
+<label class="bar-label" style="left: 3%; top: 20px; position: absolute";><input class="bar-input" type="radio" name="mode" value="unigram" checked> Uni-gram</label>
+<label class="bar-label" style="left: 3%; top: 45px; position: absolute";><input class="bar-input" type="radio" name="mode" value="bigram"> Bi-gram</label>
+<label class="bar-label" style="left: 3%; top: 70px; position: absolute";><input class="bar-input" type="radio" name="mode" value="trigram"> Tri-gram</label>
+</form><script>$(document).ready(function () {
+
+    var width = $(window).width()
+
+    var height = $(window).height()
+
+    //상단쪽 디폴트 디자인
+
+    var div = d3.select("#section").append("div")   //상단 버튼 관련 div
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+    var svgheader = d3.select("#header")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 50)
+
+    svgheader.append("text")
+            .text("PreechVis")
+            .attr("x", (width * 0.02))
+            .attr("y", 40)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "35px")
+            .attr("fill", "white")
+            .attr("font-weight", "bold")
+
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/download_circle.png")
+            .attr("x", width * 0.85)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.848)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.85)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_download)
+            //.on("click", Show_popup_download)
+
+
+            function Show_popup_download() {
+                console.log("downloading..")
+                window.location.href = 'data/US_President.zip';
+            }
+
+            //function Show_popup_download() {
+                //window.open("http://202.30.24.167:3011/Seongmin_Mun");
+            //}
+
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/person_circle.png")
+            .attr("x", width * 0.88)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.878)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.88)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("mouseenter", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', .95);
+                div.html('<img src="images/personal/personal.png" alt="Seongmin Mun" style="float:left;width:100%;height:390px;"/>')
+                        .style('left', '0px')
+                        .style('top', '80px')
+                        .style('width', width*0.59+ 'px');
+            })
+            .on("mouseleave", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', 0);
+            })
+            .on("click", Show_popup_personal)
+
+    //Show_popup()
+
+    function Show_popup_personal() {
+        window.open("http://ressources.modyco.fr/sm/Seongmin/");
+    }
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/info_circle.png")
+            .attr("x", width * 0.91)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.908)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.91)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("mouseenter", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', .95);
+                div.html('<img src="images/guideline/Coming_soon.png" alt="description" style="float:left;width:100%;height:450px;"/>')
+                        .style('left', '0px')
+                        .style('top', '60px')
+                        .style('width', width*0.59+ 'px');
+            })
+            .on("mouseleave", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', 0);
+            })
+    //.on("click", Show_popup_Guide)
+
+    //Show_popup()
+
+    //function Show_popup_Guide() {
+    //window.open("Guideline", "guideline");
+    //}
+
+    //var mail_position = (((width - (width * 0.4)) * 0.4) - (354 * 0.25))
+
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/mail_circle.png")
+            .attr("x", width * 0.94)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.938)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "default")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.94)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("mouseenter", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', .95);
+                div.html('<img src="images/info/Information.png" alt="description" style="float:left;width:100%;height:502px;"/>')
+                        .style('left', width * 0.15 + 'px')
+                        .style('top', '40px')
+                        .style('width', width * 0.28 + 'px');
+            })
+            .on("mouseleave", function () {
+                div.transition()
+                        .duration(100)
+                        .style('opacity', 0);
+            })
+
+    //메인 좌측 정보 시각화
+
+    var svgleft = d3.select("#left")
+            .append("svg")
+            .attr("width", width * 0.18)
+            .attr("height", 650)
+
+    svgleft.append("text")
+            .text("Personal Information")
+            .attr("class", "svgleft_text")
+            .attr("x", 15)
+            .attr("y", 27)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "22px")
+            .attr("fill", "#717171")
+
+    svgleft.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", ((width * 0.18) / 20) * 0.5)
+            .attr("y", 33)
+            .attr("width", ((width * 0.18) / 20) * 19)
+            .attr("height", 208)
+            .attr("fill", "white")
+
+
+    svgleft.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", ((width * 0.18) / 20) * 0.5)
+            .attr("y", 280)
+            .attr("width", ((width * 0.18) / 20) * 19)
+            .attr("height", 310)
+            .attr("fill", "white")
+
+
+    //left_변경부분
+
+
+    //정보 함수
+
+
+    drawInformation(Information_All_speech, 0);
+
+    function drawInformation(data, i) {
+
+        svgleft.selectAll(".svgleft_text_name").remove();
+        svgleft.selectAll(".svgleft_image").remove();
+        svgleft.selectAll(".svgleft_HTMLtext").remove();
+
+        svgleft.append("text")
+                .text(data[i].name)
+                .attr("class", "svgleft_text_name")
+                .attr("x", 15)
+                .attr("y", 270)
+                .attr("text-anchor", "right")
+                .attr("font-family", "Open Sans")
+                .attr("font-size", "22px")
+                .attr("fill", "#717171")
+
+        svgleft.append("image")
+                .attr("class", "svgleft_image")
+                .attr("xlink:href", "images/president/" + data[i].name + ".png")
+                .attr("x", (((width * 0.18) / 20) * 0.5) * 2)
+                .attr("y", 36)
+                .attr("width", ((width * 0.18) / 20) * 18)
+                .attr("height", 200)
+                .style("cursor", "default")
+
+        svgleft.append("foreignObject")
+                .attr("class", "svgleft_HTMLtext")
+                .attr("x", ((width * 0.18) / 20))
+                .attr("y", 280)
+                .attr("width", ((width * 0.186) / 20) * 18)
+                .attr("height", 310)
+                .append('xhtml:body')
+                .style('overflow-y', "scroll")
+                .style('max-height', "310px")
+                .style('color', "black")
+                .style("font", "13px 'Helvetica Neue'")
+                .html(data[i].words)
+    };
+
+
+    //좌측 하단 기사 정보
+
+
+    var svgbottomup_left = d3.select("#bottomup_left")
+            .append("svg")
+            .attr("width", width * 0.38)
+            .attr("height", 530)
+
+
+    svgbottomup_left.append("rect")
+            .attr("class", "bottomup_left_rect")
+            .attr("x", width * 0.01)
+            .attr("y", 10)
+            .attr("rx", 5)
+            .attr("ry", 5)
+            .attr("width", width * 0.36)
+            .attr("height", 50)
+            .attr("fill", "#717171")
+
+
+    svgbottomup_left.append("rect")
+            .attr("class", "bottomup_left_rect")
+            .attr("x", width * 0.0098)
+            .attr("y", 40)
+            .attr("width", width * 0.3604)
+            .attr("height", 480)
+            .attr("fill", "white")
+
+
+    //기사 함수
+
+    drawArticle(Article_All_speech, 0);
+
+    function drawArticle(data, i) {
+
+        svgbottomup_left.selectAll(".bottomup_left_HTMLArticle").remove();
+        svgbottomup_left.selectAll(".bottomup_left_title").remove();
+
+        svgbottomup_left.append("foreignObject")
+                .attr("class", "bottomup_left_HTMLArticle")
+                .attr("id", "bottomup_left_HTMLArticle")
+                .attr("x", width * 0.02)
+                .attr("y", 80)
+                .attr("width", width * 0.35)
+                .attr("height", 440)
+                .append('xhtml:body')
+                .style('overflow-y', "scroll")
+                .style('max-height', "440px")
+                .style('color', "black")
+                .style("font", "13px 'Helvetica Neue'")
+                .html(data[i].words)
+
+        svgbottomup_left.append("text")
+                .text("Speech transcript ( Number of texts : " + data[i].size + " )")
+                .attr("class", "bottomup_left_title")
+                .attr("x", width * 0.02)
+                .attr("y", 33)
+                .attr("text-anchor", "right")
+                .attr("font-family", "Open Sans")
+                .attr("font-size", (width * 0.18) * 0.1 + "px")
+                .attr("fill", "white")
+
+    }
+
+
+    //메인 부분
+
+    var zoomrange = 7;
+
+    var circle_rightleft = (((width * 0.58) / 2));
+
+    var circle_updown = 300;
+
+    var svgsection = d3.select('#section').append('svg')
+            .attr('width', width * 0.58)
+            .attr('height', 600)
+            .call(d3.behavior.zoom().scaleExtent([1, zoomrange]).on("zoom", function () {
+                svgsection.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+            }))
+            .append("g");
+
+
+    //단어 수에 따른 변화
+
+    d3.selectAll(".bar-input").on("change", change);
+
+    //transitionUigram();
+
+    function change() {
+        if (this.value === "unigram") transitionUigram();
+        else if (this.value === "bigram") transitionBigram();
+        else if (this.value === "trigram") transitionTrigram();
+    }
+
+    function transitionUigram() {
+
+        svgsection.selectAll(".arc_path").remove();
+        svgsection.selectAll(".arc_text").remove();
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+        svgbottomup_middle.selectAll(".bottomup_middle_title").transition().duration(2000).text("Word cloud");
+
+        //first unigram arc
+
+        var div_uni = d3.select("#section").append("div")
+                .attr("class", "tooltip2")
+                .style("opacity", 0);
+
+
+        var unigram_first_layer_color = ["#832850", "#762137", "#5a2d1e", "#665043", "#666666", "#566873", "#344277", "#3f5c94"];
+
+
+        for (var i = 0; i < unigram_first_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.15)
+                    .outerRadius(width * 0.165)
+                    .startAngle((((Math.PI * 2) / 36)) * (unigram_first_layer[i].first + 2) + 0.94)
+                    .endAngle(((Math.PI * 2) / 36) * (unigram_first_layer[i].finish + 3 ) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("d", arc)
+                    .attr("id", "unigram_first_" + i)
+                    .attr("fill", unigram_first_layer_color[i])
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black")
+
+            svgsection.append("text")
+                    .attr("class", "arc_text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#unigram_first_" + i)
+                    .text(unigram_first_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 14 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_uni.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_uni.html('<strong>' + '# Object : ' + unigram_first_layer[index].text + '</strong>' + '</br>' + 'Example : ' + unigram_first_layer[index].example + ' ')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_uni.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+        }
+
+
+        var unigram_second_layer_color = ["#8c4366", "#955e7c", "#9f7991", "#a894a7", "#854559", "#94687a", "#a28c9c", "#664035", "#73524b", "#7f6562", "#8c7779", "#988a90", "#a59ca6", "#796862", "#8c8080", "#9e979f", "#757577", "#848389", "#93929a", "#a2a0ac", "#5e6e79", "#65747f", "#6d7a86", "#74808c", "#7c8692", "#848c98", "#8b919e", "#9397a4", "#9a9dab", "#a2a3b1", "#a9a9b7", "#535d89", "#73799a", "#9294ac", "#6578a2", "#8b93af"];
+
+        for (var i = 0; i < unigram_second_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.165)
+                    .outerRadius(width * 0.18)
+                    .startAngle(((Math.PI * 2) / (36)) * (i + 3) + 0.94)
+                    .endAngle(((Math.PI * 2) / (36)) * (i + 4) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("d", arc)
+                    .attr("id", "unigram_second_" + i)
+                    .attr("fill", unigram_second_layer_color[i])
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black");
+
+            svgsection.append("text")
+                    .attr("x", 10)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("class", "arc_text")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#unigram_second_" + i)
+                    .text(unigram_second_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_uni.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_uni.html('<strong>' + '# Object : ' + unigram_second_layer[index].text + '</strong>' + '<br/>'
+                                    + 'Description : ' + unigram_second_layer[index].full + ' ' + '<br/>'
+                                    + 'Example : ' + unigram_second_layer[index].example + ' ')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_uni.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+        //unigram_innercircle
+
+
+        drawinnercircle(unigram_POS_All_speech, unigram_second_layer, unigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_uni, drawWordcloud);
+
+        drawWordcloud(unigram_MW_All_speech, 0);
+
+        drawArticle(Article_All_speech, 0);
+
+        drawInformation(Information_All_speech, 0);
+
+        draw_uni_issues();
+
+
+    }
+
+    function transitionBigram() {
+
+        svgsection.selectAll(".arc_path").remove();
+        svgsection.selectAll(".arc_text").remove();
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+        svgbottomup_middle.selectAll(".bottomup_middle_title").transition().duration(2000).text("Word cloud");
+
+        //first bigram arc
+
+        var div_bi = d3.select("#section").append("div")
+                .attr("class", "tooltip2")
+                .style("opacity", 0);
+
+        var bigram_first_layer_color = ["#665043", "#566873", "#344277", "#663399", "#666666", "#762137", "#5a2d1e", "#3f5c94"];
+
+
+        for (var i = 0; i < bigram_first_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.15)
+                    .outerRadius(width * 0.165)
+                    .startAngle((((Math.PI * 2) / 50)) * (bigram_first_layer[i].first + 3.5) + 0.94)
+                    .endAngle(((Math.PI * 2) / 50) * (bigram_first_layer[i].finish + 4.5 ) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("opacity", 0.7)
+                    .attr("d", arc)
+                    .attr("id", "bigram_first_" + i)
+                    .attr("fill", bigram_first_layer_color[i])
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black")
+
+            svgsection.append("text")
+                    .attr("class", "arc_text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#bigram_first_" + i)
+                    .text(bigram_first_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_bi.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_bi.html('<strong>' + '# Object : ' + bigram_first_layer[index].text + '</strong>')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_bi.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+        }
+
+
+        //second bigram arc
+
+
+        for (var i = 0; i < bigram_second_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.165)
+                    .outerRadius(width * 0.18)
+                    .startAngle(((Math.PI * 2) / (50)) * (i + 4.5) + 0.94)
+                    .endAngle(((Math.PI * 2) / (50)) * (i + 5.5) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("opacity", 0.7)
+                    .attr("d", arc)
+                    .attr("id", "bigram_second_" + i)
+                    .attr("fill", (function (index) {
+                        return (function () {
+                            if (bigram_second_layer[index].text == 'DT') {
+                                return "#665043"
+                            }
+                            else if (bigram_second_layer[index].text == 'ECT') {
+                                return "#566873"
+                            }
+                            else if (bigram_second_layer[index].text == 'JJ') {
+                                return "#344277"
+                            }
+                            else if (bigram_second_layer[index].text == 'NN') {
+                                return "#663399"
+                            }
+                            else if (bigram_second_layer[index].text == 'RB') {
+                                return "#666666"
+                            }
+                            else if (bigram_second_layer[index].text == 'RP') {
+                                return "#762137"
+                            }
+                            else if (bigram_second_layer[index].text == 'VB') {
+                                return "#5a2d1e"
+                            }
+                            else if (bigram_second_layer[index].text == 'WP') {
+                                return "#3f5c94"
+                            }
+                            else {
+                                return "#566873"
+                            }
+                        })
+                    })(i))
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black");
+
+            svgsection.append("text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("class", "arc_text")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#bigram_second_" + i)
+                    .text(bigram_second_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_bi.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_bi.html('<strong>' + '# Object : ' + bigram_second_layer[index].text + '</strong>' + '<br/>'
+                                    + 'Description : ' + bigram_second_layer[index].full + ' ' + '<br/>'
+                                    + 'Example : ' + bigram_second_layer[index].example + ' ')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_bi.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+        //bigram_innercircle
+
+
+        drawinnercircle(bigram_POS_All_speech, bigram_second_layer, bigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_bi, drawMWordcloud);
+
+        drawMWordcloud(bigram_MW_All_speech, 0)
+
+        drawArticle(Article_All_speech, 0);
+
+        drawInformation(Information_All_speech, 0);
+
+        draw_bi_issues();
+
+
+    }
+
+    function transitionTrigram() {
+
+        svgsection.selectAll(".arc_path").remove();
+        svgsection.selectAll(".arc_text").remove();
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+        svgbottomup_middle.selectAll(".bottomup_middle_title").transition().duration(2000).text("Word cloud");
+
+        //first trigram arc
+
+        var div_tri = d3.select("#section").append("div")
+                .attr("class", "tooltip2")
+                .style("opacity", 0);
+
+        var trigram_first_layer_color = ["#665043", "#566873", "#344277", "#663399", "#666666", "#762137", "#5a2d1e", "#3f5c94"];
+
+
+        for (var i = 0; i < trigram_first_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.15)
+                    .outerRadius(width * 0.165)
+                    .startAngle((((Math.PI * 2) / 65)) * (trigram_first_layer[i].first + 5) + 0.94)
+                    .endAngle(((Math.PI * 2) / 65) * (trigram_first_layer[i].finish + 6 ) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("opacity", 0.7)
+                    .attr("d", arc)
+                    .attr("id", "trigram_first_" + i)
+                    .attr("fill", trigram_first_layer_color[i])
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black")
+
+            svgsection.append("text")
+                    .attr("class", "arc_text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#trigram_first_" + i)
+                    .text(trigram_first_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_tri.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_tri.html('<strong>' + '# Object : ' + trigram_first_layer[index].text + '</strong>')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_tri.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+        }
+
+        //second trigram arc
+
+        for (var i = 0; i < trigram_second_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.165)
+                    .outerRadius(width * 0.18)
+                    .startAngle((((Math.PI * 2) / 65)) * (trigram_second_layer[i].first + 5) + 0.94)
+                    .endAngle(((Math.PI * 2) / 65) * (trigram_second_layer[i].finish + 6 ) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("d", arc)
+                    .attr("id", "trigram_second_" + i)
+                    .attr("opacity", 0.7)
+                    .attr("fill", (function (index) {
+                        return (function () {
+                            if (trigram_second_layer[index].text == 'DT') {
+                                return "#665043"
+                            }
+                            else if (trigram_second_layer[index].text == 'ECT') {
+                                return "#566873"
+                            }
+                            else if (trigram_second_layer[index].text == 'JJ') {
+                                return "#344277"
+                            }
+                            else if (trigram_second_layer[index].text == 'NN') {
+                                return "#663399"
+                            }
+                            else if (trigram_second_layer[index].text == 'RB') {
+                                return "#666666"
+                            }
+                            else if (trigram_second_layer[index].text == 'RP') {
+                                return "#762137"
+                            }
+                            else if (trigram_second_layer[index].text == 'VB') {
+                                return "#5a2d1e"
+                            }
+                            else if (trigram_second_layer[index].text == 'WP') {
+                                return "#3f5c94"
+                            }
+                            else {
+                                return "#566873"
+                            }
+                        })
+                    })(i))
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black");
+
+            svgsection.append("text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("class", "arc_text")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#trigram_second_" + i)
+                    .text(trigram_second_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_tri.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_tri.html('<strong>' + '# Object : ' + trigram_second_layer[index].text + '</strong>' + '<br/>'
+                                    + 'Description : ' + trigram_second_layer[index].full + ' ')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_tri.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+        //third trigram arc
+
+        for (var i = 0; i < trigram_third_layer.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.18)
+                    .outerRadius(width * 0.195)
+                    .startAngle(((Math.PI * 2) / (65)) * (i + 6) + 0.94)
+                    .endAngle(((Math.PI * 2) / (65)) * (i + 7) + 0.94)
+
+            svgsection.append("path")
+                    .attr("class", "arc_path")
+                    .attr("opacity", 0.7)
+                    .attr("d", arc)
+                    .attr("id", "trigram_third_" + i)
+                    .attr("fill", (function (index) {
+                        return (function () {
+                            if (trigram_third_layer[index].text == 'DT') {
+                                return "#665043"
+                            }
+                            else if (trigram_third_layer[index].text == 'ECT') {
+                                return "#566873"
+                            }
+                            else if (trigram_third_layer[index].text == 'JJ') {
+                                return "#344277"
+                            }
+                            else if (trigram_third_layer[index].text == 'NN') {
+                                return "#663399"
+                            }
+                            else if (trigram_third_layer[index].text == 'RB') {
+                                return "#666666"
+                            }
+                            else if (trigram_third_layer[index].text == 'RP') {
+                                return "#762137"
+                            }
+                            else if (trigram_third_layer[index].text == 'VB') {
+                                return "#5a2d1e"
+                            }
+                            else if (trigram_third_layer[index].text == 'WP') {
+                                return "#3f5c94"
+                            }
+                            else {
+                                return "#566873"
+                            }
+                        })
+                    })(i))
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "black");
+
+            svgsection.append("text")
+                    .attr("x", 2)
+                    .attr("dy", 14)
+                    .append("textPath")
+                    .attr("class", "arc_text")
+                    .attr("fill", "#CCFFFF")
+                    .attr("font-size", 12 + "px")
+                    .attr("xlink:href", "#trigram_third_" + i)
+                    .text(trigram_third_layer[i].text)
+                    .style("cursor", "default")
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .style("font-weight", "bold")
+                                .style("cursor", "default")
+                                .attr("font-size", 13 + "px")
+                                .attr("fill", "#CCFFCC")
+
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("font-size", 12 + "px")
+                                .attr("fill", "#CCFFFF")
+
+                    })
+                    .on("mouseenter", (function (index) {
+                        return (function () {
+                            div_tri.transition()
+                                    .duration(100)
+                                    .style('opacity', .9);
+                            div_tri.html('<strong>' + '# Object : ' + trigram_third_layer[index].text + '</strong>' + '<br/>'
+                                    + 'Description : ' + trigram_third_layer[index].full + ' ' + '<br/>'
+                                    + 'Example : ' + trigram_third_layer[index].example + ' ')
+                                    .style('left', (d3.event.pageX) - 250 + 'px')
+                                    .style('top', (d3.event.pageY) - 35 + 'px');
+                        })
+                    })(i))
+                    .on("mouseleave", function () {
+                        div_tri.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+        //trigram_innercircle
+
+
+        drawinnercircle(trigram_POS_All_speech, trigram_third_layer, trigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_tri, drawMWordcloud);
+
+        drawMWordcloud(trigram_MW_All_speech, 0)
+
+        drawArticle(Article_All_speech, 0);
+
+        drawInformation(Information_All_speech, 0);
+
+        draw_tri_issues();
+
+    }
+
+
+    //우측 옵션 및 범례부분
+
+    var svgsection_t0 = d3.select('#section_t0').append('svg')
+            .attr('width', width * 0.18)
+            .attr('height', 30)
+
+    svgsection_t0.append("text")
+            .text("Political party color")
+            .attr("class", "svgsection_t0_text")
+            .attr("x", 18)
+            .attr("y", 24)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#717171")
+
+    var svgsection_t1 = d3.select('#section_t1').append('svg')
+            .attr('width', width * 0.18)
+            .attr('height', 50)
+
+
+    svgsection_t1.append("text")
+            .text("Select an issue")
+            .attr("class", "svgsection_t1_text0")
+            .attr("x", 18)
+            .attr("y", 24)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#717171")
+
+    svgsection_t1.append("text")
+            .text(" : All_speech")
+            .attr("class", "svgsection_t1_text1")
+            .attr("x", 18)
+            .attr("y", 46)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "17px")
+            .attr("fill", "#717171")
+
+    var svgsection_t2 = d3.select('#section_t2').append('svg')
+            .attr('width', width * 0.18)
+            .attr('height', 30)
+
+    svgsection_t2.append("text")
+            .text("Select a president")
+            .attr("class", "svgsection_t2_text")
+            .attr("x", 18)
+            .attr("y", 24)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#717171")
+
+    //left_변경 부분
+
+    //m0 legend bar
+
+    var svgsection_m0 = d3.select('#section_m0')
+
+    var scroll_m0 = svgsection_m0.append("div")
+            .attr("id", "container_m01")
+            .append("svg")
+            .attr("viewBox", "14,5,100,100");
+
+
+    //하단 중간 워드 클라우드
+
+
+    var svgbottomup_middle = d3.select("#bottomup_middle")
+            .append("svg")
+            .attr("width", width * 0.38)
+            .attr("height", 530)
+
+
+    svgbottomup_middle.append("rect")
+            .attr("class", "bottomup_middle_rect")
+            .attr("x", width * 0.01)
+            .attr("y", 10)
+            .attr("rx", 5)
+            .attr("ry", 5)
+            .attr("width", width * 0.36)
+            .attr("height", 50)
+            .attr("fill", "#717171")
+
+    svgbottomup_middle.append("text")
+            .text("Word cloud")
+            .attr("class", "bottomup_middle_title")
+            .attr("x", width * 0.02)
+            .attr("y", 33)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", (width * 0.18) * 0.1 + "px")
+            .attr("fill", "white")
+
+    svgbottomup_middle.append("rect")
+            .attr("class", "bottomup_middle_rect")
+            .attr("x", width * 0.0098)
+            .attr("y", 40)
+            .attr("width", width * 0.3604)
+            .attr("height", 480)
+            .attr("fill", "white")
+
+
+    //우측 하단 범례 및 정렬
+
+    var svgbottomup_up0 = d3.select('#bottomup_up0').append('svg')
+            .attr('width', width * 0.18)
+            .attr('height', 30)
+
+    svgbottomup_up0.append("text")
+            .text("Color of words")
+            .attr("class", "svgbottomup_up0_text")
+            .attr("x", 18)
+            .attr("y", 24)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#717171")
+
+    var svgbottomup_up1 = d3.select('#bottomup_up1').append('svg')
+            .attr('width', width * 0.18)
+            .attr('height', 30)
+
+    svgbottomup_up1.append("text")
+            .text("Sorted result")
+            .attr("class", "svgbottomup_up1_text")
+            .attr("x", 18)
+            .attr("y", 24)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#717171")
+
+
+    //bottomup_down_변경 부분
+
+    //bottomup_down legend bar
+
+    var svgbottomup_down0 = d3.select('#bottomup_down0')
+
+    var scroll_down0 = svgbottomup_down0.append("div")
+            .attr("id", "container_down0")
+            .append("svg")
+            .attr("viewBox", "14,5,100,80");
+
+
+    //초기화면
+
+    // unigram arc
+
+    var div_uni = d3.select("#section").append("div")
+            .attr("class", "tooltip2")
+            .style("opacity", 0);
+
+
+    var unigram_first_layer_color = ["#832850", "#762137", "#5a2d1e", "#665043", "#666666", "#566873", "#344277", "#3f5c94"];
+
+
+    for (var i = 0; i < unigram_first_layer.length; i++) {
+
+        var arc = d3.svg.arc()
+                .innerRadius(width * 0.15)
+                .outerRadius(width * 0.165)
+                .startAngle((((Math.PI * 2) / 36)) * (unigram_first_layer[i].first + 2) + 0.94)
+                .endAngle(((Math.PI * 2) / 36) * (unigram_first_layer[i].finish + 3 ) + 0.94)
+
+        svgsection.append("path")
+                .attr("class", "arc_path")
+                .attr("d", arc)
+                .attr("id", "unigram_first_" + i)
+                .attr("fill", unigram_first_layer_color[i])
+                .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                .attr("stroke", "black")
+
+        svgsection.append("text")
+                .attr("class", "arc_text")
+                .attr("x", 2)
+                .attr("dy", 14)
+                .append("textPath")
+                .attr("fill", "#CCFFFF")
+                .attr("font-size", 12 + "px")
+                .attr("xlink:href", "#unigram_first_" + i)
+                .text(unigram_first_layer[i].text)
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .style("font-weight", "bold")
+                            .style("cursor", "default")
+                            .attr("font-size", 14 + "px")
+                            .attr("fill", "#CCFFCC")
+
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("font-size", 12 + "px")
+                            .attr("fill", "#CCFFFF")
+
+                })
+                .on("mouseenter", (function (index) {
+                    return (function () {
+                        div_uni.transition()
+                                .duration(100)
+                                .style('opacity', .9);
+                        div_uni.html('<strong>' + '# Object : ' + unigram_first_layer[index].text + '</strong>' + '</br>' + 'Example : ' + unigram_first_layer[index].example + ' ')
+                                .style('left', (d3.event.pageX) - 250 + 'px')
+                                .style('top', (d3.event.pageY) - 35 + 'px');
+                    })
+                })(i))
+                .on("mouseleave", function () {
+                    div_uni.transition()
+                            .duration(100)
+                            .style('opacity', 0);
+                })
+    }
+
+
+    var unigram_second_layer_color = ["#8c4366", "#955e7c", "#9f7991", "#a894a7", "#854559", "#94687a", "#a28c9c", "#664035", "#73524b", "#7f6562", "#8c7779", "#988a90", "#a59ca6", "#796862", "#8c8080", "#9e979f", "#757577", "#848389", "#93929a", "#a2a0ac", "#5e6e79", "#65747f", "#6d7a86", "#74808c", "#7c8692", "#848c98", "#8b919e", "#9397a4", "#9a9dab", "#a2a3b1", "#a9a9b7", "#535d89", "#73799a", "#9294ac", "#6578a2", "#8b93af"];
+
+
+    for (var i = 0; i < unigram_second_layer.length; i++) {
+
+        var arc = d3.svg.arc()
+                .innerRadius(width * 0.165)
+                .outerRadius(width * 0.18)
+                .startAngle(((Math.PI * 2) / (36)) * (i + 3) + 0.94)
+                .endAngle(((Math.PI * 2) / (36)) * (i + 4) + 0.94)
+
+        svgsection.append("path")
+                .attr("class", "arc_path")
+                .attr("d", arc)
+                .attr("id", "unigram_second_" + i)
+                .attr("fill", unigram_second_layer_color[i])
+                .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                .attr("stroke", "black");
+
+        svgsection.append("text")
+                .attr("x", 10)
+                .attr("dy", 14)
+                .append("textPath")
+                .attr("class", "arc_text")
+                .attr("fill", "#CCFFFF")
+                .attr("font-size", 12 + "px")
+                .attr("xlink:href", "#unigram_second_" + i)
+                .text(unigram_second_layer[i].text)
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .style("font-weight", "bold")
+                            .style("cursor", "default")
+                            .attr("font-size", 13 + "px")
+                            .attr("fill", "#CCFFCC")
+
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("font-size", 12 + "px")
+                            .attr("fill", "#CCFFFF")
+
+                })
+                .on("mouseenter", (function (index) {
+                    return (function () {
+                        div_uni.transition()
+                                .duration(100)
+                                .style('opacity', .9);
+                        div_uni.html('<strong>' + '# Object : ' + unigram_second_layer[index].text + '</strong>' + '<br/>'
+                                + 'Description : ' + unigram_second_layer[index].full + ' ' + '<br/>'
+                                + 'Example : ' + unigram_second_layer[index].example + ' ')
+                                .style('left', (d3.event.pageX) - 250 + 'px')
+                                .style('top', (d3.event.pageY) - 35 + 'px');
+                    })
+                })(i))
+                .on("mouseleave", function () {
+                    div_uni.transition()
+                            .duration(100)
+                            .style('opacity', 0);
+                })
+
+
+    }
+
+    //unigram_innercircle
+
+    drawinnercircle(unigram_POS_All_speech, unigram_second_layer, unigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_uni, drawWordcloud);
+
+    //unigram_wordcloud
+
+    drawWordcloud(unigram_MW_All_speech, 0);
+
+    draw_uni_issues();
+
+
+    //정치적 안건
+
+    function draw_uni_issues() {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        var svgsection_m1 = d3.select('#section_m1')
+
+        var scroll_m1 = svgsection_m1.append("div")
+                .attr("id", "container_m01")
+                .append("svg")
+                .attr("viewBox", "14,5,100,110");
+
+        svgsection_m1.selectAll(".issues_legend_rect").remove();
+        svgsection_m1.selectAll(".issues_legend").remove();
+
+
+        for (var k = 0; k < 11; k++) {
+
+            scroll_m1.append("rect")
+                    .attr("class", "issues_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * k))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", "#717171")
+
+        }
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 0))
+                .attr("class", "issues_legend")
+                .text("Economic_Growth")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Economic_Growth");
+
+
+                    drawinnercircle(unigram_POS_Economic_Growth, unigram_second_layer, unigram_MW_Economic_Growth, Article_Economic_Growth, Information_Economic_Growth, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Economic_Growth, 0);
+
+                    drawArticle(Article_Economic_Growth, 0);
+
+                    drawInformation(Information_Economic_Growth, 0);
+                })
+
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 1))
+                .attr("class", "issues_legend")
+                .text("Social_Welfare")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Social_Welfare");
+
+                    drawinnercircle(unigram_POS_Social_Welfare, unigram_second_layer, unigram_MW_Social_Welfare, Article_Social_Welfare, Information_Social_Welfare, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Social_Welfare, 0);
+
+                    drawArticle(Article_Social_Welfare, 0);
+
+                    drawInformation(Information_Social_Welfare, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 2))
+                .attr("class", "issues_legend")
+                .text("US_Policies_War")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Policies (War,,)");
+
+                    drawinnercircle(unigram_POS_US_Policies_War, unigram_second_layer, unigram_MW_US_Policies_War, Article_US_Policies_War, Information_US_Policies_War, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_US_Policies_War, 0);
+
+                    drawArticle(Article_US_Policies_War, 0);
+
+                    drawInformation(Information_US_Policies_War, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 3))
+                .attr("class", "issues_legend")
+                .text("Health_Care")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Health_Care");
+
+                    drawinnercircle(unigram_POS_Health_Care, unigram_second_layer, unigram_MW_Health_Care, Article_Health_Care, Information_Health_Care, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Health_Care, 0);
+
+                    drawArticle(Article_Health_Care, 0);
+
+                    drawInformation(Information_Health_Care, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 4))
+                .attr("class", "issues_legend")
+                .text("Immigration")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Immigration");
+
+                    drawinnercircle(unigram_POS_Immigration, unigram_second_layer, unigram_MW_Immigration, Article_Immigration, Information_Immigration, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Immigration, 0);
+
+                    drawArticle(Article_Immigration, 0);
+
+                    drawInformation(Information_Immigration, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 5))
+                .attr("class", "issues_legend")
+                .text("Humanitarian_Aid")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Humanitarian_Aid");
+
+                    drawinnercircle(unigram_POS_Humanitarian_Aid, unigram_second_layer, unigram_MW_Humanitarian_Aid, Article_Humanitarian_Aid, Information_Humanitarian_Aid, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Humanitarian_Aid, 0);
+
+                    drawArticle(Article_Humanitarian_Aid, 0);
+
+                    drawInformation(Information_Humanitarian_Aid, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 6))
+                .attr("class", "issues_legend")
+                .text("Protecting_US_Terror")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Protecting_US (Terror,,)");
+
+                    drawinnercircle(unigram_POS_Protecting_US_Terror, unigram_second_layer, unigram_MW_Protecting_US_Terror, Article_Protecting_US_Terror, Information_Protecting_US_Terror, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Protecting_US_Terror, 0);
+
+                    drawArticle(Article_Protecting_US_Terror, 0);
+
+                    drawInformation(Information_Protecting_US_Terror, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 7))
+                .attr("class", "issues_legend")
+                .text("Establishing_Democracy")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Establishing_Democracy");
+
+                    drawinnercircle(unigram_POS_Establishing_Democracy, unigram_second_layer, unigram_MW_Establishing_Democracy, Article_Establishing_Democracy, Information_Establishing_Democracy, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Establishing_Democracy, 0);
+
+                    drawArticle(Article_Establishing_Democracy, 0);
+
+                    drawInformation(Information_Establishing_Democracy, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 8))
+                .attr("class", "issues_legend")
+                .text("Promoting_US_Strength")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Promoting_US_Strength");
+
+                    drawinnercircle(unigram_POS_Promoting_US_Strength, unigram_second_layer, unigram_MW_Promoting_US_Strength, Article_Promoting_US_Strength, Information_Promoting_US_Strength, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_Promoting_US_Strength, 0);
+
+                    drawArticle(Article_Promoting_US_Strength, 0);
+
+                    drawInformation(Information_Promoting_US_Strength, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 9))
+                .attr("class", "issues_legend")
+                .text("US_Priorities")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Priorities");
+
+                    drawinnercircle(unigram_POS_US_Priorities, unigram_second_layer, unigram_MW_US_Priorities, Article_US_Priorities, Information_US_Priorities, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_US_Priorities, 0);
+
+                    drawArticle(Article_US_Priorities, 0);
+
+                    drawInformation(Information_US_Priorities, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 10))
+                .attr("class", "issues_legend")
+                .text("All_speech")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+                    drawinnercircle(unigram_POS_All_speech, unigram_second_layer, unigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_uni, drawWordcloud);
+
+                    drawWordcloud(unigram_MW_All_speech, 0);
+
+                    drawArticle(Article_All_speech, 0);
+
+                    drawInformation(Information_All_speech, 0);
+                })
+    }
+
+    function draw_bi_issues() {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        var svgsection_m1 = d3.select('#section_m1')
+
+        var scroll_m1 = svgsection_m1.append("div")
+                .attr("id", "container_m01")
+                .append("svg")
+                .attr("viewBox", "14,5,100,110");
+
+        svgsection_m1.selectAll(".issues_legend_rect").remove();
+        svgsection_m1.selectAll(".issues_legend").remove();
+
+
+        for (var k = 0; k < 11; k++) {
+
+            scroll_m1.append("rect")
+                    .attr("class", "issues_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * k))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", "#717171")
+
+        }
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 0))
+                .attr("class", "issues_legend")
+                .text("Economic_Growth")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Economic_Growth");
+
+                    drawinnercircle(bigram_POS_Economic_Growth, bigram_second_layer, bigram_MW_Economic_Growth, Article_Economic_Growth, Information_Economic_Growth, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Economic_Growth, 0);
+
+                    drawArticle(Article_Economic_Growth, 0);
+
+                    drawInformation(Information_Economic_Growth, 0);
+                })
+
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 1))
+                .attr("class", "issues_legend")
+                .text("Social_Welfare")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Social_Welfare");
+
+                    drawinnercircle(bigram_POS_Social_Welfare, bigram_second_layer, bigram_MW_Social_Welfare, Article_Social_Welfare, Information_Social_Welfare, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Social_Welfare, 0);
+
+                    drawArticle(Article_Social_Welfare, 0);
+
+                    drawInformation(Information_Social_Welfare, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 2))
+                .attr("class", "issues_legend")
+                .text("US_Policies_War")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Policies (War,,)");
+
+                    drawinnercircle(bigram_POS_US_Policies_War, bigram_second_layer, bigram_MW_US_Policies_War, Article_US_Policies_War, Information_US_Policies_War, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_US_Policies_War, 0);
+
+                    drawArticle(Article_US_Policies_War, 0);
+
+                    drawInformation(Information_US_Policies_War, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 3))
+                .attr("class", "issues_legend")
+                .text("Health_Care")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Health_Care");
+
+                    drawinnercircle(bigram_POS_Health_Care, bigram_second_layer, bigram_MW_Health_Care, Article_Health_Care, Information_Health_Care, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Health_Care, 0);
+
+                    drawArticle(Article_Health_Care, 0);
+
+                    drawInformation(Information_Health_Care, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 4))
+                .attr("class", "issues_legend")
+                .text("Immigration")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Immigration");
+
+                    drawinnercircle(bigram_POS_Immigration, bigram_second_layer, bigram_MW_Immigration, Article_Immigration, Information_Immigration, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Immigration, 0);
+
+                    drawArticle(Article_Immigration, 0);
+
+                    drawInformation(Information_Immigration, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 5))
+                .attr("class", "issues_legend")
+                .text("Humanitarian_Aid")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Humanitarian_Aid");
+
+                    drawinnercircle(bigram_POS_Humanitarian_Aid, bigram_second_layer, bigram_MW_Humanitarian_Aid, Article_Humanitarian_Aid, Information_Humanitarian_Aid, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Humanitarian_Aid, 0);
+
+                    drawArticle(Article_Humanitarian_Aid, 0);
+
+                    drawInformation(Information_Humanitarian_Aid, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 6))
+                .attr("class", "issues_legend")
+                .text("Protecting_US_Terror")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Protecting_US (Terror,,)");
+
+                    drawinnercircle(bigram_POS_Protecting_US_Terror, bigram_second_layer, bigram_MW_Protecting_US_Terror, Article_Protecting_US_Terror, Information_Protecting_US_Terror, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Protecting_US_Terror, 0);
+
+                    drawArticle(Article_Protecting_US_Terror, 0);
+
+                    drawInformation(Information_Protecting_US_Terror, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 7))
+                .attr("class", "issues_legend")
+                .text("Establishing_Democracy")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Establishing_Democracy");
+
+                    drawinnercircle(bigram_POS_Establishing_Democracy, bigram_second_layer, bigram_MW_Establishing_Democracy, Article_Establishing_Democracy, Information_Establishing_Democracy, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Establishing_Democracy, 0);
+
+                    drawArticle(Article_Establishing_Democracy, 0);
+
+                    drawInformation(Information_Establishing_Democracy, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 8))
+                .attr("class", "issues_legend")
+                .text("Promoting_US_Strength")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Promoting_US_Strength");
+
+                    drawinnercircle(bigram_POS_Promoting_US_Strength, bigram_second_layer, bigram_MW_Promoting_US_Strength, Article_Promoting_US_Strength, Information_Promoting_US_Strength, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_Promoting_US_Strength, 0);
+
+                    drawArticle(Article_Promoting_US_Strength, 0);
+
+                    drawInformation(Information_Promoting_US_Strength, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 9))
+                .attr("class", "issues_legend")
+                .text("US_Priorities")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Priorities");
+
+                    drawinnercircle(bigram_POS_US_Priorities, bigram_second_layer, bigram_MW_US_Priorities, Article_US_Priorities, Information_US_Priorities, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_US_Priorities, 0);
+
+                    drawArticle(Article_US_Priorities, 0);
+
+                    drawInformation(Information_US_Priorities, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 10))
+                .attr("class", "issues_legend")
+                .text("All_speech")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+                    drawinnercircle(bigram_POS_All_speech, bigram_second_layer, bigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_bi, drawMWordcloud);
+
+                    drawMWordcloud(bigram_MW_All_speech, 0);
+
+                    drawArticle(Article_All_speech, 0);
+
+                    drawInformation(Information_All_speech, 0);
+                })
+    }
+
+    function draw_tri_issues() {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        var svgsection_m1 = d3.select('#section_m1')
+
+        var scroll_m1 = svgsection_m1.append("div")
+                .attr("id", "container_m01")
+                .append("svg")
+                .attr("viewBox", "14,5,100,110");
+
+        svgsection_m1.selectAll(".issues_legend_rect").remove();
+        svgsection_m1.selectAll(".issues_legend").remove();
+
+
+        for (var k = 0; k < 11; k++) {
+
+            scroll_m1.append("rect")
+                    .attr("class", "issues_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * k))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", "#717171")
+
+        }
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 0))
+                .attr("class", "issues_legend")
+                .text("Economic_Growth")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Economic_Growth");
+
+                    drawinnercircle(trigram_POS_Economic_Growth, trigram_third_layer, trigram_MW_Economic_Growth, Article_Economic_Growth, Information_Economic_Growth, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Economic_Growth, 0);
+
+                    drawArticle(Article_Economic_Growth, 0);
+
+                    drawInformation(Information_Economic_Growth, 0);
+                })
+
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 1))
+                .attr("class", "issues_legend")
+                .text("Social_Welfare")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Social_Welfare");
+
+                    drawinnercircle(trigram_POS_Social_Welfare, trigram_third_layer, trigram_MW_Social_Welfare, Article_Social_Welfare, Information_Social_Welfare, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Social_Welfare, 0);
+
+                    drawArticle(Article_Social_Welfare, 0);
+
+                    drawInformation(Information_Social_Welfare, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 2))
+                .attr("class", "issues_legend")
+                .text("US_Policies_War")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Policies (War,,)");
+
+                    drawinnercircle(trigram_POS_US_Policies_War, trigram_third_layer, trigram_MW_US_Policies_War, Article_US_Policies_War, Information_US_Policies_War, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_US_Policies_War, 0);
+
+                    drawArticle(Article_US_Policies_War, 0);
+
+                    drawInformation(Information_US_Policies_War, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 3))
+                .attr("class", "issues_legend")
+                .text("Health_Care")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Health_Care");
+
+                    drawinnercircle(trigram_POS_Health_Care, trigram_third_layer, trigram_MW_Health_Care, Article_Health_Care, Information_Health_Care, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Health_Care, 0);
+
+                    drawArticle(Article_Health_Care, 0);
+
+                    drawInformation(Information_Health_Care, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 4))
+                .attr("class", "issues_legend")
+                .text("Immigration")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Immigration");
+
+                    drawinnercircle(trigram_POS_Immigration, trigram_third_layer, trigram_MW_Immigration, Article_Immigration, Information_Immigration, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Immigration, 0);
+
+                    drawArticle(Article_Immigration, 0);
+
+                    drawInformation(Information_Immigration, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 5))
+                .attr("class", "issues_legend")
+                .text("Humanitarian_Aid")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Humanitarian_Aid");
+
+                    drawinnercircle(trigram_POS_Humanitarian_Aid, trigram_third_layer, trigram_MW_Humanitarian_Aid, Article_Humanitarian_Aid, Information_Humanitarian_Aid, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Humanitarian_Aid, 0);
+
+                    drawArticle(Article_Humanitarian_Aid, 0);
+
+                    drawInformation(Information_Humanitarian_Aid, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 6))
+                .attr("class", "issues_legend")
+                .text("Protecting_US_Terror")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Protecting_US (Terror,,)");
+
+                    drawinnercircle(trigram_POS_Protecting_US_Terror, trigram_third_layer, trigram_MW_Protecting_US_Terror, Article_Protecting_US_Terror, Information_Protecting_US_Terror, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Protecting_US_Terror, 0);
+
+                    drawArticle(Article_Protecting_US_Terror, 0);
+
+                    drawInformation(Information_Protecting_US_Terror, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 7))
+                .attr("class", "issues_legend")
+                .text("Establishing_Democracy")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Establishing_Democracy");
+
+                    drawinnercircle(trigram_POS_Establishing_Democracy, trigram_third_layer, trigram_MW_Establishing_Democracy, Article_Establishing_Democracy, Information_Establishing_Democracy, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Establishing_Democracy, 0);
+
+                    drawArticle(Article_Establishing_Democracy, 0);
+
+                    drawInformation(Information_Establishing_Democracy, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 8))
+                .attr("class", "issues_legend")
+                .text("Promoting_US_Strength")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : Promoting_US_Strength");
+
+                    drawinnercircle(trigram_POS_Promoting_US_Strength, trigram_third_layer, trigram_MW_Promoting_US_Strength, Article_Promoting_US_Strength, Information_Promoting_US_Strength, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_Promoting_US_Strength, 0);
+
+                    drawArticle(Article_Promoting_US_Strength, 0);
+
+                    drawInformation(Information_Promoting_US_Strength, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 9))
+                .attr("class", "issues_legend")
+                .text("US_Priorities")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : US_Priorities");
+
+                    drawinnercircle(trigram_POS_US_Priorities, trigram_third_layer, trigram_MW_US_Priorities, Article_US_Priorities, Information_US_Priorities, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_US_Priorities, 0);
+
+                    drawArticle(Article_US_Priorities, 0);
+
+                    drawInformation(Information_US_Priorities, 0);
+                })
+
+        scroll_m1.append("text")
+                .attr("x", 27)
+                .attr("y", 11 + (10 * 10))
+                .attr("class", "issues_legend")
+                .text("All_speech")
+                .attr("text-anchor", "start")
+                .attr("font-family", "Open Sans")
+                .attr("dominant-baseline", "middle")
+                .attr("font-size", "7.5px")
+                .attr("fill", "black")
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "central")
+                            .style("font-weight", "bold")
+                            .style("cursor", "pointer")
+                            .attr("fill", "#00BFFF");
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .attr("dominant-baseline", "middle")
+                            .style("font-weight", "")
+                            .style("cursor", "default")
+                            .attr("fill", "black");
+                })
+                .on("click", function () {
+                    svgsection.selectAll(".outer_weight_arc").remove();
+                    svgsection.selectAll(".outer_text_arc").remove();
+
+                    svgsection_t1.selectAll(".svgsection_t1_text1").transition().duration(2000).text(" : All_speech");
+
+                    drawinnercircle(trigram_POS_All_speech, trigram_third_layer, trigram_MW_All_speech, Article_All_speech, Information_All_speech, 15, drawouterarc_tri, drawMWordcloud);
+
+                    drawMWordcloud(trigram_MW_All_speech, 0);
+
+                    drawArticle(Article_All_speech, 0);
+
+                    drawInformation(Information_All_speech, 0);
+                })
+    }
+
+
+    //function 모음
+
+    //복합단어 워드 클라우드
+
+
+    function drawWordcloud(W_data, index) {
+
+        svgbottomup_middle.selectAll(".wordcloud_text").remove();
+        svgbottomup_down0.selectAll(".MW_color_legend_rect").remove();
+        svgbottomup_down0.selectAll(".MW_color_legend").remove();
+
+        var svgbottomup_down1 = d3.select('#bottomup_down1')
+
+        var scroll_down1 = svgbottomup_down1.append("div")
+                .attr("id", "container_down1")
+                .append("svg")
+                .attr("viewBox", "14,5,100," + W_data[index].words.length + "0");
+
+
+        svgbottomup_down1.selectAll(".W_sorted_rect").remove();
+        svgbottomup_down1.selectAll(".W_sorted").remove();
+
+        svgbottomup_middle.selectAll(".bottomup_middle_title").transition().duration(2000).text("Word cloud");
+
+        var unigram_color_name = ["Noun", "Pronoun", "Verb", "Determiner", "Adverb", "Other", "Adjective", "WP-Pronoun"];
+        var unigram_color_color = ["#8c4366", "#854559", "#664035", "#796862", "#757577", "#5e6e79", "#535d89", "#6578a2"];
+
+
+        for (var i = 0; i < unigram_color_name.length; i++) {
+
+            scroll_down0.append("rect")
+                    .attr("class", "MW_color_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * i))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", unigram_color_color[i])
+
+            scroll_down0.append("text")
+                    .attr("x", 27)
+                    .attr("y", 11 + (10 * i))
+                    .attr("class", "MW_color_legend")
+                    .text(unigram_color_name[i])
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "7.5px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+        }
+
+        //bottomup_down information
+
+
+        for (var j = 0; j < W_data[index].words.length; j++) {
+
+            scroll_down1.append("rect")
+                    .attr("class", "MW_sorted_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * j))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 7.5)
+                    .attr("height", 7.5)
+                    .attr("fill", "#717171")
+
+            scroll_down1.append("text")
+            //.attr("x", 18.8)
+                    .attr("x", (function () {
+                        if (j == 0) {
+                            return 20.6
+                        } else if (j == 1) {
+                            return 20.2
+                        } else if (j == 2) {
+                            return 20.2
+                        }
+                        else if (j == 3) {
+                            return 20.2
+                        }
+                        else if (j == 4) {
+                            return 20.2
+                        }
+                        else if (j == 5) {
+                            return 20.2
+                        }
+                        else if (j == 6) {
+                            return 20.2
+                        }
+                        else if (j == 7) {
+                            return 20.2
+                        }
+                        else if (j == 8) {
+                            return 20.2
+                        } else if (j == 9) {
+                            return 19.2
+                        } else if (j == 10) {
+                            return 19.6
+                        } else {
+                            return 18.8
+                        }
+                    }))
+                    .attr("y", 11.1 + (10 * j))
+                    .attr("class", "president_legend")
+                    .text((j + 1))
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", (function () {
+                        if (j >= 99) {
+                            return "4px"
+                        } else {
+                            return "5.7px"
+                        }
+                    }))
+                    .attr("fill", "white")
+
+            scroll_down1.append("text")
+                    .attr("x", 27)
+                    .attr("y", 11 + (10 * j))
+                    .attr("class", "MW_sorted")
+                    .text(W_data[index].words[j].text + "(" + W_data[index].words[j].size + ")")
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "7.5px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+        }
+
+
+        var div_MW = d3.select("#bottomup_middle").append("div")
+                .attr("class", "tooltip2")
+                .style("opacity", 0);
+
+        d3.selection.prototype.moveToFront = function () {
+            return this.each(function () {
+                this.parentNode.appendChild(this)
+            })
+        }
+
+
+        d3.layout.cloud().size([width * 0.36, 450])
+                .words(W_data[index].words.map(function (d) {
+                    return {text: d.text, pos: d.pos, count: d.size, size: d.size}
+                }))
+                .rotate(function () {
+                    return ~~(Math.random() * 2);
+                })
+                .font("Impact")
+                .fontSize(function (d) {
+                    if (d.size >= 70) {
+                        return d.size = 70
+                    }
+                    else if (d.size <= 10) {
+                        return d.size = 10
+                    } else {
+                        return d.size
+                    }
+                })
+                .on("end", draw)
+                .start();
+
+        function draw(words) {
+            svgbottomup_middle.append("g")
+                    .attr("transform", "translate(" + (width * 0.38) / 2 + "," + 280 + ")")
+                    .selectAll(".wordcloud_text")
+                    .data(words)
+                    .enter().append("text")
+                    .attr("class", "wordcloud_text")
+                    .style("font-size", function (d) {
+                        if (d.size >= 70) {
+                            return d.size = 70
+                        }
+                        else if (d.size <= 10) {
+                            return d.size = 10
+                        } else {
+                            return d.size
+                        }
+                        +"px";
+                    })
+                    .style("font-family", "Impact")
+                    .style("fill", function (d) {
+                        if (d.pos == 'NN' || d.pos == 'NNPS' || d.pos == 'NNS' || d.pos == 'NNP') {
+                            return "#8c4366"
+                        }
+                        else if (d.pos == 'RP' || d.pos == 'PRP' || d.pos == 'PRP$') {
+                            return "#854559"
+                        }
+                        else if (d.pos == 'VB' || d.pos == 'VBN' || d.pos == 'VBP' || d.pos == 'VBZ' || d.pos == 'VBG' || d.pos == 'VBD') {
+                            return "#664035"
+                        }
+                        else if (d.pos == 'DT' || d.pos == 'WDT' || d.pos == 'PDT') {
+                            return "#796862"
+                        }
+                        else if (d.pos == 'RB' || d.pos == 'RBR' || d.pos == 'RBS' || d.pos == 'WRB') {
+                            return "#757577"
+                        }
+                        else if (d.pos == 'JJ' || d.pos == 'JJS' || d.pos == 'JJR') {
+                            return "#535d89"
+                        }
+                        else if (d.pos == 'WP$' || d.pos == 'WP') {
+                            return "#6578a2"
+                        }
+                        else {
+                            return "#5e6e79"
+                        }
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function (d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                    })
+                    .text(function (d) {
+                        return d.text
+                    })
+                    .style("cursor", "default")
+                    .attr("opacity", 0.9)
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("stroke", "black")
+                                .attr("stroke-width", 1.3 + "px")
+                                .style("font-size", function (d) {
+                                    if (d.size <= 20) {
+                                        return 30
+                                    } else {
+                                        return d.size
+                                    }
+                                    +"px"
+                                })
+                                .moveToFront()
+                                .attr("transform", function (d) {
+                                    if (d.size <= 20) {
+                                        return "translate(" + [d.x, d.y + 4] + ")rotate(" + 0 + ")"
+                                    } else {
+                                        return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                                    }
+                                })
+                                .style("cursor", "default")
+                                .attr("opacity", 1)
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("stroke", "black")
+                                .attr("stroke-width", 0 + "px")
+                                .style("font-size", function (d) {
+                                    if (d.size >= 70) {
+                                        return d.size = 70
+                                    }
+                                    else {
+                                        return d.size
+                                    }
+                                    +"px"
+                                })
+                                .attr("transform", function (d) {
+                                    return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                                })
+                                .style("cursor", "default")
+                                .attr("opacity", 0.9)
+                    })
+                    .on("mouseenter", function (d) {
+                        div_MW.transition()
+                                .duration(100)
+                                .style('opacity', .9);
+                        div_MW.html('<strong> # Word : ' + d.text + '</strong>' + '</br>' + '- POS type : <strong>' + d.pos + '</strong>' + '</br>' + '- Word Count : <strong>' + d.count + '</strong>')
+                                .style('left', (d3.event.pageX) - 500 + 'px')
+                                .style('top', (d3.event.pageY) - 650 + 'px');
+                    })
+                    .on("mouseleave", function (d) {
+                        div_MW.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+    }
+
+    //복합단어 워드 클라우드
+
+
+    function drawMWordcloud(MW_data, index) {
+
+        svgbottomup_middle.selectAll(".wordcloud_text").remove();
+        svgbottomup_down0.selectAll(".MW_color_legend_rect").remove();
+        svgbottomup_down0.selectAll(".MW_color_legend").remove();
+
+        var svgbottomup_down1 = d3.select('#bottomup_down1')
+
+        var scroll_down1 = svgbottomup_down1.append("div")
+                .attr("id", "container_down1")
+                .append("svg")
+                .attr("viewBox", "14,5,100," + MW_data[index].words.length + "0");
+
+        svgbottomup_down1.selectAll(".MW_sorted_rect").remove();
+        svgbottomup_down1.selectAll(".MW_sorted").remove();
+
+        svgbottomup_middle.selectAll(".bottomup_middle_title").transition().duration(2000).text("Word cloud");
+
+        var MW_color_name = ["Frequency(0-10)", "Frequency(11-20)", "Frequency(21-30)", "Frequency(31-40)", "Frequency(41-50)", "Frequency(51-60)", "Frequency(61-70)", "Frequency(more than 71)"];
+        var MW_color_color = ["#6BC600", "#AACA00", "#CEB100", "#D27500", "#D53700", "#D90008", "#DD004B", "#E1008F"];
+
+
+        for (var i = 0; i < MW_color_name.length; i++) {
+
+            scroll_down0.append("rect")
+                    .attr("class", "MW_color_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * i))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", MW_color_color[i])
+
+            scroll_down0.append("text")
+                    .attr("x", 27)
+                    .attr("y", 11 + (10 * i))
+                    .attr("class", "MW_color_legend")
+                    .text(MW_color_name[i])
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "7.5px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+        }
+
+
+        //bottomup_down information
+
+
+        for (var j = 0; j < MW_data[index].words.length; j++) {
+
+            scroll_down1.append("rect")
+                    .attr("class", "MW_sorted_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * j))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 7.5)
+                    .attr("height", 7.5)
+                    .attr("fill", "#717171")
+
+            scroll_down1.append("text")
+            //.attr("x", 18.8)
+                    .attr("x", (function () {
+                        if (j == 0) {
+                            return 20.6
+                        } else if (j == 1) {
+                            return 20.2
+                        } else if (j == 2) {
+                            return 20.2
+                        }
+                        else if (j == 3) {
+                            return 20.2
+                        }
+                        else if (j == 4) {
+                            return 20.2
+                        }
+                        else if (j == 5) {
+                            return 20.2
+                        }
+                        else if (j == 6) {
+                            return 20.2
+                        }
+                        else if (j == 7) {
+                            return 20.2
+                        }
+                        else if (j == 8) {
+                            return 20.2
+                        } else if (j == 9) {
+                            return 19.2
+                        } else if (j == 10) {
+                            return 19.6
+                        } else {
+                            return 18.8
+                        }
+                    }))
+                    .attr("y", 11.1 + (10 * j))
+                    .attr("class", "president_legend")
+                    .text((j + 1))
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", (function () {
+                        if (j >= 99) {
+                            return "4px"
+                        } else {
+                            return "5.7px"
+                        }
+                    }))
+                    .attr("fill", "white")
+
+            scroll_down1.append("text")
+                    .attr("x", 27)
+                    .attr("y", 11 + (10 * j))
+                    .attr("class", "MW_sorted")
+                    .text(MW_data[index].words[j].text + "(" + MW_data[index].words[j].size + ")")
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "7.5px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+        }
+
+        var div_MW = d3.select("#bottomup_middle").append("div")
+                .attr("class", "tooltip2")
+                .style("opacity", 0);
+
+        d3.selection.prototype.moveToFront = function () {
+            return this.each(function () {
+                this.parentNode.appendChild(this)
+            })
+        }
+
+
+        d3.layout.cloud().size([width * 0.36, 450])
+                .words(MW_data[index].words.map(function (d) {
+                    return {text: d.text, pos: d.pos, count: d.size, size: d.size}
+                }))
+                .rotate(function () {
+                    return ~~(Math.random() * 2);
+                })
+                .font("Impact")
+                .fontSize(function (d) {
+                    if (d.size >= 70) {
+                        return d.size = 70
+                    }
+                    else if (d.size <= 10) {
+                        return d.size = 10
+                    } else {
+                        return d.size
+                    }
+                })
+                .on("end", draw)
+                .start();
+
+        function draw(words) {
+            svgbottomup_middle.append("g")
+                    .attr("transform", "translate(" + (width * 0.38) / 2 + "," + 280 + ")")
+                    .selectAll(".wordcloud_text")
+                    .data(words)
+                    .enter().append("text")
+                    .attr("class", "wordcloud_text")
+                    .style("font-size", function (d) {
+                        if (d.size >= 70) {
+                            return d.size = 70
+                        }
+                        else if (d.size <= 10) {
+                            return d.size = 10
+                        } else {
+                            return d.size
+                        }
+                        +"px";
+                    })
+                    .style("font-family", "Impact")
+                    .style("fill", function (d) {
+                        if (d.size >= 0 && d.size <= 10) {
+                            return "#6BC600"
+                        }
+                        else if (d.size >= 10.1 && d.size <= 20) {
+                            return "#AACA00"
+                        }
+                        else if (d.size >= 20.1 && d.size <= 30) {
+                            return "#CEB100"
+                        }
+                        else if (d.size >= 30.1 && d.size <= 40) {
+                            return "#D27500"
+                        }
+                        else if (d.size >= 40.1 && d.size <= 50) {
+                            return "#D53700"
+                        }
+                        else if (d.size >= 50.1 && d.size <= 60) {
+                            return "#D90008"
+                        }
+                        else if (d.size >= 60.1 && d.size <= 70) {
+                            return "#DD004B"
+                        }
+                        else {
+                            return "#E1008F"
+                        }
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function (d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                    })
+                    .text(function (d) {
+                        return d.text
+                    })
+                    .style("cursor", "default")
+                    .attr("opacity", 0.9)
+                    .on("mouseover", function () {
+                        d3.select(this)
+                                .attr("stroke", "black")
+                                .attr("stroke-width", 1.3 + "px")
+                                .style("font-size", function (d) {
+                                    if (d.size <= 20) {
+                                        return 30
+                                    } else {
+                                        return d.size
+                                    }
+                                    +"px"
+                                })
+                                .moveToFront()
+                                .attr("transform", function (d) {
+                                    if (d.size <= 20) {
+                                        return "translate(" + [d.x, d.y + 4] + ")rotate(" + 0 + ")"
+                                    } else {
+                                        return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                                    }
+                                })
+                                .style("cursor", "default")
+                                .attr("opacity", 1)
+                    })
+                    .on("mouseout", function () {
+                        d3.select(this)
+                                .attr("stroke", "black")
+                                .attr("stroke-width", 0 + "px")
+                                .style("font-size", function (d) {
+                                    if (d.size >= 70) {
+                                        return d.size = 70
+                                    }
+                                    else {
+                                        return d.size
+                                    }
+                                    +"px"
+                                })
+                                .attr("transform", function (d) {
+                                    return "translate(" + [d.x, d.y] + ")rotate(" + 0 + ")"
+                                })
+                                .style("cursor", "default")
+                                .attr("opacity", 0.9)
+                    })
+                    .on("mouseenter", function (d) {
+                        div_MW.transition()
+                                .duration(100)
+                                .style('opacity', .9);
+                        div_MW.html('<strong> # Word : ' + d.text + '</strong>' + '</br>' + '- POS type : <strong>' + d.pos + '</strong>' + '</br>' + '- Word Count : <strong>' + d.count + '</strong>')
+                                .style('left', (d3.event.pageX) - 500 + 'px')
+                                .style('top', (d3.event.pageY) - 650 + 'px');
+                    })
+                    .on("mouseleave", function (d) {
+                        div_MW.transition()
+                                .duration(100)
+                                .style('opacity', 0);
+                    })
+
+
+        }
+
+    }
+
+    function drawouterarc_uni(weight_data, index) {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        var property_color = ["#8c4366", "#955e7c", "#9f7991", "#a894a7", "#854559", "#94687a", "#a28c9c", "#664035", "#73524b", "#7f6562", "#8c7779", "#988a90", "#a59ca6", "#796862", "#8c8080", "#9e979f", "#757577", "#848389", "#93929a", "#a2a0ac", "#5e6e79", "#65747f", "#6d7a86", "#74808c", "#7c8692", "#848c98", "#8b919e", "#9397a4", "#9a9dab", "#a2a3b1", "#a9a9b7", "#535d89", "#73799a", "#9294ac", "#6578a2", "#8b93af"];
+
+        for (var i = 0; i < weight_data[index].weight.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.1815)
+                    .outerRadius((width * 0.1815) + (weight_data[index].weight[i] * 250))
+                    .startAngle(((Math.PI * 2) / (36)) * (i + 3) + 0.94)
+                    .endAngle(((Math.PI * 2) / (36)) * (i + 4) + 0.94)
+
+            svgsection.append("path")
+                    .attr("d", arc)
+                    .attr("class", "outer_weight_arc")
+                    .attr("id", "weight_arc_" + i)
+                    .attr("opacity", 0.7)
+                    .attr("fill", property_color[i])
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "#68695f")
+                    .attr("stroke-width", "2.4px");
+
+            svgsection.append("text")
+                    .attr("x", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 == 0) {
+                            return 18
+                        } else {
+                            return 10
+                        }
+                    })
+                    .attr("dy", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 >= 0.05) {
+                            return 12
+                        } else {
+                            return -2
+                        }
+                    })
+                    .attr("class", "outer_text_arc")
+                    .append("textPath")
+                    .attr("fill", "#4b4f6a")
+                    .attr("font-size", 12 + "px")
+                    .style("font-weight", "bold")
+                    .attr("xlink:href", "#weight_arc_" + i)
+                    .text(Math.round(weight_data[index].weight[i] * 100) / 100)
+                    .style("cursor", "default")
+
+        }
+
+    }
+
+    function drawouterarc_bi(weight_data, index) {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        for (var i = 0; i < weight_data[index].weight.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.1815)
+                    .outerRadius((width * 0.1815) + (weight_data[index].weight[i] * 100))
+                    .startAngle(((Math.PI * 2) / (50)) * (i + 4.5) + 0.94)
+                    .endAngle(((Math.PI * 2) / (50)) * (i + 5.5) + 0.94)
+
+            svgsection.append("path")
+                    .attr("d", arc)
+                    .attr("class", "outer_weight_arc")
+                    .attr("id", "weight_arc_" + i)
+                    .attr("opacity", 0.7)
+                    .attr("fill", "#8b93af")
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "#68695f")
+                    .attr("stroke-width", "2.4px");
+
+            svgsection.append("text")
+                    .attr("x", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 == 0) {
+                            return 10
+                        } else {
+                            return 7
+                        }
+                    })
+                    .attr("dy", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 >= 0.14) {
+                            return 12
+                        } else {
+                            return -2
+                        }
+                    })
+                    .attr("class", "outer_text_arc")
+                    .append("textPath")
+                    .attr("fill", "#4b4f6a")
+                    .attr("font-size", 12 + "px")
+                    .style("font-weight", "bold")
+                    .attr("xlink:href", "#weight_arc_" + i)
+                    .text(Math.round(weight_data[index].weight[i] * 10) / 10)
+                    .style("cursor", "default")
+
+        }
+
+    }
+
+
+    function drawouterarc_tri(weight_data, index) {
+
+        svgsection.selectAll(".outer_weight_arc").remove();
+        svgsection.selectAll(".outer_text_arc").remove();
+
+        for (var i = 0; i < weight_data[index].weight.length; i++) {
+
+            var arc = d3.svg.arc()
+                    .innerRadius(width * 0.1965)
+                    .outerRadius((width * 0.1965) + (weight_data[index].weight[i] * 100))
+                    .startAngle(((Math.PI * 2) / (65)) * (i + 6) + 0.94)
+                    .endAngle(((Math.PI * 2) / (65)) * (i + 7) + 0.94)
+
+            svgsection.append("path")
+                    .attr("d", arc)
+                    .attr("class", "outer_weight_arc")
+                    .attr("id", "weight_arc_" + i)
+                    .attr("opacity", 0.7)
+                    .attr("fill", "#8b93af")
+                    .attr("transform", "translate(" + circle_rightleft + "," + circle_updown + ")")
+                    .attr("stroke", "#68695f")
+                    .attr("stroke-width", "2.4px");
+
+            svgsection.append("text")
+                    .attr("x", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 == 0) {
+                            return 8
+                        } else {
+                            return 6
+                        }
+                    })
+                    .attr("dy", function () {
+                        if (Math.round(weight_data[index].weight[i] * 100) / 100 >= 0.14) {
+                            return 12
+                        } else {
+                            return -2
+                        }
+                    })
+                    .attr("class", "outer_text_arc")
+                    .append("textPath")
+                    .attr("fill", "#4b4f6a")
+                    .attr("font-size", 12 + "px")
+                    .style("font-weight", "bold")
+                    .attr("xlink:href", "#weight_arc_" + i)
+                    .text(Math.round(weight_data[index].weight[i] * 10) / 10)
+                    .style("cursor", "default")
+
+        }
+
+    }
+
+
+    //가운데 사람 그려주는 함수 & 정당 색상
+
+    function drawinnercircle(weight_data, layer_data, word_data, article_data, information_data, longer, arc, word) {
+
+
+        //svgsection.selectAll(".onoffswitch-checkbox").remove();
+        svgsection.selectAll(".svgsection_inner_Text").remove();
+        svgsection.selectAll(".svgsection_inner_Circle").remove();
+        svgsection_m0.selectAll(".party_legend_rect").remove();
+        svgsection_m0.selectAll(".party_legend").remove();
+
+        var svgsection_m2 = d3.select("#section_m2");
+
+        var scroll_m2 = svgsection_m2.append("div")
+                .attr("id", "container_m2")
+                .append("svg")
+                .attr("viewBox", "14,3,100," + weight_data.length + "3")
+                .append("g");
+
+        svgsection_m2.selectAll(".president_legend_rect").remove();
+        svgsection_m2.selectAll(".president_legend").remove();
+
+        var nodes = [];
+        var texts = [];
+        var spot = [];
+
+        var spotLength = layer_data.length;
+
+        function makeSpot() {
+            var radius = width * 0.148;
+
+            for (var i = 0; i < spotLength; i++) {
+                var x = Math.cos((Math.PI * 2 / spotLength * i)) * radius + circle_rightleft;
+                var y = Math.sin((Math.PI * 2 / spotLength * i)) * radius + circle_updown;
+                spot.push({
+                    x: x,
+                    y: y,
+                    text: layer_data[i].text,
+                })
+            }
+        }
+
+
+        function makeNodes() {
+            for (var i = 0; i < weight_data.length; i++) {
+                var each = {
+                    gravity: [],
+                    size: (weight_data[i].size / 4 ),
+                    label: weight_data[i].name,
+                    color: weight_data[i].party,
+                    x: 0,
+                    y: 0,
+                    svg: null,
+                };
+
+
+                each.svg = drawPersonCircle(0, 0, each.size * (width * 0.001));
+
+                for (var j = 0; j < spotLength; j++) {
+                    var value = weight_data[i].weight[j];
+                    each.gravity.push(value);
+                }
+                nodes.push(each);
+            }
+        }
+
+        function makeTexts() {
+            for (var i = 0; i < weight_data.length; i++) {
+                var each = {
+                    gravity: [],
+                    size: (weight_data[i].size / 4 ),
+                    label: weight_data[i].name,
+                    color: weight_data[i].party,
+                    x: 0,
+                    y: 0,
+                    svg: null,
+                };
+
+
+                each.svg = drawPersonText(each.label, 0, 0, i, weight_data, word_data, article_data, information_data);
+                for (var j = 0; j < spotLength; j++) {
+                    var value = weight_data[i].weight[j];
+                    each.gravity.push(value);
+                }
+                texts.push(each);
+            }
+        }
+
+
+        makeSpot();
+        makeNodes();
+        makeTexts();
+
+        //arc 위치 테스트
+
+        //for (var i = 0; i < spot.length; i++) {
+        //console.log('?')
+        //  TestCircle(spot[i].x, spot[i].y, 5, '#F00',spot[i].text);
+        //}
+
+        //function TestCircle(x, y, size, color, text) {
+        //  return svgsection.append('circle')
+        //        .attr('class', "svgsection_inner_Circle")
+        //      .attr('cx', x)
+        //    .attr('cy', y)
+        //  .attr('fill', color)
+        //.attr("r", function () {
+        //  if (size <= 2) {
+        //    return size = 2
+        //}
+        //else if (size >= 15) {
+        //   return size = 15
+        //} else {
+        //   return size
+        // }
+        // })
+        // .attr("stroke", "black")
+        // .attr("stroke-width", "1px")
+        // .style("cursor", "default")
+        // .attr("opacity", 0.6)
+        //.on("mouseover", function () {
+        //   return console.log(text)
+        //})
+        //}
+
+
+        function drawPersonCircle(x, y, size) {
+            return svgsection.append('circle')
+                    .attr('class', "svgsection_inner_Circle")
+                    .attr('cx', x)
+                    .attr('cy', y)
+                    .attr('fill', "#00BFFF")
+                    .attr("r", function () {
+                        if (size <= 2) {
+                            return size = 2
+                        }
+                        else if (size >= 15) {
+                            return size = 15
+                        } else {
+                            return size
+                        }
+                    })
+                    .attr("stroke", "black")
+                    .attr("stroke-width", "1px")
+                    .style("cursor", "default")
+                    .attr("opacity", 0.6)
+
+        }
+
+        function drawPersonText(text, x, y, index, weight_data, word_data, article_data, information_data) {
+            return svgsection.append('text')
+                    .text(text)
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('class', "svgsection_inner_Text")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "10px")
+                    .attr('fill', '#717171')
+                    .style("font-weight", "")
+                    .attr("opacity", 0.4)
+                    .style("cursor", "default")
+                    .on("mouseover", (function (index) {
+                        return (function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return 0.95
+                                        } else {
+                                            return 0.2
+                                        }
+                                    });
+                            d3.select(this)
+                                    .attr("font-size", "13px")
+                                    .style("font-weight", "bold")
+                                    .style("cursor", "pointer")
+                                    .attr('fill', 'rgb(51,51,51)')
+                                    .attr("opacity", 0.9)
+                        })
+                    })(index))
+                    .on("mouseout", function () {
+                        d3.selectAll(".svgsection_inner_Circle")
+                                .attr("opacity", 0.6)
+                        d3.select(this)
+                                .attr("font-size", "10px")
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr('fill', '#717171')
+                                .attr("opacity", 0.4)
+                    })
+                    .on("click", (function (index_innertext) {
+                        return (function () {
+
+                            arc(weight_data, index_innertext);
+
+                            word(word_data, index_innertext);
+
+                            drawArticle(article_data, index_innertext);
+
+                            drawInformation(information_data, index_innertext);
+
+                        })
+                    })(index))
+
+        }
+
+        function drawNodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                var posX = 0;
+                var posY = 0;
+
+                for (var j = 0; j < nodes[i].gravity.length; j++) {
+                    var idf = nodes[i].gravity[j];
+                    posX += spot[j].x * idf;
+                    posY += spot[j].y * idf;
+
+                }
+                nodes[i]['x'] = posX;
+                nodes[i]['y'] = posY;
+
+                nodes[i]['svg'].attr('cx', posX);
+                nodes[i]['svg'].attr('cy', posY);
+
+            }
+        }
+
+        function drawTexts() {
+            for (var i = 0; i < texts.length; i++) {
+                var posX = 0;
+                var posY = 0;
+
+                for (var j = 0; j < texts[i].gravity.length; j++) {
+                    var idf = texts[i].gravity[j];
+                    posX += spot[j].x * idf;
+                    posY += spot[j].y * idf;
+
+                }
+                texts[i]['x'] = posX;
+                texts[i]['y'] = posY;
+
+                texts[i]['svg'].attr('x', posX);
+                texts[i]['svg'].attr('y', posY);
+
+            }
+        }
+
+        var critaria = longer;
+
+
+        function flok_nodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                for (var j = 0; j < nodes.length; j++) {
+                    if (i == j) continue;
+
+                    if (distance(nodes[i], nodes[j]) < critaria) {
+                        // flok
+
+                        var diffX = nodes[i].x - nodes[j].x;
+                        var diffY = nodes[i].y - nodes[j].y;
+
+                        nodes[i].x += diffX * 0.25;
+                        nodes[i].y += diffY * 0.25;
+
+                        nodes[j].x -= diffX * 0.25;
+                        nodes[j].y -= diffY * 0.25;
+
+                    }
+
+
+                }
+            }
+            function distance(from, to) {
+                return Math.pow(Math.pow(from.x - to.x, 2)
+                        + Math.pow(from.y - to.y, 2),
+                        0.5);
+            }
+
+        }
+
+        function flok_texts() {
+            for (var i = 0; i < texts.length; i++) {
+                for (var j = 0; j < texts.length; j++) {
+                    if (i == j) continue;
+
+                    if (distance(texts[i], texts[j]) < critaria) {
+                        // flok
+
+                        var diffX = texts[i].x - texts[j].x;
+                        var diffY = texts[i].y - texts[j].y;
+
+                        texts[i].x += diffX * 0.25;
+                        texts[i].y += diffY * 0.25;
+
+                        texts[j].x -= diffX * 0.25;
+                        texts[j].y -= diffY * 0.25;
+
+                    }
+
+
+                }
+            }
+            function distance(from, to) {
+                return Math.pow(Math.pow(from.x - to.x, 2)
+                        + Math.pow(from.y - to.y, 2),
+                        0.5);
+            }
+
+        }
+
+        function updateNodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                nodes[i]['svg'].attr('cx', nodes[i]['x']);
+                nodes[i]['svg'].attr('cy', nodes[i]['y']);
+            }
+        }
+
+        function updateTexts() {
+            for (var i = 0; i < texts.length; i++) {
+                texts[i]['svg'].attr('x', texts[i]['x']);
+                texts[i]['svg'].attr('y', texts[i]['y']);
+            }
+        }
+
+        setInterval(function () {
+            flok_nodes();
+            flok_texts();
+            updateNodes();
+            updateTexts();
+        }, 100);
+
+        drawNodes();
+        drawTexts();
+
+
+        //정당 색상 목차
+
+        //M0 legend bar
+
+        var party_name = [
+            "Federalist",
+            "Federalist, Whig",
+            "Whig",
+            "Whig; Republican",
+            "Democrat",
+            "Democratic",
+            "Democrat, Whig",
+            "Democrat; Unionist",
+            "Republican",
+            "Democratic-Republican"];
+
+        var party_color = [
+            "#af6f49",
+            "#ad836b",
+            "#b2a8a2",
+            "#754b46",
+            "#403dce",
+            "#3230a5",
+            "#4c4b77",
+            "#afaef2",
+            "#d63131",
+            "#9751c6"];
+
+
+        for (var i = 0; i < party_name.length; i++) {
+
+            scroll_m0.append("rect")
+                    .attr("class", "party_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 8 + (10 * i))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 6.5)
+                    .attr("height", 6.5)
+                    .attr("fill", party_color[i])
+
+            scroll_m0.append("text")
+                    .attr("x", 27)
+                    .attr("y", 11 + (10 * i))
+                    .attr("class", "party_legend")
+                    .text(party_name[i])
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "7.5px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+                    .on("mouseover", (function (index) {
+                        return (function () {
+                            d3.selectAll(".svgsection_inner_Text")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.color == party_name[index]) {
+                                            return 0.9
+                                        } else {
+                                            return 0.2
+                                        }
+                                    })
+                                    .style("font-weight", function (d) {
+                                        if (d.color == party_name[index]) {
+                                            return "bold"
+                                        } else {
+                                            return ""
+                                        }
+                                    })
+                                    .attr('fill', function (d) {
+                                        if (d.color == party_name[index]) {
+                                            return 'rgb(51,51,51)'
+                                        } else {
+                                            return '#717171'
+                                        }
+                                    })
+                                    .attr("font-size", function (d) {
+                                        if (d.color == party_name[index]) {
+                                            return '13px'
+                                        } else {
+                                            return '10px'
+                                        }
+                                    });
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.color == party_name[index]) {
+                                            return 0.95
+                                        } else {
+                                            return 0.2
+                                        }
+                                    });
+                            d3.select(this)
+                                    .attr("dominant-baseline", "central")
+                                    .style("font-weight", "bold")
+                                    .style("cursor", "default")
+                                    .attr("fill", "#00BFFF");
+                        })
+                    })(i))
+                    .on("mouseout", function () {
+                        d3.selectAll(".svgsection_inner_Text")
+                                .style("font-weight", "")
+                                .attr('fill', '#717171')
+                                .attr("opacity", 0.4)
+                                .attr("font-size", '10px');
+                        d3.selectAll(".svgsection_inner_Circle")
+                                .attr("opacity", 0.6);
+                        d3.select(this)
+                                .attr("dominant-baseline", "middle")
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("fill", "black");
+                    })
+
+        }
+
+        d3.selectAll(".onoffswitch-checkbox").on("click", change_circle_color);
+
+        function change_circle_color() {
+
+            var active = this.click ? false : true,
+                    checked = active ? 0 : 1;
+
+            if (checked == 0) color_off()
+            else color_on()
+
+            this.click = active;
+
+            console.log(checked)
+        }
+
+
+        function color_on() {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.color == 'Federalist') {
+                            return "#af6f49"
+                        }
+                        else if (d.color == 'Federalist, Whig') {
+                            return "#ad836b"
+                        }
+                        else if (d.color == 'Whig') {
+                            return "#b2a8a2"
+                        }
+                        else if (d.color == 'Whig; Republican') {
+                            return "#754b46"
+                        }
+                        else if (d.color == 'Democrat') {
+                            return "#403dce"
+                        }
+                        else if (d.color == 'Democratic') {
+                            return "#3230a5"
+                        }
+                        else if (d.color == 'Democrat, Whig') {
+                            return "#4c4b77"
+                        }
+                        else if (d.color == 'Democrat; Unionist') {
+                            return "#afaef2"
+                        }
+                        else if (d.color == 'Republican') {
+                            return "#d63131"
+                        }
+                        else if (d.color == 'Democratic-Republican') {
+                            return "#9751c6"
+                        }
+                    })
+        }
+
+        function color_off() {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .attr("fill", "#00BFFF")
+        }
+
+
+        var number = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+
+        for (var j = 0; j < weight_data.length; j++) {
+
+            scroll_m2.append("rect")
+                    .attr("class", "president_legend_rect")
+                    .attr("x", 18)
+                    .attr("y", 7 + (10 * j))
+                    .attr("stroke", "")
+                    .attr("stroke-width", "0.7px")
+                    .attr("rx", 1)
+                    .attr("ry", 1)
+                    .attr("width", 7.7)
+                    .attr("height", 7.7)
+                    .attr("fill", '#717171')
+
+            scroll_m2.append("text")
+            //.attr("x", 18.8)
+                    .attr("x", (function () {
+                        if (j == 0) {
+                            return 20.6
+                        } else if (j == 1) {
+                            return 20.2
+                        } else if (j == 2) {
+                            return 20.2
+                        }
+                        else if (j == 3) {
+                            return 20.2
+                        }
+                        else if (j == 4) {
+                            return 20.2
+                        }
+                        else if (j == 5) {
+                            return 20.2
+                        }
+                        else if (j == 6) {
+                            return 20.2
+                        }
+                        else if (j == 7) {
+                            return 20.2
+                        }
+                        else if (j == 8) {
+                            return 20.2
+                        } else if (j == 9) {
+                            return 19.2
+                        } else if (j == 10) {
+                            return 19.6
+                        } else {
+                            return 18.8
+                        }
+                    }))
+                    .attr("y", 10.5 + (10 * j))
+                    .attr("class", "president_legend")
+                    .text((j + 1))
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "5.7px")
+                    .attr("fill", "white")
+
+            scroll_m2.append("text")
+                    .attr("x", 28)
+                    .attr("y", 11 + (10 * j))
+                    .attr("class", "president_legend")
+                    .text(weight_data[j].name)
+                    .attr("text-anchor", "start")
+                    .attr("font-family", "Open Sans")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "8px")
+                    .attr("fill", "black")
+                    .style("font-weight", "")
+                    .style("cursor", "default")
+                    .on("mouseover", (function (index) {
+                        return (function () {
+                            d3.selectAll(".svgsection_inner_Text")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return 0.9
+                                        } else {
+                                            return 0.2
+                                        }
+                                    })
+                                    .style("font-weight", function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return "bold"
+                                        } else {
+                                            return ""
+                                        }
+                                    })
+                                    .attr('fill', function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return 'rgb(51,51,51)'
+                                        } else {
+                                            return '#717171'
+                                        }
+                                    })
+                                    .attr("font-size", function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return '13px'
+                                        } else {
+                                            return '10px'
+                                        }
+                                    });
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.label == weight_data[index].name) {
+                                            return 0.95
+                                        } else {
+                                            return 0.2
+                                        }
+                                    });
+                            d3.select(this)
+                                    .attr("dominant-baseline", "central")
+                                    .style("font-weight", "bold")
+                                    .style("cursor", "pointer")
+                                    .attr("fill", "#00BFFF");
+                        })
+                    })(j))
+                    .on("mouseout", function () {
+                        d3.selectAll(".svgsection_inner_Text")
+                                .style("font-weight", "")
+                                .attr('fill', '#717171')
+                                .attr("opacity", 0.4)
+                                .attr("font-size", '10px');
+                        d3.selectAll(".svgsection_inner_Circle")
+                                .attr("opacity", 0.6);
+                        d3.select(this)
+                                .attr("dominant-baseline", "middle")
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr("fill", "black");
+                    })
+                    .on("click", (function (index) {
+                        return (function () {
+
+                            arc(weight_data, index);
+
+                            word(word_data, index);
+
+                            drawArticle(article_data, index);
+
+                            drawInformation(information_data, index);
+
+                        })
+                    })(j))
+
+
+        }
+
+
+    }
+
+    //svgbottomup_left.selectAll(".bottomup_left_HTMLArticle")
+
+
+})
+
+</script></div><div id="section_t0"><div class="onoffswitch">
+<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+<label style="left: 90%; top: 8px; position: absolute" class="onoffswitch-label" for="myonoffswitch">
+<span class="onoffswitch-inner"></span>
+<span class="onoffswitch-switch"></span>
+</label>
+</div></div><div id="section_m0"></div><div id="section_t1"></div><div id="section_m1"></div><div id="section_t2"></div><div id="section_m2"></div><div id="bottomup_left"><input style="left: 7.5%; top: 58px; position: absolute; width: 50%" type="text" placeholder="Please type a word to highlight..." id="search">
+<input style="left: 60%; top: 62px; position: absolute" class="ct-btn white" type="button" id="button" onmousedown="ColorIn(document.getElementById('search').value)" value="ColorIn">
+<input style="left: 72%; top: 62px; position: absolute" class="ct-btn white" type="button" id="button" onmousedown="ColorOut(document.getElementById('search').value)" value="ColorOut"><script>var fill = ["#d9cbf9","#c8fdcc","#d3b9c5","#6eb5ff","#fff5ba","ffabab"];
+
+function ColorOut(text) {
+
+    if (window.find && window.getSelection) {
+        document.designMode = "on";
+        var sel = window.getSelection();
+        //sel.collapse(document.body, 0);
+
+        while (window.find(text)) {
+            //document.getElementById("button").blur();
+            document.execCommand("HiliteColor", false, 'white');
+            sel.collapseToEnd();
+        }
+        document.designMode = "off";
+    }
+}
+
+var clicks = 0;
+
+function ColorIn(text) {
+
+	clicks += 1;
+	if(clicks==6){
+		clicks = 0;
+	}
+
+    //var n = Math.round(Math.random() * 10)
+
+    if (window.find && window.getSelection) {
+        document.designMode = "on";
+        var sel = window.getSelection();
+        //sel.collapse(document.body, 0);
+        while (window.find(text)) {
+            //document.getElementById("button").blur();
+            document.execCommand("HiliteColor", false, fill[clicks]);
+            sel.collapseToEnd();
+        }
+        document.designMode = "off";
+    }
+}
+
+//function doMove(text) {
+
+    //if (window.find)window.find(text, 0, 0, 0, 0, 0, 1);
+
+    //if (window.find && window.getSelection) {
+        //document.designMode = "on";
+        //if (window.find) {
+            //var strFound = self.find(text);
+            //if (!strFound) {
+            //    while (self.find(text, 0, 1)) continue;
+            //}
+            //
+        //}
+        //document.designMode = "off";
+    //}
+//}
+
+
+</script></div><div id="bottomup_middle"></div><div id="bottomup_up0"></div><div id="bottomup_down0"></div><div id="bottomup_up1"></div><div id="bottomup_down1"></div><div id="bottomdown"><p><p>&copy; 2017, Seongmin Mun, All rights reserved.</p></p></div></body></html>

@@ -1,0 +1,358 @@
+body {
+    margin: 0;
+}
+
+#header {
+    height:50px;
+    background-color:rgb(51,51,51);
+}
+
+
+#left {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:600px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#section {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:58%;
+    height:600px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#section_t0 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:30px;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+#section_m0 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:110px;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+#section_t1 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:50px;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+#section_m1 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:110px;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+#section_t2 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:30px;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+#section_m2 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:270px;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_left {
+    height:530px;
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:38%;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_middle {
+    height:530px;
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:38%;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_up0 {
+    height:30px;
+    background-color:#F1F1F1;
+    position:relative;
+    float:right;
+    width:18%;
+    padding-top: 1%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_down0 {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:18%;
+    height:110px;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_up1 {
+    height:30px;
+    background-color:#F1F1F1;
+    position:relative;
+    float:right;
+    width:18%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-clip: content-box;
+}
+
+#bottomup_down1 {
+    height:360px;
+    background-color:#F1F1F1;
+    position:relative;
+    float:right;
+    width:18%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-bottom: 1%;
+    background-clip: content-box;
+}
+
+
+
+#bottomdown {
+    height:20px;
+    background-color:#717171;
+    clear:both;
+    text-align:center;
+    font-size: 20px;
+    color:whitesmoke;
+    padding: 0%;
+    font-family: sans-serif;
+}
+
+p {
+    padding: 0%;
+    margin: 0%;
+}
+
+
+
+
+
+
+
+div#container_m01 {
+    position: absolute;
+    top: 3px;
+    right: 10%;
+    height: 105px;
+    width:80%;
+    background-color: white;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+div#container_m2 {
+    position: absolute;
+    right: 10%;
+    top: 3px;
+    height: 250px;
+    width: 80%;
+    background-color: white;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+
+}
+
+div#container_down0 {
+    position: absolute;
+    top: 3px;
+    right: 10%;
+    height: 105px;
+    width:80%;
+    background-color: white;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+div#container_down1 {
+    position: absolute;
+    right: 10%;
+    top: 3px;
+    height: 340px;
+    width: 80%;
+    background-color: white;
+    overflow: scroll;
+    scroll-behavior: smooth;
+
+}
+
+
+
+
+
+
+.bar-input {
+    cursor: pointer;
+}
+
+.bar-label {
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+.onoffswitch {
+    position: relative; width: 90%;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; overflow: hidden; cursor: pointer;
+    border: 2px solid #999999; border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; width: 200%; margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; float: left; width: 50%; height: 15px; padding: 0; line-height: 15px;
+    font-size: 7px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:after {
+    content: "ON";
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #EEEEEE; color: #00BFFF;
+}
+.onoffswitch-inner:before {
+    content: "OFF";
+    padding-left: 3px;
+    background-color: #EEEEEE; color: #999999;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+}
+
+
+
+div.tooltip { /* 툴팁 스타일 */
+    position: absolute;
+    text-align: left;
+    padding: 5px;
+    font-size: 17px;
+    background-color: #efefef;
+    border: solid 1px #cecece;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 #dfdfdf;
+    pointer-events: none;
+}
+
+div.tooltip2 { /* 툴팁 스타일 */
+    position: absolute;
+    text-align: left;
+    padding: 5px;
+    font-size: 14px;
+    background-color: #efefef;
+    border: solid 1px #cecece;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 #dfdfdf;
+    pointer-events: none;
+}
+
+
+
+/* 일반적인 버튼의 상황 */
+.ct-btn.white,
+.ct-btn.white:link,
+.ct-btn.white:visited {
+    color: #666;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #c6c6c6;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    background: #fff;
+    background: linear-gradient(to bottom, #ffffff 40%, #f6f6f6 100%);
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6', GradientType=0 );/*IE*/
+}
+
+/* 마우스오버 */
+.ct-btn.white:focus,
+.ct-btn.white:hover {
+    cursor: pointer;
+    background: #9B9998;
+    background: linear-gradient(to bottom, #fafafa 0%, #9B9998 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#ffffff', GradientType=0 );/*IE*/
+}
+
+/* 눌려졌거나 선택 된 상황 */
+.ct-btn.white:active,
+.ct-btn.white.active {
+    cursor: pointer;
+    text-shadow: 0 1px 0px #fff;
+    border-color: #ebebeb;
+    border-top-color: #ddd;
+    background: #9B9998;
+    box-shadow: none
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 6px 7px;
+    margin: 0px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
