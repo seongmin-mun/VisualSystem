@@ -1,0 +1,704 @@
+<!DOCTYPE html> 
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="processing.js"></script>
+<meta charset="UTF-8">
+<title>Analysis of Corporate Twitter Usage Types and Influence Visualization on Key Players</title>
+<meta name="description" content="A description of your website">
+<meta name="keywords" content="keyword1, keyword2, keyword3">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<script> 
+var g_valuse = new Array();
+var eleaspsd = 0;
+var animationTime = 2;
+var totalRadi = 0;
+var additionalRate = 0;
+var multiply = 1.3;
+var bacgroundRadious = 200;
+var selectedIndex = -1;
+var selectPriority = 0;
+var selectAnimationTime = 1.5;
+var selectAnimationCur = 0; 
+var mouseSelect = false;
+var selectX = 0;
+var selectY = 0;
+var needDescImgLoad = false;
+var typeName = "";
+var linkLoading = 0;
+</script>
+<body>
+
+<div id="wrapper"> 
+
+  <div id="header"> 
+
+	<div class="top_banner">
+      <h1>Analysis of Corporate Twitter Usage Types and</h1>
+	  <h1>Influence Visualization on Key Players</h1> 
+    </div>
+	 
+  </div>
+  
+  <div id="page_content">
+
+    <!--<div class="navigation">
+      <ul>
+        <li>Sang-eun Park</li>
+        <li>Eun-jung Jo</li>
+        <li>Hyung-jung Lee</li>
+        <li>Seongmin Mun</li>
+        <li>Kyung-won Lee</li>
+      </ul>
+    </div>-->
+
+    <div class="left_side_bar"> 
+
+      <div class="col_1">
+        <div class="box">
+          <ul class ="menu">
+            <li><a href="#">Abstract</a></li>
+            <li><a href="#">Ratio visualization classified by twitter usage types</a></li>
+			<br>
+			<li><a href="#">SKT World</a></li>
+			<li><a href="#">Olleh KT</a></li>
+			<li><a href="#">LG U Plus</a></li>
+			<br>
+			<li><a href="#">Lotte Department store</a></li>
+			<li><a href="#">Sinsegae Department store</a></li>
+			<li><a href="#">Hyundai Department store</a></li>
+			<br>			
+			<li><a href="#">Hyundai Card</a></li>
+            <li><a href="#">Domino's Pizza</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right_section">
+      <div class="common_content">
+        <h2 class="content_name">Abstract</h2>
+        <hr>
+		<div class="dynamic_contents">
+        <p>This research aims to analyze Twitter marketing strategies by focusing on tweets posted by four corporate Twitter accounts. We classified the posts by the four accounts into six types: daily life, general PR, event, professional information, customer service and retweet. Twitter usage types are compared through ANOVA and cluster analysis. In-depth analyses were conducted by selecting an additional four companies to compare the influence structure between companies in the same industry. We aimed to identify key players using an influence formula and gave a clear sense by visualization. The study reveals that most enterprises apply customer service for customer communication, and followers are most reactive to event-type posts. The visualization of key players’ influence, however, fully reflects the usage types and intentions of enterprises. The study is expected to provide valuable insights for enterprises to apply effective social media marketing strategies that focus more on key-player.</p>
+		</div>
+		<canvas id="processing-canvas"> </canvas>
+      </div>
+    </div>
+
+    <div class="clear"></div>
+    
+    <!--start footer from here-->
+    <div id="footer">Copyright &copy; 2014. idlab<br>
+    
+  </div>
+
+</div>
+
+
+
+<script>
+ $(document).ready(function() 
+ {
+    $('ul.menu li').click(function(e) 
+    { 
+	 var text = $(this).text();
+	 
+	$('.content_name').text(text);
+	
+	var contents = "";
+	
+	 if (text == "Abstract")
+	{
+		contents = "This study classified tweets posted by four corporate twitter accounts according to the contents in order to analyze mar-keting strategies. Moreover, key findings include usage types of corporation and followed key players. further findings were made by investigating four more corporate accounts for the comparison between same line of business. Usage type was classified as six types: daily life, general publicity, event, professional information, customize and retweet. We aimed to find key players with influence formula and give a clear sense by visualization. The study reveals that most corporation apply cus-tomize types for customer communication, and followers show the most active reaction on event type of tweets. It is thus essential to adopt customized strate-gies such as building familiar relationship with key players, or maintain-ing/reinforcing the influence of key players. This research is expected to pro-vi-de valuable insights for corporation to apply effective and specific social me-dia marketing strategies.";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('aa');
+	}
+	else if (text == "Ratio visualization classified by twitter usage types")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/전체.png',width:"620",height:"620"}));
+		
+		loadData('aa');
+	}
+	else if (text == "Olleh KT")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('OllehKT');
+	}
+	else if (text == "Domino's Pizza")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('DominoPizza');
+	}
+	else if (text == "Lotte Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('LotteDepartmentstore');
+	}
+	else if (text == "Hyundai Card")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('HyundaiCard');
+	}
+	else if (text == "LG U Plus")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('LGUPlus');
+	}
+	else if (text == "SKT World")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('SKTworld');
+	}
+	else if (text == "Sinsegae Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('SinsegaeDepartmentstore');
+	
+	}
+	else if (text == "Hyundai Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		
+		loadData('HyundaiDepartmentstore');
+		
+	}
+	 
+	
+	 
+    });
+ });
+ 
+ function loadData(type)
+ {
+	typeName = type;
+    var data = {
+      "type": type
+    };
+    data = $(this).serialize() + "&" + $.param(data);
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "http://202.30.24.167/twitterEffect/ajax.php", 
+      data: data,
+      success: function(data) {
+			g_valuse = [];
+			eleaspsd = 0;
+			additionalRate = 0;
+			totalRadi = 0;
+			selectedIndex = -1;
+			needDescImgLoad = true;
+			
+			for(var i = 0 ; i < data.length ; ++i)
+			{
+				//반지름,색깔
+				var radious = 0;
+				var dist = 0;
+				var fontSize = 0;
+				
+				if(data[i].fdInfulence < 10)
+				{
+					radious = 1.74;
+				}
+				else if(data[i].fdInfulence  >= 10 && data[i].fdInfulence < 50)
+				{
+					radious = 2.42;		
+				}
+				else if(data[i].fdInfulence >= 50 && data[i].fdInfulence < 100)
+				{
+					radious = 7.36;		
+				}
+				else if(data[i].fdInfulence >= 100 && data[i].fdInfulence < 500)
+				{
+					radious = 12.86;	
+				}
+				else if(data[i].fdInfulence >= 500)
+				{
+					radious = 21.98;																
+					fontSize = 12;
+				}
+				
+				if(data[i].fdRefCount  >= 0 && data[i].fdRefCount <= 10)
+				{
+					dist = (bacgroundRadious + ( -10 * (data[i].fdRefCount)));
+					console.log(dist + ' ' + data[i].fdRefCount + ' ' + bacgroundRadious);
+				}
+				else if(data[i].fdRefCount  > 10 && data[i].fdRefCount <= 50)
+				{
+					dist = ((bacgroundRadious/2) + ((-1 * data[i].fdRefCount)));
+				}
+				else if(data[i].fdRefCount > 50 && data[i].fdRefCount <= 100)
+				{
+					dist = (((bacgroundRadious/4) - (data[i].fdRefCount * 0.25)));
+				}
+				
+				if(dist> bacgroundRadious )
+				{
+					dist = bacgroundRadious;
+				}
+				
+				dist = dist * multiply;
+							
+				g_valuse.push({ fdName: data[i].fdName
+				, fdFollowerCount : data[i].fdFollowerCount
+				, fdAdvertiser : data[i].fdAdvertiser
+				, fdRefCount : data[i].fdRefCount 
+				, fdWriteCount : data[i].fdWriteCount
+				, fdFollowingCount : data[i].fdFollowingCount
+				, fdInfulence : data[i].fdInfulence
+				, fdType : data[i].fdType
+				, fdRadious : radious
+				, fdFontSize : fontSize
+				, fdDist : dist});
+				
+				
+			}
+			
+			for (var i = 0; i < g_valuse.length; ++i) {
+				totalRadi+= g_valuse[i].fdRadious;	
+			}
+				
+			if(totalRadi != 0)
+			{
+				additionalRate = 360/totalRadi;
+			}
+			
+	  },
+	  error: function() {
+          alert('Error occurs!');
+      }
+    });
+ }
+
+</script>
+
+ <script type="text/processing" data-processing-target="processing-canvas">
+ 
+ var screenWidth  = 660;
+ var screenHeight = 660;
+
+ 
+ PImage circle;
+ PImage distance;
+ PImage type;
+ PImage box;
+ PImage boxBig;
+ PImage descImg;
+ void setup() {
+    size(screenWidth, screenHeight);
+    background(255,255,255,255);
+	
+	distance = loadImage("http://202.30.24.167//twitterEffect/images/distance.png");
+	type   = loadImage("http://202.30.24.167//twitterEffect/images/type.png");
+	circle = loadImage("http://202.30.24.167//twitterEffect/images/circle.png");
+	box = loadImage("http://202.30.24.167//twitterEffect/images/box.png");
+	boxBig = loadImage("http://202.30.24.167//twitterEffect/images/boxBig.png");
+	descImg = null;
+ }
+ void draw()
+ {
+    background(255,255,255,255);
+	
+	
+	if(g_valuse.length <= 0) return;
+	
+	fill(0);
+	ellipse(screenWidth/2,screenHeight/2,bacgroundRadious * 2 * multiply,bacgroundRadious * 2 * multiply);
+	
+	stroke(255, 255, 255, 100);
+	fill(0, 0, 0, 0);
+	
+	if(needDescImgLoad && typeName != "")
+	{
+		descImg = loadImage("http://202.30.24.167//twitterEffect/images/"+typeName+".png");
+		needDescImgLoad  = false;
+	}
+	
+	int j = 0;
+	
+	for (int i = 0; i < 200; i += 10) {
+
+		if(i == 200)
+		{
+			fill(255, 255, 255, 100);
+			textFont(createFont("sans-serif",16));
+			text(0, screenWidth / 2, screenHeight / 2 - (i * multiply));
+		}
+		else if(i == 150)
+		{
+			fill(255, 255, 255, 100);
+			textFont(createFont("sans-serif",16));
+			text(5, screenWidth / 2, screenHeight / 2 - (i * multiply));				
+		}
+		else if(i == 100)
+		{
+			fill(255, 255, 255, 100);
+			textFont(createFont("sans-serif",16));
+			text(10, screenWidth / 2, screenHeight / 2 - (i * multiply));								
+		}			
+		else if(i == 50)
+		{
+			fill(255, 255, 255, 100);
+			textFont(createFont("sans-serif",16));
+			text(50, screenWidth / 2, screenHeight / 2 - (i * multiply));	
+		}
+		else if(i == 0)
+		{
+			fill(255, 255, 255, 100);
+			textFont(createFont("sans-serif",16));
+			text(200, screenWidth / 2, screenHeight / 2 - (i * multiply));			
+		}
+		if (j % 5 == 0) {
+			
+			strokeWeight(2);
+			fill(0, 0, 0, 0);
+		} 
+		else 
+		{
+			strokeWeight(1);
+		}
+		
+		ellipse(screenWidth / 2, screenHeight / 2, i * 2 * multiply, i * 2 * multiply);
+		j++;
+	}
+	
+		image(circle, 15,screenHeight - circle.height);
+		image(distance, screenWidth - distance.width, screenHeight - distance.height - 20);
+		image(type, screenWidth - type.width, 0);
+		
+		if(descImg!=null)
+		{
+			image(descImg,0, -17);
+		}
+		
+		var angle = 0;
+		
+		
+		
+		if (mousePressed && (mouseButton == LEFT)) {
+			CollisionCheck(true);
+		}
+		else
+		{
+			if(mouseSelect == false)
+			{
+				selectedIndex = -1;
+				CollisionCheck(false);
+			}
+		}
+		
+		
+		var angle = 0;
+		for(var i = 0; i < g_valuse.length ; ++i)
+		{
+			var model = g_valuse[i];
+			
+			var x =  Math.cos(angle * (3.14 /180));
+			var y =  Math.sin(angle * (3.14 /180));
+			
+			if(eleaspsd < animationTime)
+			{
+				x = x * (eleaspsd/animationTime);
+				y = y * (eleaspsd/animationTime);
+			}
+			
+			angle = angle + (additionalRate * model.fdRadious);
+			
+			strokeWeight(0);
+			
+			
+			
+			var alpha = 255;
+			
+			if(selectedIndex != -1)
+			{
+				if(i == selectedIndex)
+				{
+					alpha = 255;
+					
+					stroke(255,0,0,255);
+					strokeWeight(2);
+					fill(0, 0, 0, 0);			
+					
+					var selectedRadious = model.fdRadious * ( 1 + 0.3 * ( selectAnimationCur / selectAnimationTime) );
+					
+					ellipse(screenWidth / 2 +  model.fdDist * x, screenHeight / 2 + model.fdDist * y,
+							selectedRadious *2 * multiply , selectedRadious *2 * multiply);
+							
+					if(selectAnimationCur > selectAnimationTime)
+					{
+						selectAnimationCur = 0;
+					}
+					
+					stroke(0,0,0,0);
+					strokeWeight(0);
+					fill(0, 0, 0, 0);	
+				}
+				else
+				{
+					alpha = 150;
+				}
+			}
+			
+			
+			if(model.fdType == "Customize")
+			{
+				fill(140, 173, 56, alpha);	
+			}
+			else if(model.fdType == "Daily life")
+			{
+				fill(143, 57, 143, alpha);
+			}
+			else if(model.fdType == "Event")
+			{
+				fill(171, 52, 44, alpha);
+			}
+			else if(model.fdType == "General publicity")
+			{
+				fill(217, 212, 67, alpha);
+			}
+			else if(model.fdType == "Professional information")
+			{
+				fill(62, 157, 191, alpha);
+			}
+			else if(model.fdType == "Retweet")
+			{
+				fill(140, 173, 56, alpha);
+			}
+			
+			stroke(0,0,0,0);
+			strokeWeight(0);
+			ellipse(screenWidth / 2 +  model.fdDist * x, screenHeight / 2 + model.fdDist * y,
+							model.fdRadious *2 * multiply, model.fdRadious *2 * multiply);
+													
+		}
+		
+		angle = 0;
+		if(eleaspsd > animationTime)
+		{
+			for(var i = 0; i < g_valuse.length ; ++i)
+			{
+				var model = g_valuse[i];
+			
+				var x =  Math.cos(angle * (3.14 /180));
+				var y =  Math.sin(angle * (3.14 /180));
+			
+				angle = angle + (additionalRate * model.fdRadious);
+			
+				if(model.fdFontSize > 0)
+				{
+					fill(255, 255, 255, 255);
+					textFont(createFont("sans-serif",model.m_fFontSize));
+					text(model.fdName,screenWidth / 2 + model.fdDist * x,  screenHeight / 2 + model.fdDist * y);
+				}
+			}
+		}
+		
+
+		
+		if(selectedIndex != -1 && g_valuse.length > selectedIndex)
+		{
+			selectAnimationCur += frameRate/1000;
+			drawPopup();
+		}
+		else
+		{
+			selectAnimationCur = 0;
+		}
+		
+		
+	
+		eleaspsd += frameRate/1000;
+		linkLoading += frameRate/1000;
+		
+ }
+ 
+ void drawPopup()
+ {
+	var model = g_valuse[selectedIndex];
+	
+	var mx,my;
+	
+	if(mouseSelect == true)
+	{
+		mx = selectX;
+		my = selectY;
+	}
+	else
+	{
+		mx = mouseX;
+		my = mouseY;
+	}
+	fill(255, 255, 255, 200);
+	
+	if(mx + box.width > screenWidth)
+	{
+		mx -= box.width;
+	}
+	
+	if(my + box.height > screenHeight)
+	{
+		my -= box.height;
+	}
+	
+	
+	tint(255,255,255,200);
+	if(model.fdType == "Professional information")
+	{
+		image(boxBig, mx,my);	
+	}
+	else
+	{
+		
+		image(box, mx,my);
+		
+	}
+	noTint();
+	
+	
+	fill(0, 0, 0, 255);
+	
+	textFont(createFont("sans-serif",11));
+	
+	mx += 70;
+	var textHeightSpan = 14;
+	my += textHeightSpan;
+	text(model.fdName,mx,my);
+	my += textHeightSpan;
+	text(model.fdType,mx,my);	
+	my += textHeightSpan;
+	text(model.fdWriteCount,mx,my);
+	my += textHeightSpan;
+	text(+model.fdRefCount,mx,my);
+	my += textHeightSpan;
+	text(model.fdFollowerCount,mx,my);
+	my += textHeightSpan;
+	text(model.fdFollowingCount,mx,my);
+	my += textHeightSpan;
+	text(model.fdInfulence,mx,my);	
+ }
+ 
+ void mousePressed() { 
+
+ 	
+	if(descImg != null && typeName != "")
+	{
+		if( 0 < mouseX  && descImg.width > mouseX && descImg.height > mouseY && mouseY > 0 && mousePressed )
+		{
+			if(typeName=="DominoPizza")
+			{
+				link("http://www.dominos.com/","_new"); 
+			}
+			else if(typeName=="HyundaiCard")
+			{
+				link("https://card.hyundaicard.com/","_new"); 
+			}
+			else if(typeName=="HyundaiDepartmentstore")
+			{
+				link("http://www.ehyundai.com/lang/en/index.do","_new"); 
+			}
+			else if(typeName=="LGUPlus")
+			{
+				link("http://www.uplus.co.kr/com/main/pemain/PeMain.hpi","_new"); 
+			}
+			else if(typeName=="LotteDepartmentstore")
+			{
+				link("http://store.lotteshopping.com/handler/AmbassaMain-StartEn","_new"); 
+			}
+			else if(typeName=="OllehKT")
+			{
+				link("http://www.kt.com/eng/main.jsp","_new"); 
+			}
+			else if(typeName=="SinsegaeDepartmentstore")
+			{
+				link("http://english.shinsegae.com/english/main.asp","_new"); 
+			}
+			else if(typeName=="SKTworld")
+			{
+				link("http://www.tworld.co.kr/eng/","_new"); 
+			}
+		}
+	}
+
+}
+ 
+ void CollisionCheck(isMouseSelect)
+ {
+	cursor(ARROW);
+	selectPriority = 1000;
+	var ret = false;
+	var angle = 0;
+	for(var i = 0; i < g_valuse.length ; ++i)
+	{
+		var model = g_valuse[i];
+			
+		var x =  Math.cos(angle * (3.14 /180));
+		var y =  Math.sin(angle * (3.14 /180));
+		
+		angle = angle + (additionalRate * model.fdRadious);
+		
+		
+		if(screenWidth / 2 + model.fdDist * x + model.fdRadious * multiply > mouseX 
+				&& screenWidth / 2 + model.fdDist * x - model.fdRadious * multiply < mouseX
+				&& screenHeight / 2 + model.fdDist * y + model.fdRadious * multiply > mouseY
+				&& screenHeight / 2 + model.fdDist * y - model.fdRadious * multiply < mouseY)
+		{
+			if(selectPriority > model.fdRadious )
+			{
+				selectedIndex = i;
+				selectPriority = model.fdRadious;
+				ret = true;
+				cursor(HAND);
+				if(isMouseSelect == true)
+				{
+				  selectX = mouseX;
+				  selectY = mouseY;
+				}
+			}
+		}	
+	}
+	if(ret == true && isMouseSelect == true)
+	{
+	  mouseSelect = true;
+	}
+	else
+	{
+	  mouseSelect = false;
+	  if(ret == false)
+	  {
+		selectedIndex = -1;
+	  }
+	}
+	
+	if(descImg != null && typeName != "")
+	{
+		if( 0 < mouseX  && descImg.width > mouseX && descImg.height > mouseY && mouseY > 0  )
+		{
+			cursor(HAND);
+		}
+	}
+
+ }
+ </script>
+
+</body></html>

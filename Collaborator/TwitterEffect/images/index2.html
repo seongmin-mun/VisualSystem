@@ -1,0 +1,184 @@
+<html>
+
+</html><!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+<meta charset="UTF-8">
+<title>Analysis of Corporate Twitter Usage Types and Influence Visualization on Key Players</title>
+<meta name="description" content="A description of your website">
+<meta name="keywords" content="keyword1, keyword2, keyword3">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div id="wrapper"> 
+
+  <div id="header"> 
+
+	<div class="top_banner">
+      <h1>Analysis of Corporate Twitter Usage Types and</h1>
+	  <h1>Influence Visualization on Key Players</h1> 
+    </div>
+	
+	<div class="top_right_banner">
+	 <h2>Department of Digital Media,</h2>
+	 <h2>Ajou University,</h2>
+	 <h2>Republic of Korea.</h2>
+	</div>
+ 
+  </div>
+  
+  <div id="page_content">
+
+    <div class="navigation">
+      <ul>
+        <li>Sang-eun Park</li>
+        <li>Eun-jung Jo</li>
+        <li>Sung-min Moon </li>
+        <li>Hyung-jung Lee</li>
+        <li>Kyung-won Lee</li>
+      </ul>
+    </div>
+
+    <div class="left_side_bar"> 
+
+      <div class="col_1">
+        <div class="box">
+          <ul class ="menu">
+            <li><a href="#">Abstract</a></li>
+            <li><a href="#">Ratio visualization classified by twitter usage types</a></li>
+            <li><a href="#">Olleh KT</a></li>
+            <li><a href="#">Domino's Pizza</a></li>
+            <li><a href="#">Lotte Department store</a></li>
+            <li><a href="#">Hyundai Card</a></li>
+            <li><a href="#">LG U Plus</a></li>
+			<li><a href="#">SKT World</a></li>
+			<li><a href="#">Sinsegae Department store</a></li>
+			<li><a href="#">Hyundai Department store</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="right_section">
+      <div class="common_content">
+        <h2 class="content_name">Abstract</h2>
+        <hr>
+		<div class="dynamic_contents">
+        <p>This study classified tweets posted by four corporate twitter accounts according to the contents in order to analyze mar-keting strategies. Moreover, key findings include usage types of corporation and followed key players. further findings were made by investigating four more corporate accounts for the comparison between same line of business. Usage type was classified as six types: daily life, general publicity, event, professional information, customize and retweet. We aimed to find key players with influence formula and give a clear sense by visualization. The study reveals that most corporation apply cus-tomize types for customer communication, and followers show the most active reaction on event type of tweets. It is thus essential to adopt customized strate-gies such as building familiar relationship with key players, or maintain-ing/reinforcing the influence of key players. This research is expected to pro-vi-de valuable insights for corporation to apply effective and specific social me-dia marketing strategies.</p>
+		</div>
+		
+		<script type="text/javascript"
+		src="http://www.java.com/js/deployJava.js"></script>
+	<script type="text/javascript">
+	  /* <![CDATA[ */
+
+	  var attributes = { 
+            code: 'CTwitterEffectVisualize.class',
+            archive: 'test.jar , core.jar , poi-ooxml-schemas-3.8-20120326.jar , xmlbeans-2.3.0.jar , poi-3.8-20120326.jar , poi-scratchpad-3.8-20120326.jar, poi-ooxml-3.8-20120326.jar , dom4j-1.6.1.jar , poi-examples-3.8-20120326.jar , poi-excelant-3.8-20120326.jar  ',
+            width: 660, 
+            height: 660
+          };
+          var parameters = { };
+          var version = '1.5';
+          deployJava.runApplet(attributes, parameters, version);
+
+          /* ]]> */
+        </script>
+   
+      </div>
+    </div>
+
+    <div class="clear"></div>
+    
+    <!--start footer from here-->
+    <div id="footer">Copyright &copy; 2014. idlab<br>
+    
+  </div>
+
+</div>
+
+
+
+<script>
+ $(document).ready(function() 
+ {
+    $('ul.menu li').click(function(e) 
+    { 
+	 var text = $(this).text();
+	 
+	$('.content_name').text(text);
+	
+	var contents = "";
+	
+	 if (text == "Abstract")
+	{
+		contents = "This study classified tweets posted by four corporate twitter accounts according to the contents in order to analyze mar-keting strategies. Moreover, key findings include usage types of corporation and followed key players. further findings were made by investigating four more corporate accounts for the comparison between same line of business. Usage type was classified as six types: daily life, general publicity, event, professional information, customize and retweet. We aimed to find key players with influence formula and give a clear sense by visualization. The study reveals that most corporation apply cus-tomize types for customer communication, and followers show the most active reaction on event type of tweets. It is thus essential to adopt customized strate-gies such as building familiar relationship with key players, or maintain-ing/reinforcing the influence of key players. This research is expected to pro-vi-de valuable insights for corporation to apply effective and specific social me-dia marketing strategies.";
+		$('.dynamic_contents').text(contents);
+	}
+	else if (text == "Ratio visualization classified by twitter usage types")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/전체.png',width:"620",height:"620"}));
+	}
+	else if (text == "Olleh KT")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/올레.png',width:"620",height:"620"}));
+	}
+	else if (text == "Domino's Pizza")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/도미노피자.png',width:"620",height:"620"}));
+	}
+	else if (text == "Lotte Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/롯데백화점.png',width:"620",height:"620"}));
+	}
+	else if (text == "Hyundai Card")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/현대카드.png',width:"620",height:"620"}));
+	}
+	else if (text == "LG U Plus")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/lg유플러스.png',width:"620",height:"620"}));
+	}
+	else if (text == "SKT World")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/SKTworld.png',width:"620",height:"620"}));
+	}
+	else if (text == "Sinsegae Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/신세계백화점.png',width:"620",height:"620"}));
+	}
+	else if (text == "Hyundai Department store")
+	{
+		var contents ="";
+		$('.dynamic_contents').text(contents);
+		$('.dynamic_contents').prepend($('<img>',{id:'theImg',src:'./images/현대백화점.png',width:"620",height:"620"}));
+	}
+	 
+	
+	 
+    });
+ });
+
+</script>
+
+
+</body></html>

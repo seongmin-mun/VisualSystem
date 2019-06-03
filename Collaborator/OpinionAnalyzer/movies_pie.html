@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>movie polarity review similarity</title>
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <style>
+        @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+        html,body {
+           margin:0;padding:0;
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            font-family:'Nanum Gothic';
+        }
+        #canvas {
+            position:absolute;
+            left:260px;
+            display:block;
+            top:55px;
+            background-color:#eeeeee;
+            outline: 1px solid #ccc;
+        }
+        #infoPanel h1 {
+            padding:0;
+            margin:0 0 0 10px;
+            font-size:20px;
+        }
+        #infoPanel {
+            background-color:rgb(244,244,244);
+        }
+
+        #optionBox {
+            transition-property:height;
+            transition-duration:.5s;
+        }
+
+        #optionBox h4 {
+            padding:0;
+            margin:0;
+            font-size:14px;
+        }
+
+        .subOptionBox {
+            padding:10px;
+            border-top:1px solid #ccc;
+        }
+
+        .subOptionBox label {
+            font-size:12px;
+        }
+
+        .subOptionBox form {
+            margin:0;
+            padding:5px;
+        }
+
+        #polaritylegend li {
+            display:inline-block;
+            float:left;
+            width:22px;
+            height:10px;
+            outline:1px solid grey;
+            font-size:8px;
+        }
+
+        .propCanvas {
+           /* outline:1px solid #ccc;*/
+        }
+
+        button {
+            padding:5px;
+        }
+
+        #footer {
+            outline:1px solid #ccc;
+            width:100%;
+            height:20px;
+            top:100%;
+            margin-top:-20px;
+            background-color:#5d5d5d;
+            color:#fff;
+            position:absolute;
+        }
+
+        #property-container {
+            height:200px;
+            overflow-y:scroll;
+        }
+
+        .propTitle {
+            font-size:15px;
+            margin-top:10px;
+        }
+
+        .propBar {
+            position:relative;
+            height:15px;
+            font-size:12px;
+            margin-top:1px;
+            margin-left:10px;
+            margin-bottom:1px;
+            transition-delay:1s;
+            transition-property:width;
+            transition-duration:.3s;
+        }
+
+        .gauge {
+            position:relative;
+            width:100%;
+            height:100%;
+            animation-name:gauge;
+            animation-duration:2s;
+        }
+
+        .propName {
+            top:0;
+            position:absolute;
+            width:200px;
+        }
+
+        @keyframes gauge {
+            from {width:0%;}
+            to {width:100%;}
+        }
+
+        .propBarContainer {
+            width:200px;
+            height:70px;
+            overflow-y:scroll;
+            outline:1px solid #ccc;
+            margin-top:5px;
+            overflow-x:hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="header" style="width:100%; z-index:999; position:fixed; background-color:#5d5d5d; color:#fff; outline:1px solid #ccc;">
+    <h2 style="font-size:25px; font-weight:300; margin:10px; display:inline-block;">Opinion Analyzer</h2>
+    <div class="util-box" style="display:inline-block; float:right; margin-top:10px; margin-right:25px;">
+    </div>
+</div>
+<canvas id="canvas"></canvas>
+<div id="infoPanel" style="position:absolute; width:250px; top:55px; outline:1px solid #ccc;">
+    <canvas width="200" height="200" id="legends" style="margin:0 25px 0 25px;"></canvas>
+    <div id="node-name" style="text-align:center; min-width:2px; min-height:20px;"></div>
+    <div id="property-container" style="padding-left:22px; margin-top:20px; border-top:1px solid #ccc;">
+        <!--<canvas id="prop0" width="200" height="500" class="propCanvas"></canvas>-->
+    </div>
+</div>
+<div id="optionBox" style="display:block; position:absolute; left:270px; top:70px; height:40px; overflow:hidden; background-color:rgba(255,255,255,.5); outline:1px solid #ccc;">
+    <div style="width:250px; display:table;"><span style="padding:10px; display:block; float:left;">Options</span><button style="margin:8px; float:right;" onclick="openOptions()"><i class="fa fa-plus"></i></button></div>
+    <div class="subOptionBox">
+        <h4>Node Shape</h4>
+            <form>
+                <input type="radio" name="nodeShape" id="radio-circle-node" checked="checked" onclick="changeNodeShape(true)"><label for="radio-circle-node">Circle Node</label><br/>
+                <input type="radio" name="nodeShape" id="radio-polar-node" onclick="changeNodeShape(false)"><label for="radio-polar-node">Polar Chart Node</label>
+            </form>
+    </div>
+    <div class="subOptionBox">
+        <h4>Color Setting</h4>
+        <form>
+            <input type="radio" name="colorMode" id="radio-property-color" checked="checked" onclick="changePolarView(false)"><label for="radio-property-color">Set to Property Colors</label><br/>
+            <input type="radio" name="colorMode" id="radio-polarity-color" onclick="changePolarView(true)"><label for="radio-polarity-color">Set to Polarity Colors</label>
+        </form>
+    </div>
+    <div class="subOptionBox">
+        <input type="checkbox" id="checkbox-edge" checked="checked" onclick="showEdge()"> <label for="checkbox-edge" style="margin-right:20px;">Show Edges</label>
+        <input type="checkbox" id="checkbox-label" checked="checked" onclick="showNodeTitle()"> <label for="checkbox-label">Show Labels</label>
+    </div>
+</div>
+<div id="footer">
+
+</div>
+<script>
+var colorl = ['hsl(6,55%,','hsl(31,61%,','hsl(248,15%,','hsl(170,33%,','hsl(205,39%,','hsl(60,30%,'];
+var pcolor = ['#CC3D3D','#CC723D','#CCA63D','#C4B73B','#9FC93C','#47C83E'];
+pcolor = ['#fb8072','#fdb462','#bebada','#8dd3c7','#80b1d3','#ffffb3'];
+var dcolor = ['rgba(255,0,0,1)','rgba(255,0,0,.5)','rgba(255,0,0,.2)', 'rgba(71,200,62,.2)', 'rgba(71,200,62,.5)', 'rgba(71,200,62,1)'];
+const degree360 = Math.PI*2;
+var nodes = [];
+var canvas;
+var context;
+var cooling;
+var innerRadius = 1;
+var outerRadius = 50;
+var innerLineWidth = 50;
+var outerLineWidth = 5;
+var textCondition = 50;
+var edges = [];
+var polarityEdges = [];
+var polaritySimArray = [];
+var moviesSimArray = [];
+var mDown = false;
+var dragging = false;
+var beginOffsetX, beginOffsetY;
+var moveOffsetX = 0; var moveOffsetY = 0;
+var transitOffsetX = 0; var transitOffsetY = 0;
+var beforePositionX, beforePositionY;
+var data = null;
+var selectedMovie = null;
+var legendDrawTimer;
+var initLegend = true;
+var legendLoop = 0;
+var targetWidth = [0,0,0,0,0,0];
+var currWidth = [0,0,0,0,0,0];
+var numOfMovie = 0;
+var numOfProperty = 0;
+var sDegree = Math.PI/180;
+var viewNodeTitle = true;
+var isPcolor = true;
+var isReverse = false;
+var viewEdge = true;
+var isPolarview = false;
+var isNormalNode = true;
+var createBar = true;
+function updateLegends() {
+    document.querySelector("#node-name").innerHTML = "";
+    var legend = document.querySelector("#legends");
+    var ctx = legend.getContext('2d');
+    if (initLegend) {
+        ctx.lineWidth = 1;
+        legendLoop = 0;
+        currWidth = [0,0,0,0,0,0];
+    }
+    var i, r;
+    ctx.clearRect(0, 0, legend.clientWidth, legend.clientHeight);
+    var propMaxValue = 0;
+    var thisPositive, thisNegative, total;
+    if (selectedMovie !== null) {
+        for (i = 0; i < data[0].children.length; i++) {
+            total = selectedMovie.positive + selectedMovie.negative;
+            thisPositive = selectedMovie.children[i].positive;
+            thisNegative = selectedMovie.children[i].negative;
+            if (propMaxValue < ((thisPositive + thisNegative) / total)) {
+                propMaxValue = (thisPositive + thisNegative) / total;
+            }
+        }
+    }
+    ctx.strokeStyle = "white";
+
+    //var propCvs = document.querySelector("#prop0");
+    //var propCtx = propCvs.getContext('2d');
+    //propCtx.textBaseline ="top";
+    //propCtx.clearRect(0,0, propCvs.width, propCvs.height);
+    var bar = [];
+
+    for(i = 0; i < data[0].children.length; i++) {
+        if (selectedMovie === null) {
+            if(initLegend) targetWidth = [65,65,65,65,65,65];
+            ctx.lineWidth = currWidth[i];
+            if (isPolarview) {
+                if(isReverse) {
+                    ctx.fillStyle = "hsl(220,30%,80%)";
+                } else {
+                    ctx.fillStyle = "hsl(0,35%,80%)";
+                }
+            } else {
+                ctx.fillStyle = pcolor[i];
+            }
+        } else {
+            total = selectedMovie.positive + selectedMovie.negative;
+            thisPositive = selectedMovie.children[i].positive;
+            thisNegative = selectedMovie.children[i].negative;
+            if (initLegend){
+                targetWidth[i] = 80*(((thisPositive + thisNegative) / total) / propMaxValue);
+                if(targetWidth[i]<= 0) targetWidth[i] = 1;
+            }
+            currWidth[i] += targetWidth[i]/20;
+        }
+
+        var beginRad = Math.PI/180;
+        var endRad = 0;
+        var motherWidth = currWidth[i];
+        var rot;
+        if (selectedMovie !== null) {
+            document.querySelector("#node-name").innerHTML = selectedMovie.name;
+            var dep2 = selectedMovie.children[i].children;
+            console.log("[1단계]"+selectedMovie.children[i].name+":"+(thisPositive + thisNegative) / total);
+            var lw = 0;
+            for (r = 0; r < dep2.length; r++) {
+                console.log("[2단계]"+dep2[r].name+":"+(dep2[r].positive+dep2[r].negative) / (thisPositive+thisNegative));
+                endRad = (degree360/numOfProperty) *((dep2[r].positive+dep2[r].negative) / (thisPositive+thisNegative) );
+                if (endRad < 0) {
+                    continue;
+                }
+                ctx.lineWidth = .2;
+                ctx.beginPath();
+                ctx.moveTo(legend.clientWidth/2, legend.clientHeight/2);
+                ctx.arc(legend.clientWidth/2, legend.clientHeight/2, motherWidth, (((degree360/numOfProperty)*(i+1))+beginRad), (((degree360/numOfProperty)*(i+1))+beginRad+endRad), false);
+                beginRad += endRad;
+                if (isPolarview) {
+//                    if (isReverse) {
+//                        ctx.fillStyle = "hsl(220,30%," + (80 - Math.floor(0.4 * (dep2[r].positive / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+//                    } else {
+//                        ctx.fillStyle = "hsl(0,35%," + (80 - Math.floor(0.4 * (dep2[r].negative / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+//                    }
+                    if (dep2[r].positive > dep2[r].negative) {
+                        ctx.fillStyle = "hsl(220,30%," + (100 - Math.floor(0.4 * (dep2[r].positive / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+                    } else {
+                        ctx.fillStyle = "hsl(0,35%," + (100 - Math.floor(0.4 * (dep2[r].negative / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+                    }
+                } else {
+                    if (isReverse)  {
+                        ctx.fillStyle = colorl[i] + (80 - Math.floor(0.4 * (dep2[r].positive / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+                    } else {
+                        ctx.fillStyle = colorl[i] + (80 - Math.floor(0.4 * (dep2[r].negative / (dep2[r].positive + dep2[r].negative) * 100)) ) + "%)";
+                    }
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+
+                lw = (dep2[r].positive+dep2[r].negative) / total;
+                //if (lw > .03) {
+                    bar.push([dep2[r].name, (dep2[r].positive+dep2[r].negative)/(thisPositive+thisNegative), ctx.fillStyle, lw, data[0].children[i].name]);
+                //}
+            }
+
+        } else {
+            ctx.beginPath();
+            ctx.moveTo(legend.clientWidth/2, legend.clientHeight/2);
+            ctx.arc(legend.clientWidth/2, legend.clientHeight/2, 80, (degree360/numOfProperty)*(i+1), (degree360/numOfProperty)*(i+2), false);
+            ctx.closePath();
+            ctx.fill();
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            dep2 = data[0].children[i].children;
+            for (r = 0; r < dep2.length; r++) {
+                bar.push([dep2[r].name, 1, ctx.fillStyle, 1, data[0].children[i].name]);
+            }
+        }
+    }
+
+    if(createBar) {
+        document.querySelector("#property-container").innerHTML = "";
+        createBar = false;
+        var propTitle = "";
+        var tel = null;
+        var validCnt = 0;
+        var el = null;
+        var propN = null;
+        var gauge = null;
+        for (var y = 0; y < bar.length; y++) {
+            r = (y+27)%bar.length;
+            if (propTitle !== bar[r][4]) {
+                propTitle = bar[r][4];
+                tel = document.createElement("div");
+                tel.setAttribute('class','propTitle');
+                tel.innerHTML = propTitle;
+                document.querySelector('#property-container').appendChild(tel);
+                tel = document.createElement("div");
+                tel.setAttribute('class','propBarContainer');
+                document.querySelector('#property-container').appendChild(tel);
+            }
+            if (bar[r][3] > .03) {
+              el = document.createElement("div");
+              el.setAttribute('class','propBar');
+              el.style.width = (160 * bar[r][1]) +"px";
+              tel.appendChild(el);
+                gauge = document.createElement("div");
+                gauge.setAttribute('class','gauge');
+                gauge.style.backgroundColor = bar[r][2];
+              el.appendChild(gauge);
+                propN = document.createElement("span");
+                propN.setAttribute('class','propName');
+                propN.innerHTML = bar[r][0];
+              el.appendChild(propN);
+            }
+        }
+    }
+
+
+    ctx.fillStyle = "#454545";
+    ctx.textBaseline = "middle";
+    ctx.font = "13px Nanum Gothic";
+    ctx.textAlign = "right";
+    for(i = 0; i < numOfProperty; i++){
+        ctx.save();
+        ctx.translate(legend.clientWidth/2, legend.clientHeight/2);
+        rot = ((degree360/numOfProperty) * (i+1)+1) - ((degree360/numOfProperty)/2);
+        if (rot > (degree360/4) && rot < (Math.PI + Math.PI/2)) {
+            ctx.rotate(rot + Math.PI);
+            ctx.fillText(data[0].children[i].name, -40, 0);
+        } else {
+            ctx.textAlign="left";
+            ctx.rotate(rot);
+            ctx.fillText(data[0].children[i].name, 40, 0);
+        }
+        ctx.restore();
+    }
+    legendLoop++;
+    if(initLegend) initLegend = false;
+    if (legendLoop === 20) {
+        initLegend = true;
+        legendLoop = 0;
+        return;
+    }
+    legendDrawTimer = setTimeout(updateLegends,1000/60);
+}
+
+window.addEventListener('load',function(){
+    canvas = document.querySelector("#canvas");
+    console.log(canvas.width = document.body.clientWidth - 270);
+    console.log(canvas.height = document.body.clientHeight - document.querySelector("#footer").clientHeight - 65);
+    document.querySelector('#property-container').style.height=(canvas.height-245)+"px";
+    context = canvas.getContext('2d');
+    cooling = canvas.width *.1;
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function(){
+        if (req.readyState == 4) {
+            if (req.status == 200) {
+                data = JSON.parse(req.responseText).movies;
+                numOfMovie = data.length;
+                numOfProperty = data[0].children.length;
+                updateLegends();
+                getSimilarityMatrix();
+                getPolarityMatrix();
+                initNodes();
+                makeEdge();
+                update();
+                document.addEventListener('mousedown', function(e){
+                    mDown = true;
+                    beginOffsetX = e.offsetX;
+                    beginOffsetY = e.offsetY;
+                },false);
+                document.addEventListener('mousemove', function(e){
+                   if (mDown) {
+                       dragging = true;
+                       moveOffsetX = e.offsetX - beginOffsetX;
+                       moveOffsetY = e.offsetY - beginOffsetY;
+                       draw();
+                   }
+                },false);
+                document.addEventListener('mouseup', function(e){
+                    if(dragging){
+                      mDown = false;
+                      dragging = false;
+                        transitOffsetX += moveOffsetX;
+                        transitOffsetY += moveOffsetY;
+                        moveOffsetX = 0;
+                        moveOffsetY = 0;
+                    } else {
+                        mDown = false;
+                    }
+                },false);
+                document.querySelector('#canvas').addEventListener('click',function(e){
+                    var node;
+                    var ex,ey;
+                    var i;
+                    //document.querySelector("#infoBox").style.display = "block";
+                    for (i = 0; i < nodes.length; i++) {
+                        node = nodes[i];
+                        ex = e.offsetX -( zoomXcalc(node.posX) + moveOffsetX + transitOffsetX );
+                        ey = e.offsetY -( zoomYcalc(node.posY) + moveOffsetY + transitOffsetY );
+                        er = Math.sqrt(ex * ex + ey * ey);
+                        if (er < node.r) {
+                            selectedMovie = data[i];
+                            //document.querySelector("#infoBox img").src = "poster/"+i+".jpg";
+                            createBar = true;
+                            updateLegends();
+                            draw();
+                            break;
+                        }
+                    }
+                    if (i === nodes.length) {
+                        selectedMovie = null;
+                        updateLegends();
+                        draw();
+                    }
+                },false);
+                document.querySelector('#canvas').addEventListener('wheel',function(e){
+                    if (e.deltaY < 0) {
+                        zoomin();
+                    } else {
+                        zoomout();
+                    }
+                    draw();
+                },false);
+            }
+        }
+    };
+    req.open("get","data_eng.json",false);
+    req.send();
+});
+
+var zoomLevel = 10;
+var zoomrate = 1;
+function zoomin() {
+    zoomLevel++;
+    if(zoomLevel > 40) {
+        zoomLevel = 40;
+        return;
+    }
+    zoomrate += 0.08;
+}
+
+function zoomout() {
+    zoomLevel--;
+    if(zoomLevel < 1) {
+        zoomLevel = 1;
+        return;
+    }
+    zoomrate -= 0.08;
+}
+
+function zoomXcalc(posX) {
+    return posX * zoomrate;
+}
+
+function zoomYcalc(posY) {
+    return posY * zoomrate;
+}
+
+function getSimilarityMatrix() {
+    for (var i = 0; i < numOfMovie; i++) {
+        //each Movies
+        var prop;
+        var a = [];
+        for (var x = 0; x < data[i].children.length; x++) {
+            prop = data[i].children[x];
+            a.push( (prop.positive + prop.negative) / (data[i].positive + data[i].negative) );
+        }
+
+        var sim = [];
+        for (var r = 0; r < data.length; r++) {
+            var result = 0;
+            var b = [];
+            for (var y = 0; y < numOfProperty; y++) {
+                prop = data[r].children[y];
+                b.push( (prop.positive + prop.negative) / (data[r].positive + data[r].negative) );
+            }
+            var aVector = 0;
+            var bVector = 0;
+            for (var z = 0; z < a.length; z++) {
+                aVector += a[z] * a[z];
+                bVector += b[z] * b[z];
+                result += (a[z] * b[z]);
+            }
+            aVector = Math.sqrt(aVector);
+            bVector = Math.sqrt(bVector);
+            result = Math.floor((result / (aVector * bVector)) * 100);
+            sim.push(result / 100);
+        }
+        moviesSimArray.push(sim);
+    }
+}
+
+function getPolarityMatrix() {
+    for (var i = 0; i < numOfMovie; i++) {
+        var prop;
+        var a =[];
+        for (var x = 0; x < numOfProperty; x++) {
+            prop = data[i].children[x];
+            //a.push( (prop.positive / prop.positive+prop.negative) );
+            a.push( (prop.negative / prop.positive+prop.negative) );
+        }
+
+        var sim = [];
+        for(var r = 0; r < numOfMovie; r++) {
+            var result = 0;
+            var b = [];
+            for (var y = 0; y < numOfProperty; y++) {
+                prop = data[r].children[y];
+               //b.push( (prop.positive / prop.positive+prop.negative) );
+                b.push( (prop.negative / prop.positive+prop.negative) );
+            }
+            var aVector = 0;
+            var bVector = 0;
+            for (var z = 0; z < a.length; z++) {
+                aVector += a[z] * a[z];
+                bVector += b[z] * b[z];
+                result += (a[z] * b[z]);
+            }
+            aVector = Math.sqrt(aVector);
+            bVector = Math.sqrt(bVector);
+            result = Math.floor((result /(aVector * bVector))*100);
+            sim.push(result/100);
+        }
+        polaritySimArray.push(sim);
+    }
+}
+
+function makeEdge() {
+    var i, r;
+    edges = [];
+    var origin;
+    var target;
+    for (i = 0; i < polaritySimArray.length; i++) {
+        origin = i;
+        edgenum = 0;
+        for (r = i+1; r < polaritySimArray[i].length; r++) {
+            target = r;
+            if (moviesSimArray[i][r] >= .95) {
+                    edges.push({origin: i, target: r, value: moviesSimArray[i][r]});
+                    edgenum++;
+                if (polaritySimArray[i][r] >= .9) {
+                    polarityEdges.push({origin:i, target: r});
+                }
+            }
+        }
+    }
+    console.log("num of pEdge :"+edges.length);
+}
+
+var propPoint = [];
+function initNodes() {
+    var max = 0;
+    var i, r;
+    var len = data.length;
+    for (i = 0; i < len; i++) {
+        if((data[i].positive + data[i].negative) > max) max = data[i].positive + data[i].negative;
+    }
+    for (i = 0; i < len; i++) {
+        r = 100 * ((data[i].positive + data[i].negative) / max) ;
+        if (r < 20) r = 20;
+        nodes.push(new function() {
+            this.name = data[i].name;
+            this.x = i*20;
+            this.y = 10;
+            this.dx = 0;
+            this.dy = 0;
+            this.posX = i*20;
+            this.posY = 10;
+            this.r = r;
+            this.active = true;
+        });
+    }
+
+    var ii = 0;
+    for (i = 0; i < 6; i++) {
+        ii = ((i+1)%6)-6/4;
+        propPoint.push(new function(){
+            this.name = "p"+i;
+           this.x = (canvas.width * .2) * Math.cos(2*Math.PI*ii/6) + canvas.width * .5;
+           this.y = (canvas.width * .2) * Math.sin(2*Math.PI*ii/6) + canvas.height * .5;
+        });
+    }
+}
+
+
+var focusValue = 0;
+draw = function() {
+    var x;
+    var y;
+    context.clearRect(0,0,canvas.width, canvas.height);
+    context.globalAlpha = 1;
+    if (selectedMovie !== null) {
+        for(i = 0; i < nodes.length; i++) {
+            nodes[i].active = false;
+        }
+    } else {
+        for(i = 0; i < nodes.length; i++) {
+            nodes[i].active = true;
+        }
+    }
+
+    var i, r,nd1,nd2;
+        for (i = 0; i < polarityEdges.length; i++) {
+            nd1 = nodes[polarityEdges[i].origin];
+            nd2 = nodes[polarityEdges[i].target];
+            if (selectedMovie !== null) {
+                if (selectedMovie.name === nd1.name || selectedMovie.name === nd2.name) {
+                    context.strokeStyle = "#BDBDBD";
+                    context.lineWidth = .1;
+                    nd1.active = true;
+                    nd2.active = true;
+                } else {
+                    context.strokeStyle = "#BDBDBD";
+                    context.lineWidth = .1;
+                }
+            }
+            if (viewEdge) {
+                context.strokeStyle = "#BDBDBD";
+                context.lineWidth = .1;
+                context.beginPath();
+                context.moveTo(zoomXcalc(nd1.posX) + moveOffsetX + transitOffsetX, zoomYcalc(nd1.posY) + moveOffsetY + transitOffsetY);
+                context.lineTo(zoomXcalc(nd2.posX) + moveOffsetX + transitOffsetX, zoomYcalc(nd2.posY) + moveOffsetY + transitOffsetY);
+                context.closePath();
+                context.stroke();
+            }
+        }
+        for (i = 0; i < edges.length; i++) {
+            nd1 = nodes[edges[i].origin];
+            nd2 = nodes[edges[i].target];
+            if (selectedMovie !== null) {
+                if (selectedMovie.name === nd1.name || selectedMovie.name === nd2.name) {
+                    context.strokeStyle = "#BDBDBD";
+                    context.lineWidth = .1;
+                    nd1.active = true;
+                    nd2.active = true;
+                } else {
+                    context.strokeStyle = "#BDBDBD";
+                    context.lineWidth = .1;
+                }
+            }
+            if (viewEdge) {
+                context.strokeStyle = "#BDBDBD";
+                context.lineWidth = .1;
+                context.beginPath();
+                context.moveTo(zoomXcalc(nd1.posX) + moveOffsetX + transitOffsetX, zoomYcalc(nd1.posY) + moveOffsetY + transitOffsetY);
+                context.lineTo(zoomXcalc(nd2.posX) + moveOffsetX + transitOffsetX, zoomYcalc(nd2.posY) + moveOffsetY + transitOffsetY);
+                context.closePath();
+                context.stroke();
+            }
+        }
+    for (i = 0; i < nodes.length; i++) {
+        focusValue = 0;
+        var isSelected = false;
+        if (selectedMovie !== null) {
+            if (selectedMovie.name === nodes[i].name){
+                isSelected = true;
+                nodes[i].active = true;
+            }
+        }
+        if (nodes[i].active) {
+            context.globalAlpha = 1;
+        } else {
+            context.globalAlpha = .2;
+        }
+        nodes[i].posX += (nodes[i].x - nodes[i].posX) / 25;
+        nodes[i].posY += (nodes[i].y - nodes[i].posY) / 25;
+        x = zoomXcalc(nodes[i].posX) + transitOffsetX + moveOffsetX;
+        y = zoomYcalc(nodes[i].posY) + transitOffsetY + moveOffsetY;
+        if (!isNormalNode) {
+            var beginRad = degree360/6;
+            var endRad = 0;
+            var radRange = 0;
+            var propRad = 0;
+            var propMaxValue = 0;
+            for (r = 0; r < data[i].children.length; r++) {
+                if (propMaxValue < (data[i].children[r].positive + data[i].children[r].negative)) {
+                    propMaxValue = (data[i].children[r].positive + data[i].children[r].negative);
+                }
+            }
+            for (r = 0; r < data[i].children.length; r++) {
+                var thisPositive = data[i].children[r].positive;
+                var thisNegative = data[i].children[r].negative;
+                radRange = (degree360 * ((thisPositive + thisNegative) / (data[i].positive + data[i].negative)));
+                var dep2 = data[i].children[r].children;
+                for (var v = 0; v < dep2.length; v++) {
+                    propRad = (degree360 / 6) / dep2.length;
+                    var lw = context.lineWidth;
+                    if (isPolarview) {
+                        if (dep2[v].positive > dep2[v].negative) {
+                            context.fillStyle = "hsl(220,30%," + (100 - Math.floor(0.4 * (dep2[v].positive / (dep2[v].positive + dep2[v].negative) * 100)) ) + "%)";
+                        } else {
+                            context.fillStyle = "hsl(0,35%," + (100 - Math.floor(0.4 * (dep2[v].negative / (dep2[v].negative+dep2[v].positive) * 100)) ) + "%)";
+                        }
+                    }
+                    else {
+                        if (isReverse) {
+                            context.fillStyle = colorl[r] + (80 - Math.floor(0.4 * (dep2[v].positive / (dep2[v].positive + dep2[v].negative) * 100)) ) + "%)";
+                        } else {
+                            context.fillStyle = colorl[r] + (80 - Math.floor(0.4 * (dep2[v].negative / (dep2[v].positive + dep2[v].negative) * 100)) ) + "%)";
+                        }
+                    }
+                    context.strokeStyle = "white";
+                    if (lw === 0) lw = 1;
+                    context.lineWidth = .1 * (zoomLevel/20);
+                    endRad = (degree360 / 6) * ((dep2[v].positive + dep2[v].negative) / (thisPositive + thisNegative));
+                    //endRad = propRad;
+                    context.beginPath();
+                    context.moveTo(x, y);
+                    var radius = nodes[i].r * (zoomLevel/20);
+                    context.arc(x, y, radius * ((thisPositive + thisNegative) / propMaxValue), beginRad, beginRad + endRad, false);
+                    context.closePath();
+                    beginRad += endRad;
+                    context.fill();
+                    context.lineWidth = 1;
+                    context.stroke();
+                }
+            }
+        } else {
+            if (isPolarview) {
+                if (data[i].positive >= data[i].negative) {
+                   context.fillStyle = "hsl(220,30%," + (100 - Math.floor(0.4 * (data[i].positive / (data[i].positive+data[i].negative) * 100)) ) + "%)";
+                } else {
+                   context.fillStyle = "hsl(0,35%," + (100 - Math.floor(0.4 * (data[i].negative / (data[i].negative+data[i].positive) * 100)) ) + "%)";
+                }
+            } else {
+                var maxPropVal = 0;
+                var maxPropIdx = 0;
+                for (r = 0; r < data[i].children.length; r++) {
+                    if (maxPropVal < (data[i].children[r].positive + data[i].children[r].negative)) {
+                        maxPropVal = (data[i].children[r].positive + data[i].children[r].negative);
+                        maxPropIdx = r;
+                    }
+                }
+                context.fillStyle = pcolor[maxPropIdx];
+            }
+            context.beginPath();
+            context.arc(x,y, (nodes[i].r/10)*(zoomLevel/5), 0, Math.PI*2);
+            context.closePath();
+            context.fill();
+            context.strokeStyle = "#454545";
+            context.stroke();
+        }
+    }
+    context.fillStyle = "#454545";
+    if (viewNodeTitle) {
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        for (i = 0; i < nodes.length; i++) {
+            if (nodes[i].active) context.globalAlpha = 1;
+            else context.globalAlpha = .2;
+            context.font = "lighter 12px Nanum Gothic";
+            if (nodes[i].r * (zoomLevel/20) > 50) context.font = "lighter 20px Nanum Gothic";
+            if (nodes[i].r * (zoomLevel/20) < 20) {
+                context.font = "0px Nanum Gothic";
+            }
+            if (selectedMovie != null) {
+                if (selectedMovie.name == nodes[i].name) {
+                    context.font = "bolder 12px Nanum Gothic";
+                    if (nodes[i].r * (zoomLevel/20) > 50) context.font = "bolder 20px Nanum Gothic";
+                }
+            }
+            x = zoomXcalc(nodes[i].posX) + transitOffsetX + moveOffsetX;
+            y = zoomYcalc(nodes[i].posY) + transitOffsetY + moveOffsetY;
+            context.fillText(nodes[i].name, x, y);
+        }
+    }
+};
+
+update = function() {
+    if(cooling < 0.0001) return;
+    var nd1, nd2;
+    var i,r;
+    var k = Math.sqrt(canvas.height*canvas.height / nodes.length);
+    //var k = 70;
+    var ex, ey, er;
+    aForce = function(er) {return er*er /k};
+    rForce = function(er) {return (k*k)/er};
+    for (i = 0; i < nodes.length; i++) {
+        nodes[i].dx = 0;
+        nodes[i].dy = 0;
+    }
+
+    //repulsive
+    for (i = 0; i < nodes.length-1; i++) {
+        nd1 = nodes[i];
+        for (r = i+1; r < nodes.length; r++){
+            nd2 = nodes[r];
+            ex = nd1.x - nd2.x;
+            ey = nd1.y - nd2.y;
+            er = Math.sqrt(ex*ex + ey*ey); //euclidean distance
+            if (er === 0) er = 0.0001;
+            fr = rForce(er);
+            nd1.dx += ex/er*fr;
+            nd1.dy += ey/er*fr;
+            nd2.dx -= ex/er*fr;
+            nd2.dy -= ey/er*fr;
+            if (er < (nd1.r + nd2.r)+20) {
+                nd1.dx += ex/er*fr;
+                nd1.dy += ey/er*fr;
+                nd2.dx -= ex/er*fr;
+                nd2.dy -= ey/er*fr;
+            }
+        }
+    }
+
+    //attractive
+    for(i = 0; i < edges.length; i++) {
+        nd1 = nodes[edges[i].origin];
+        nd2 = nodes[edges[i].target];
+        ex = nd1.x - nd2.x;
+        ey = nd1.y - nd2.y;
+        er = Math.sqrt(ex*ex + ey*ey);
+        if (er === 0) er = 0.0001;
+        fa = aForce(er);
+        nd1.dx -= ex/er*fa;
+        nd1.dy -= ey/er*fa;
+        nd2.dx += ex/er*fa;
+        nd2.dy += ey/er*fa;
+    }
+
+    for(i = 0; i < polarityEdges.length; i++) {
+        nd1 = nodes[polarityEdges[i].origin];
+        nd2 = nodes[polarityEdges[i].target];
+        ex = nd1.x - nd2.x;
+        ey = nd1.y - nd2.y;
+        er = Math.sqrt(ex*ex + ey*ey);
+        if (er === 0) er = 0.0001;
+        fa = aForce(er);
+        nd1.dx -= ex/er*fa;
+        nd1.dy -= ey/er*fa;
+        nd2.dx += ex/er*fa;
+        nd2.dy += ey/er*fa;
+    }
+
+    for (i=0; i < nodes.length; i++) {
+        var max = 0;
+        var mIdx = 0;
+        for (r=0; r < data[i].children.length; r++){
+            var dep2 = data[i].children[r];
+
+            if((dep2.positive + dep2.negative) > max){
+                max = dep2.positive+dep2.negative;
+                mIdx = (r+2)%6;
+            }
+        }
+        nd1 = propPoint[mIdx];
+        nd2 = nodes[i];
+        ex = nd1.x - nd2.x;
+        ey = nd1.y - nd2.y;
+        er = Math.sqrt(ex*ex + ey*ey);
+        if (er === 0) er = 0.0001;
+        fa = aForce(er);
+        nd2.dx += ex/er*fa*9;
+        nd2.dy += ey/er*fa*9;
+    }
+
+    //Central
+    for (i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+        ex = canvas.width/2 - node.x;
+        ey = canvas.height/2 - node.y;
+        er = Math.sqrt(ex*ex + ey*ey);
+        if (er === 0) er = 0.0001;
+        fa = aForce(er);
+        node.dx += ex/er*fa;
+        node.dy += ey/er*fa;
+    }
+
+    //apply
+    for (i = 0; i < nodes.length; i++) {
+        er = Math.sqrt(nodes[i].dx * nodes[i].dx + nodes[i].dy * nodes[i].dy);
+        nodes[i].x += nodes[i].dx / er * Math.min(er, cooling);
+        if(nodes[i].x < (nodes[i].r*2) ) nodes[i].x = (nodes[i].r*2);
+        if(nodes[i].x > (canvas.width - (nodes[i].r*2))) nodes[i].x = canvas.width -(nodes[i].r*2);
+        nodes[i].y += nodes[i].dy / er * Math.min(er, cooling);
+        if(nodes[i].y < (nodes[i].r*2)) nodes[i].y = (nodes[i].r*2);
+        if(nodes[i].y > (canvas.height - (nodes[i].r*2))) nodes[i].y = canvas.height - (nodes[i].r*2);
+    }
+    cooling = cooling *.95;
+    draw();
+    window.requestAFrame(update);
+};
+
+window.requestAFrame = (function () {
+    return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+                // if all else fails, use setTimeout
+            function (callback) {
+                return window.setTimeout(callback, 1000 / 60); // shoot for 60 fps
+            };
+})();
+
+function showNodeTitle() {
+    viewNodeTitle = !viewNodeTitle;
+    draw();
+    updateLegends();
+}
+
+function changeColorMode(bool) {
+    isReverse = bool;
+    draw();
+    updateLegends();
+}
+
+    function showEdge() {
+        viewEdge = !viewEdge;
+        draw();
+        updateLegends();
+    }
+
+    function changePolarView(b) {
+        isPolarview = b;
+        draw();
+        updateLegends();
+    }
+
+    function changeNodeShape(b) {
+        isNormalNode = b;
+        draw();
+        updateLegends();
+    }
+
+    var isOptionOpen = false;
+    function openOptions() {
+        if (isOptionOpen) {
+            document.querySelector('.fa.fa-minus').className = "fa fa-plus";
+            document.querySelector('#optionBox').style.height = "40px";
+        } else {
+            document.querySelector('.fa.fa-plus').className = "fa fa-minus";
+            document.querySelector('#optionBox').style.height = "270px";
+        }
+        isOptionOpen = !isOptionOpen;
+    }
+
+</script>
+</body>
+</html>
