@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+}
+
+#main {
+    width: 200px;
+    height: 200px;
+}
+
+svg path {
+    fill: none;
+    stroke: #444;
+    stroke-width: 2px;
+}
+
+svg marker path {
+    stroke: none;
+    fill: #000;
+}

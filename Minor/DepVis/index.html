@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="images/Logo.png" rel="shortcut icon">
+  <title>DepVis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="javascripts/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>DepVis; Visual Result of Dependency Parser</h2>
+  </br>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#modyco">MWCs_Parser</a></li>
+    <li><a data-toggle="tab" href="#stanford">Stanford_CoreNLP</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="modyco" class="tab-pane fade in active" >
+      <h3>MWCs_Parser</h3>
+      </br>
+      <p>This visual system made by <a href="http://www.modyco.fr/fr/" >MoDyCo</a> can recognize 'MWEs' in the sentence and show it as 'MWE'. Also you can see more details, <strong>if you click the text of 'MWE'.</strong></p>
+      <form name='color'>
+            <label class="bar-label" ;><input class="bar-input" type="radio" name="mode" id="class" value="class"> Color by Class </label>
+            <label class="bar-label" ;><input class="bar-input" type="radio" name="mode" id="details" value="details" checked> Color by Details </label>
+      </form>
+      <script>
+$(document).ready(function () {
+
+//데이터 불러오기
+textJSON = d3.json("data/sentence.json", function(error, Data) {
+//윈도우 넓이 계산
+var window_width = ($(window).width())*0.9
+
+//필요 데이터 받기
+var inputtext = Data.sentence;
+var inputtext_array = Data.morpheme;
+var inputtext_POS_array = Data.pos;
+var range = Data.range;
+var margin_left = (window_width*0.07);
+
+//품사 태그와 연결 색상 나열JJ, NN, DT, RP, RB, VB, WP, C, IN, TO, MWE, SYM
+var pos_property = ["CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS","MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS","RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB","MWE"];
+var pos_color = ["#c6a045","#c69244","#c68044","#c67e44","#c67144","#59d9e5","#44c6a3","#44c666","#64c644","#c6b244","#c67c44","#44a1c6","#448fc6","#447cc6","#446ac6","#827064","#775b57","#7544c6","#9144c6","#a144c6","#c144c6","#c644b4","#c6448f","#545d6d","#4a6867","#68524a","#ce2525","#c94e64","#ce4631","#ce3140","#af2d45","#c94e4e","#364aaf","#366aaf","#367caf","#368eaf","#c3ea44"];
+
+var pos_propertyClass = ["JJ", "NN", "DT", "RP", "RB", "VB", "WP", "C", "IN", "TO", "MWE", "SYM"];
+var pos_colorClass = ["#44c666","#448fc6","#c6b244","#7544c6","#c644b4", "#ce2525", "#775b57", "#c68044", "#59d9e5", "#0c7c10", "#c3ea44","#545d6d"];//초, 파, 노, 보, 자, 빨, 갈, 황, 하, 흑초, 형, 검회, 회 
+
+//문자들 나열
+var punc = ["'",":",",",".","?","<",">","/",";","{","}","[","]","|","+","=","-","_",")","(","*","&","^","%","$","#","@","!","~","`"]
+
+//디펜던시 연결사 태깅 택스트 높이 설정 및 SVG넓이 높이, 디펜던시, 어휘소, 품사 텍스트 위치 높이 설정
+var Dep_tag_height = range*0.4;
+var width = margin_left+(inputtext_array.length*range)
+    height = 500;
+    direction_height = 380;
+    inputtext_height = 425;
+    inputtext_POS_height = 445;
+
+//SVG지정, 시각화의 길이가 윈도우 넓이 보다 길면 SVG도 길어지고 아니면 윈도우의 넓이에 맞춘다.
+var svg = d3.select("#modyco").append("svg")
+    .attr("width", function () {if (width <= window_width) {
+                                        return window_width
+                                    } else {
+                                        return width
+                                    }})
+    .attr("height", height)
+
+//SVG넓이와 같은 라인 
+var valueline = svg.append("line")
+    .attr("x1", 0)
+    .attr("y1", 100)
+    .attr("x2", window_width)
+    .attr("y2", 100)
+    .style("stroke", "#ddd")
+    .attr("stroke-width",1);
+
+//인풋 텍스트를 출력
+svg.append("text")
+    .text("Target sentence : "+inputtext)
+    .attr("id", "Depvistitle")
+    .attr("x", 0)
+    .attr("y", 70)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "2em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+
+//디펜던시 그래프를 그려준다.
+for(var i = 0 ; i < Data.links.length; i++){
+    createDependency (Data.links[i].source,Data.links[i].target,Data.links[i].tag)
+}
+
+function drawlegendClass () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_propertyClass.length ; i++){
+    color_test((10+(i*25)),140,pos_propertyClass[i],pos_colorClass[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+function drawlegendDetails () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_property.length ; i++){
+    color_test((10+(i*25)),140,pos_property[i],pos_color[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+d3.selectAll(".bar-input").on("change", change);
+
+//transitionUigram();
+
+function change() {
+    if (this.value === "class") {
+      showPOSClass(inputtext_array,inputtext_POS_array);
+      drawlegendClass();
+    }
+    else if (this.value === "details") {
+      showPOSDetails(inputtext_array,inputtext_POS_array);
+      drawlegendDetails();
+    }
+}
+
+
+//품사, 어휘소, 루트에 대한 시각적 결과 출력
+//M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+showtext(inputtext_array,inputtext_POS_array);
+showPOSDetails(inputtext_array,inputtext_POS_array);
+createRoot(Data.root);
+drawlegendDetails();
+
+
+//품사, 어휘소에 대한 텍스트를 출력한다.
+function showtext (array_text,array_POS) {
+  for(var i = 0; i < array_text.length ; i++){
+    if(array_text[i].includes(" ")){
+         createtext_MWEs(margin_left+(i*range),inputtext_height,array_text[i]);
+    } else {
+        createtext(margin_left+(i*range),inputtext_height,array_text[i]);
+    }
+  }
+
+}
+
+function showPOSClass (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_classpos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+function showPOSDetails (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_detailspos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+//품사 텍스트 생성을 위한 함수
+function create_detailspos_text (datax,datay,text,classtext) {
+var color = "";
+for(var i = 0; i < pos_property.length; i++){
+    if(pos_property[i]==text){
+        color = pos_color[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+//품사 텍스트 생성을 위한 함수
+function create_classpos_text (datax,datay,text,classtext) {
+var color = "gray";
+for(var i = 0; i < pos_propertyClass.length; i++){
+    if(text.includes(pos_propertyClass[i])==true){
+        color = pos_colorClass[i];
+    }
+}
+
+
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+
+
+//복합 단어 어휘소 텍스트 생성을 위한 함수
+function createtext_MWEs (datax,datay,text) {
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .style("cursor", "default")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("font-size", "1.4em")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .attr("font-size", "1.3em")
+                    .style("cursor", "default")
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    .on("click", function () {
+        svg.selectAll("#Depvis").remove();
+        svg.selectAll("#Depvis_pos").remove();
+        svg.selectAll("#Depvistitle").remove();
+        update(class_name,svg);
+    })
+};
+
+
+
+//어휘소 텍스트 생성을 위한 함수
+function createtext (datax,datay,text) {
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+    };
+
+//루트 텍스트 출력을 위한 함수
+function createRoot(text) {
+var text_position = 0;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==text){
+        text_position = text_position + i;
+    }
+}
+var Root_position = (margin_left+(text_position*range));
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(" ", "_");
+}
+
+svg.append("text")
+    .text("Root")
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", Root_position)
+    .attr("y", inputtext_height-20)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "blue")//steelblue
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+};
+
+
+//디펜던시 그래프 생성을 위한 함수1
+function createDependency (source,target,tag) {
+var t_position = 0;
+var s_position = 0;
+var direction = 0;
+var target = target;
+var source = source;
+var tag = tag;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==target){
+        t_position = t_position + i;
+    }
+}
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==source){
+        s_position = s_position + i;
+    }
+}
+if(s_position<=t_position){
+    direction = direction + 1;
+}
+
+createlink(s_position,direction,t_position,tag,source,target);
+
+
+// <form>
+// <label class="bar-label" style="left: 1%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="unigram" checked> Uni-gram</label>
+// <label class="bar-label" style="left: 8%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="bigram"> Bi-gram</label>
+// </form>
+// d3.selectAll(".bar-input").on("change", change);
+
+// function change() {
+//     if (this.value == "unigram") {createlink_s(s_position,direction,t_position,tag,source,target);}
+//     else if (this.value == "bigram") {createlink_t(s_position,direction,t_position,tag,source,target);}
+// }
+
+};
+
+//디펜던시 그래프 생성을 위한 함수2
+function createlink (s_p,direction,t_p,tag,text_s,text_t) {
+
+var class_name = text_s;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+var start = (margin_left+(s_p*range));
+
+var end = (margin_left+(t_p*range))
+
+  var curve_path = "M"+start+","+direction_height+" A15,10 0 0,"+direction+" "+end+","+direction_height+"";//d", "M75,300 A125,125 0 0,1 325,300"
+
+  var tag_height = (Math.abs((start-end)))/range;
+
+
+  var marker = svg.append("defs").append("marker")
+      .attr({
+        'id': "arrowhead",
+        'refX': 0,
+        'refY': 2,
+        'markerWidth': 4,
+        'markerHeight': 4,
+        'orient': "auto"
+      });
+
+  marker.append("path")
+      .attr({
+        d: "M 0,0 V 4 L4,2 Z",
+        fill: "steelblue"
+      });
+
+var curve = svg.append("path") 
+            .attr("id", "Depvis")
+            .attr("class", class_name) 
+            .attr("d",curve_path)  
+            .attr("fill","white")  
+            .attr("stroke","steelblue")  
+            .attr("stroke-width",2)   
+            .attr("marker-end","url(#arrowhead)");  
+
+svg.append("text")
+    .text(tag)
+    .attr("id", "Depvis")
+    .attr("class", class_name) 
+    .attr("x", (start+end)/2)
+    .attr("y", direction_height-(Dep_tag_height*tag_height))
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+
+
+
+};
+// document.color.details.checked = true;
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function update (json,svg){
+
+document.color.details.checked = true;
+
+//데이터 불러오기
+textJSON = d3.json("data/"+json+".json", function(error, Data) {
+//윈도우 넓이 계산
+var window_width = $(window).width()
+
+//필요 데이터 받기
+var inputtext = Data.sentence;
+var inputtext_array = Data.morpheme;
+var inputtext_POS_array = Data.pos;
+var range = Data.range;
+var margin_left = (window_width*0.07);
+
+//품사 태그와 연결 색상 나열
+var pos_property = ["CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS","MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS","RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB","MWE"];
+var pos_color = ["#c6a045","#c69244","#c68044","#c67e44","#c67144","#59d9e5","#44c6a3","#44c666","#64c644","#c6b244","#c67c44","#44a1c6","#448fc6","#447cc6","#446ac6","#827064","#775b57","#7544c6","#9144c6","#a144c6","#c144c6","#c644b4","#c6448f","#545d6d","#4a6867","#68524a","#ce2525","#c94e64","#ce4631","#ce3140","#af2d45","#c94e4e","#364aaf","#366aaf","#367caf","#368eaf","#c3ea44"];
+
+var pos_propertyClass = ["JJ", "NN", "DT", "RP", "RB", "VB", "WP", "C", "IN", "TO", "MWE", "SYM"];
+var pos_colorClass = ["#44c666","#448fc6","#c6b244","#7544c6","#c644b4", "#ce2525", "#775b57", "#c68044", "#59d9e5", "#0c7c10", "#c3ea44","#545d6d"];//초, 파, 노, 보, 자, 빨, 갈, 황, 하, 흑초, 형, 검회, 회 
+
+//문자들 나열
+var punc = ["'",":",",",".","?","<",">","/",";","{","}","[","]","|","+","=","-","_",")","(","*","&","^","%","$","#","@","!","~","`"]
+
+//디펜던시 연결사 태깅 택스트 높이 설정 및 SVG넓이 높이, 디펜던시, 어휘소, 품사 텍스트 위치 높이 설정
+var Dep_tag_height = range*0.4;
+var width = margin_left+(inputtext_array.length*range)
+    height = 880;
+    direction_height = 380;
+    inputtext_height = 425;
+    inputtext_POS_height = 445;
+
+
+//리턴을 위한 버튼 생성  (10+(i*25)),140
+svg.append("image")
+    .attr("xlink:href", "./images/return.png")
+    .attr("id", "Depvisreturn")
+    .attr("x", 10)
+    .attr("y", 170)
+    .attr("width", 35)
+    .attr("height", 35)
+    .style("cursor", "default")
+    .attr("fill", "steelblue")
+    .on("mouseover", function () {
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("xlink:href", "./images/return_hover.png")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .style("cursor", "default")
+                    .attr("xlink:href", "./images/return.png")
+            })
+    .on("click", function () {
+        window.location.reload();
+    });
+    
+
+// svg.append("text")
+//     .text("Return")
+//     .attr("id", "Depvisreturn")
+//     .attr("x", 18)
+//     .attr("y", 195)
+//     .attr("font-family", "Open Sans")
+//     .attr("font-size", "1.5em")
+//     .attr("fill", "rgb(51,51,51)")
+//     .attr("font-weight", "bold")
+//     .attr("text-anchor", "start")
+//     .on("mouseover", function () {
+//                     d3.select(this)
+//                     .style("cursor", "pointer")
+//             })
+//     .on("mouseout", function () {
+//                     d3.select(this)
+//                     .style("cursor", "default")
+//             })
+//     .on("click", function () {
+//         window.location.reload();
+//     });
+
+//인풋 텍스트를 출력
+svg.append("text")
+    .text("Target MWEs : "+inputtext)
+    .attr("id", "Depvistitle")
+    .attr("x", 0)
+    .attr("y", 70)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "2em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+
+//디펜던시 그래프를 그려준다.
+for(var i = 0 ; i < Data.links.length; i++){
+    createDependency (Data.links[i].source,Data.links[i].target,Data.links[i].tag)
+}
+
+
+function drawlegendClass () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_propertyClass.length ; i++){
+    color_test((10+(i*25)),140,pos_propertyClass[i],pos_colorClass[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+function drawlegendDetails () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_property.length ; i++){
+    color_test((10+(i*25)),140,pos_property[i],pos_color[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+
+d3.selectAll(".bar-input").on("change", change);
+
+//transitionUigram();
+
+function change() {
+    if (this.value === "class") {
+      showPOSClass(inputtext_array,inputtext_POS_array);
+      drawlegendClass ()
+    }
+    else if (this.value === "details") {
+      showPOSDetails(inputtext_array,inputtext_POS_array);
+      drawlegendDetails ()
+    }
+}
+
+
+
+
+//품사, 어휘소, 루트에 대한 시각적 결과 출력
+//M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+showtext(inputtext_array,inputtext_POS_array);
+showPOSDetails(inputtext_array,inputtext_POS_array);
+createRoot(Data.root);
+drawlegendDetails();
+
+
+//품사, 어휘소에 대한 텍스트를 출력한다.
+function showtext (array_text,array_POS) {
+  for(var i = 0; i < array_text.length ; i++){
+    if(array_text[i].includes(" ")){
+         createtext_MWEs(margin_left+(i*range),inputtext_height,array_text[i]);
+    } else {
+        createtext(margin_left+(i*range),inputtext_height,array_text[i]);
+    }
+  }
+
+}
+
+function showPOSClass (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_classpos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+function showPOSDetails (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_detailspos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+//품사 텍스트 생성을 위한 함수
+function create_detailspos_text (datax,datay,text,classtext) {
+var color = "";
+for(var i = 0; i < pos_property.length; i++){
+    if(pos_property[i]==text){
+        color = pos_color[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+//품사 텍스트 생성을 위한 함수
+function create_classpos_text (datax,datay,text,classtext) {
+var color = "gray";
+for(var i = 0; i < pos_propertyClass.length; i++){
+    if(text.includes(pos_propertyClass[i])==true){
+        color = pos_colorClass[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+
+
+//복합 단어 어휘소 텍스트 생성을 위한 함수
+function createtext_MWEs (datax,datay,text) {
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .style("cursor", "default")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("font-size", "1.4em")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .attr("font-size", "1.3em")
+                    .style("cursor", "default")
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    .on("click", function () {
+        svg.selectAll("#Depvis").remove();
+        svg.selectAll("#Depvis_pos").remove();
+        svg.selectAll("#Depvistitle").remove();
+        update(class_name,svg);
+    })
+};
+
+
+
+//어휘소 텍스트 생성을 위한 함수
+function createtext (datax,datay,text) {
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+    };
+
+//루트 텍스트 출력을 위한 함수
+function createRoot(text) {
+var text_position = 0;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==text){
+            text_position = text_position + i;
+    }
+}
+var Root_position = (margin_left+(text_position*range));
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(" ", "_");
+}
+
+svg.append("text")
+    .text("Root")
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", Root_position)
+    .attr("y", inputtext_height-20)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "blue")//steelblue
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+};
+
+//디펜던시 그래프 생성을 위한 함수1
+function createDependency (source,target,tag) {
+var t_position = 0;
+var s_position = 0;
+var direction = 0;
+var target = target;
+var source = source;
+var tag = tag;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==target){
+        t_position = t_position + i;
+    }
+}
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==source){
+        s_position = s_position + i;
+    }
+}
+if(s_position<=t_position){
+    direction = direction + 1;
+}
+
+createlink(s_position,direction,t_position,tag,source,target);
+
+
+// <form>
+// <label class="bar-label" style="left: 1%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="unigram" checked> Uni-gram</label>
+// <label class="bar-label" style="left: 8%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="bigram"> Bi-gram</label>
+// </form>
+// d3.selectAll(".bar-input").on("change", change);
+
+// function change() {
+//     if (this.value == "unigram") {createlink_s(s_position,direction,t_position,tag,source,target);}
+//     else if (this.value == "bigram") {createlink_t(s_position,direction,t_position,tag,source,target);}
+// }
+
+};
+
+//디펜던시 그래프 생성을 위한 함수2
+function createlink (s_p,direction,t_p,tag,text_s,text_t) {
+
+var class_name = text_s;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+var start = (margin_left+(s_p*range));
+
+var end = (margin_left+(t_p*range))
+
+  var curve_path = "M"+start+","+direction_height+" A15,10 0 0,"+direction+" "+end+","+direction_height+"";//d", "M75,300 A125,125 0 0,1 325,300"
+
+  var tag_height = (Math.abs((start-end)))/range;
+
+
+  var marker = svg.append("defs").append("marker")
+      .attr({
+        'id': "arrowhead",
+        'refX': 0,
+        'refY': 2,
+        'markerWidth': 4,
+        'markerHeight': 4,
+        'orient': "auto"
+      });
+
+  marker.append("path")
+      .attr({
+        d: "M 0,0 V 4 L4,2 Z",
+        fill: "steelblue"
+      });
+
+var curve = svg.append("path") 
+            .attr("id", "Depvis")
+            .attr("class", class_name) 
+            .attr("d",curve_path)  
+            .attr("fill","white")  
+            .attr("stroke","steelblue")  
+            .attr("stroke-width",2)   
+            .attr("marker-end","url(#arrowhead)");  
+
+svg.append("text")
+    .text(tag)
+    .attr("id", "Depvis")
+    .attr("class", class_name) 
+    .attr("x", (start+end)/2)
+    .attr("y", direction_height-(Dep_tag_height*tag_height))
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+
+
+
+};
+//document.color.details.checked = true;
+
+})
+}
+})
+</script>
+    </div>
+    <div id="stanford" class="tab-pane fade">
+      <h3>Stanford_CoreNLP</h3>
+      </br>
+      <p><a href="https://stanfordnlp.github.io/CoreNLP/" >Stanford CoreNLP</a> provides a set of human language technology tools. This visual result show the depedency graph from Stanford CoreNLP.</p>
+      <form name='color-stan'>
+            <label class="bar-label" ;><input class="bar-input-stan" type="radio" name="mode" id = "class" value="class"> Color by Class </label>
+            <label class="bar-label" ;><input class="bar-input-stan" type="radio" name="mode" id = "details" value="details" checked> Color by Details </label>
+      </form>
+      <script>//data_stanford/sentence.json
+$(document).ready(function () {
+
+//데이터 불러오기
+textJSON = d3.json("data_stanford/sentence.json", function(error, Data) {
+//윈도우 넓이 계산
+var window_width = ($(window).width())*0.9
+
+//필요 데이터 받기
+var inputtext = Data.sentence;
+var inputtext_array = Data.morpheme;
+var inputtext_POS_array = Data.pos;
+var range = Data.range;
+var margin_left = (window_width*0.07);
+
+//품사 태그와 연결 색상 나열JJ, NN, DT, RP, RB, VB, WP, C, IN, TO, MWE, SYM
+var pos_property = ["CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS","MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS","RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB","MWE"];
+var pos_color = ["#c6a045","#c69244","#c68044","#c67e44","#c67144","#59d9e5","#44c6a3","#44c666","#64c644","#c6b244","#c67c44","#44a1c6","#448fc6","#447cc6","#446ac6","#827064","#775b57","#7544c6","#9144c6","#a144c6","#c144c6","#c644b4","#c6448f","#545d6d","#4a6867","#68524a","#ce2525","#c94e64","#ce4631","#ce3140","#af2d45","#c94e4e","#364aaf","#366aaf","#367caf","#368eaf","#c3ea44"];
+
+var pos_propertyClass = ["JJ", "NN", "DT", "RP", "RB", "VB", "WP", "C", "IN", "TO", "MWE", "SYM"];
+var pos_colorClass = ["#44c666","#448fc6","#c6b244","#7544c6","#c644b4", "#ce2525", "#775b57", "#c68044", "#59d9e5", "#0c7c10", "#c3ea44","#545d6d"];//초, 파, 노, 보, 자, 빨, 갈, 황, 하, 흑초, 형, 검회, 회 
+
+//문자들 나열
+var punc = ["'",":",",",".","?","<",">","/",";","{","}","[","]","|","+","=","-","_",")","(","*","&","^","%","$","#","@","!","~","`"]
+
+//디펜던시 연결사 태깅 택스트 높이 설정 및 SVG넓이 높이, 디펜던시, 어휘소, 품사 텍스트 위치 높이 설정
+var Dep_tag_height = range*0.4;
+var width = margin_left+(inputtext_array.length*range)
+    height = 500;
+    direction_height = 380;
+    inputtext_height = 425;
+    inputtext_POS_height = 445;
+
+//SVG지정, 시각화의 길이가 윈도우 넓이 보다 길면 SVG도 길어지고 아니면 윈도우의 넓이에 맞춘다.
+var svg = d3.select("#stanford").append("svg")
+    .attr("width", function () {if (width <= window_width) {
+                                        return window_width
+                                    } else {
+                                        return width
+                                    }})
+    .attr("height", height)
+
+//SVG넓이와 같은 라인 
+var valueline = svg.append("line")
+    .attr("x1", 0)
+    .attr("y1", 100)
+    .attr("x2", window_width)
+    .attr("y2", 100)
+    .style("stroke", "#ddd")
+    .attr("stroke-width",1);
+
+//인풋 텍스트를 출력
+svg.append("text")
+    .text("Target sentence : "+inputtext)
+    .attr("id", "Depvistitle")
+    .attr("x", 0)
+    .attr("y", 70)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "2em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+
+//디펜던시 그래프를 그려준다.
+for(var i = 0 ; i < Data.links.length; i++){
+    createDependency (Data.links[i].source,Data.links[i].target,Data.links[i].tag)
+}
+
+function drawlegendClass () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_propertyClass.length ; i++){
+    color_test((10+(i*25)),140,pos_propertyClass[i],pos_colorClass[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+function drawlegendDetails () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_property.length ; i++){
+    color_test((10+(i*25)),140,pos_property[i],pos_color[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+d3.selectAll(".bar-input-stan").on("change", change);
+
+//transitionUigram();
+
+function change() {
+    if (this.value === "class") {
+      showPOSClass(inputtext_array,inputtext_POS_array);
+      drawlegendClass ()
+    }
+    else if (this.value === "details") {
+      showPOSDetails(inputtext_array,inputtext_POS_array);
+      drawlegendDetails ()
+    }
+}
+
+
+//품사, 어휘소, 루트에 대한 시각적 결과 출력
+//M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+showtext(inputtext_array,inputtext_POS_array);
+showPOSDetails(inputtext_array,inputtext_POS_array);
+createRoot(Data.root);
+drawlegendDetails();
+
+
+//품사, 어휘소에 대한 텍스트를 출력한다.
+function showtext (array_text,array_POS) {
+  for(var i = 0; i < array_text.length ; i++){
+    if(array_text[i].includes(" ")){
+         createtext_MWEs(margin_left+(i*range),inputtext_height,array_text[i]);
+    } else {
+        createtext(margin_left+(i*range),inputtext_height,array_text[i]);
+    }
+  }
+
+}
+
+function showPOSClass (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_classpos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+function showPOSDetails (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_detailspos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+//품사 텍스트 생성을 위한 함수
+function create_detailspos_text (datax,datay,text,classtext) {
+var color = "";
+for(var i = 0; i < pos_property.length; i++){
+    if(pos_property[i]==text){
+        color = pos_color[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+//품사 텍스트 생성을 위한 함수
+function create_classpos_text (datax,datay,text,classtext) {
+var color = "gray";
+for(var i = 0; i < pos_propertyClass.length; i++){
+    if(text.includes(pos_propertyClass[i])==true){
+        color = pos_colorClass[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+
+
+//복합 단어 어휘소 텍스트 생성을 위한 함수
+function createtext_MWEs (datax,datay,text) {
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .style("cursor", "default")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("font-size", "1.4em")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .attr("font-size", "1.3em")
+                    .style("cursor", "default")
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    .on("click", function () {
+        svg.selectAll("#Depvis").remove();
+        svg.selectAll("#Depvis_pos").remove();
+        svg.selectAll("#Depvistitle").remove();
+        update(class_name,svg);
+    })
+};
+
+
+
+//어휘소 텍스트 생성을 위한 함수
+function createtext (datax,datay,text) {
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+    };
+
+//루트 텍스트 출력을 위한 함수
+function createRoot(text) {
+var text_position = 0;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==text){
+        text_position = text_position + i;
+    }
+}
+var Root_position = (margin_left+(text_position*range));
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(" ", "_");
+}
+
+svg.append("text")
+    .text("Root")
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", Root_position)
+    .attr("y", inputtext_height-20)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "blue")//steelblue
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+};
+
+
+//디펜던시 그래프 생성을 위한 함수1
+function createDependency (source,target,tag) {
+var t_position = 0;
+var s_position = 0;
+var direction = 0;
+var target = target;
+var source = source;
+var tag = tag;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==target){
+        t_position = t_position + i;
+    }
+}
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==source){
+        s_position = s_position + i;
+    }
+}
+if(s_position<=t_position){
+    direction = direction + 1;
+}
+
+createlink(s_position,direction,t_position,tag,source,target);
+
+
+// <form>
+// <label class="bar-label" style="left: 1%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="unigram" checked> Uni-gram</label>
+// <label class="bar-label" style="left: 8%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="bigram"> Bi-gram</label>
+// </form>
+// d3.selectAll(".bar-input").on("change", change);
+
+// function change() {
+//     if (this.value == "unigram") {createlink_s(s_position,direction,t_position,tag,source,target);}
+//     else if (this.value == "bigram") {createlink_t(s_position,direction,t_position,tag,source,target);}
+// }
+
+};
+
+//디펜던시 그래프 생성을 위한 함수2
+function createlink (s_p,direction,t_p,tag,text_s,text_t) {
+
+var class_name = text_s;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+var start = (margin_left+(s_p*range));
+
+var end = (margin_left+(t_p*range))
+
+  var curve_path = "M"+start+","+direction_height+" A15,10 0 0,"+direction+" "+end+","+direction_height+"";//d", "M75,300 A125,125 0 0,1 325,300"
+
+  var tag_height = (Math.abs((start-end)))/range;
+
+
+  var marker = svg.append("defs").append("marker")
+      .attr({
+        'id': "arrowhead_stan",
+        'refX': 0,
+        'refY': 2,
+        'markerWidth': 4,
+        'markerHeight': 4,
+        'orient': "auto"
+      });
+
+  marker.append("path")
+      .attr({
+        d: "M 0,0 V 4 L4,2 Z",
+        fill: "steelblue"
+      });
+
+var curve = svg.append("path") 
+            .attr("id", "Depvis")
+            .attr("class", class_name) 
+            .attr("d",curve_path)  
+            .attr("fill","white")  
+            .attr("stroke","steelblue")  
+            .attr("stroke-width",2)   
+            .attr("marker-end","url(#arrowhead_stan)");  
+
+svg.append("text")
+    .text(tag)
+    .attr("id", "Depvis")
+    .attr("class", class_name) 
+    .attr("x", (start+end)/2)
+    .attr("y", direction_height-(Dep_tag_height*tag_height))
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+
+
+
+};
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function update (json,svg){
+
+//데이터 불러오기
+textJSON = d3.json("data_stanford/"+json+".json", function(error, Data) {
+//윈도우 넓이 계산
+var window_width = $(window).width()
+
+//필요 데이터 받기
+var inputtext = Data.sentence;
+var inputtext_array = Data.morpheme;
+var inputtext_POS_array = Data.pos;
+var range = Data.range;
+var margin_left = (window_width*0.07);
+
+//품사 태그와 연결 색상 나열
+var pos_property = ["CC","CD","DT","EX","FW","IN","JJ","JJR","JJS","LS","MD","NN","NNS","NNP","NNPS","PDT","POS","PRP","PRP$","RB","RBR","RBS","RP","SYM","TO","UH","VB","VBD","VBG","VBN","VBP","VBZ","WDT","WP","WP$","WRB","MWE"];
+var pos_color = ["#c6a045","#c69244","#c68044","#c67e44","#c67144","#59d9e5","#44c6a3","#44c666","#64c644","#c6b244","#c67c44","#44a1c6","#448fc6","#447cc6","#446ac6","#827064","#775b57","#7544c6","#9144c6","#a144c6","#c144c6","#c644b4","#c6448f","#545d6d","#4a6867","#68524a","#ce2525","#c94e64","#ce4631","#ce3140","#af2d45","#c94e4e","#364aaf","#366aaf","#367caf","#368eaf","#c3ea44"];
+
+var pos_propertyClass = ["JJ", "NN", "DT", "RP", "RB", "VB", "WP", "C", "IN", "TO", "MWE", "SYM"];
+var pos_colorClass = ["#44c666","#448fc6","#c6b244","#7544c6","#c644b4", "#ce2525", "#775b57", "#c68044", "#59d9e5", "#0c7c10", "#c3ea44","#545d6d"];//초, 파, 노, 보, 자, 빨, 갈, 황, 하, 흑초, 형, 검회, 회 
+
+//문자들 나열
+var punc = ["'",":",",",".","?","<",">","/",";","{","}","[","]","|","+","=","-","_",")","(","*","&","^","%","$","#","@","!","~","`"]
+
+//디펜던시 연결사 태깅 택스트 높이 설정 및 SVG넓이 높이, 디펜던시, 어휘소, 품사 텍스트 위치 높이 설정
+var Dep_tag_height = range*0.4;
+var width = margin_left+(inputtext_array.length*range)
+    height = 880;
+    direction_height = 380;
+    inputtext_height = 425;
+    inputtext_POS_height = 445;
+
+
+//리턴을 위한 버튼 생성  (10+(i*25)),140
+svg.append("image")
+    .attr("xlink:href", "./images/return.png")
+    .attr("id", "Depvisreturn")
+    .attr("x", 10)
+    .attr("y", 170)
+    .attr("width", 35)
+    .attr("height", 35)
+    .style("cursor", "default")
+    .attr("fill", "steelblue")
+    .on("mouseover", function () {
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("xlink:href", "./images/return_hover.png")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .style("cursor", "default")
+                    .attr("xlink:href", "./images/return.png")
+            })
+    .on("click", function () {
+        window.location.reload();
+    });
+    
+
+// svg.append("text")
+//     .text("Return")
+//     .attr("id", "Depvisreturn")
+//     .attr("x", 18)
+//     .attr("y", 195)
+//     .attr("font-family", "Open Sans")
+//     .attr("font-size", "1.5em")
+//     .attr("fill", "rgb(51,51,51)")
+//     .attr("font-weight", "bold")
+//     .attr("text-anchor", "start")
+//     .on("mouseover", function () {
+//                     d3.select(this)
+//                     .style("cursor", "pointer")
+//             })
+//     .on("mouseout", function () {
+//                     d3.select(this)
+//                     .style("cursor", "default")
+//             })
+//     .on("click", function () {
+//         window.location.reload();
+//     });
+
+//인풋 텍스트를 출력
+svg.append("text")
+    .text("Target MWEs : "+inputtext)
+    .attr("id", "Depvistitle")
+    .attr("x", 0)
+    .attr("y", 70)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "2em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+
+//디펜던시 그래프를 그려준다.
+for(var i = 0 ; i < Data.links.length; i++){
+    createDependency (Data.links[i].source,Data.links[i].target,Data.links[i].tag)
+}
+
+
+function drawlegendClass () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_propertyClass.length ; i++){
+    color_test((10+(i*25)),140,pos_propertyClass[i],pos_colorClass[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+function drawlegendDetails () {
+  svg.selectAll("#Depvis_legend").remove();
+  //품사와 색상에 대한 범례생성 
+for(var i = 0; i < pos_property.length ; i++){
+    color_test((10+(i*25)),140,pos_property[i],pos_color[i]);
+  }
+
+//범례생성을 위한 함수
+function color_test (x,y,text,color) {
+
+svg.append("rect").attr("id", "Depvis_legend").attr("x", x).attr("y", y).attr("width", 10).attr("rx", 2).attr("ry", 2).attr("height", 10).attr("fill", color);
+svg.append("text")
+    .text(text)
+    .attr("id", "Depvis_legend")
+    .attr("x", x+5)
+    .attr("y", y-10)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "0.7em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("text-anchor", "middle")
+
+    };
+}
+
+
+d3.selectAll(".bar-input-stan").on("change", change);
+
+//transitionUigram();
+
+function change() {
+    if (this.value === "class") {
+      showPOSClass(inputtext_array,inputtext_POS_array);
+      drawlegendClass ()
+    }
+    else if (this.value === "details") {
+      showPOSDetails(inputtext_array,inputtext_POS_array);
+      drawlegendDetails ()
+    }
+}
+
+
+
+
+//품사, 어휘소, 루트에 대한 시각적 결과 출력
+//M start-x, start-y A radius-x, radius-y, x-axis-rotation, large-arc-flag, sweep-flag, end-x, end-y
+showtext(inputtext_array,inputtext_POS_array);
+showPOSDetails(inputtext_array,inputtext_POS_array);
+createRoot(Data.root);
+drawlegendDetails();
+
+
+//품사, 어휘소에 대한 텍스트를 출력한다.
+function showtext (array_text,array_POS) {
+  for(var i = 0; i < array_text.length ; i++){
+    if(array_text[i].includes(" ")){
+         createtext_MWEs(margin_left+(i*range),inputtext_height,array_text[i]);
+    } else {
+        createtext(margin_left+(i*range),inputtext_height,array_text[i]);
+    }
+  }
+
+}
+
+function showPOSClass (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_classpos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+function showPOSDetails (array_text,array_POS) {
+  svg.selectAll("#Depvis_pos").remove();
+  for(var i = 0; i < array_text.length ; i++){
+    create_detailspos_text(margin_left+(i*range),inputtext_POS_height,array_POS[i],array_text[i]);
+  }
+}
+
+//품사 텍스트 생성을 위한 함수
+function create_detailspos_text (datax,datay,text,classtext) {
+var color = "";
+for(var i = 0; i < pos_property.length; i++){
+    if(pos_property[i]==text){
+        color = pos_color[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+//품사 텍스트 생성을 위한 함수
+function create_classpos_text (datax,datay,text,classtext) {
+var color = "gray";
+for(var i = 0; i < pos_propertyClass.length; i++){
+    if(text.includes(pos_propertyClass[i])==true){
+        color = pos_colorClass[i];
+    }
+}
+
+var class_name = classtext;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis_pos")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", color)
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 0.25)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                d3.selectAll("."+class_name)
+                .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                d3.selectAll("#Depvis")
+                    .attr("opacity", 1)
+                d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    };
+
+
+
+//복합 단어 어휘소 텍스트 생성을 위한 함수
+function createtext_MWEs (datax,datay,text) {
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .style("cursor", "default")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+                    d3.select(this)
+                    .style("cursor", "pointer")
+                    .attr("font-size", "1.4em")
+            })
+    .on("mouseout", function () {
+                    d3.select(this)
+                    .attr("font-size", "1.3em")
+                    .style("cursor", "default")
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+    .on("click", function () {
+        svg.selectAll("#Depvis").remove();
+        svg.selectAll("#Depvis_pos").remove();
+        svg.selectAll("#Depvistitle").remove();
+        update(class_name,svg);
+    })
+};
+
+
+
+//어휘소 텍스트 생성을 위한 함수
+function createtext (datax,datay,text) {
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+    svg.append("text")
+    .text(text)
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", datax)
+    .attr("y", datay)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1.3em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+    };
+
+//루트 텍스트 출력을 위한 함수
+function createRoot(text) {
+var text_position = 0;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==text){
+        text_position = text_position + i;
+    }
+}
+var Root_position = (margin_left+(text_position*range));
+
+var class_name = text;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(" ", "_");
+}
+
+svg.append("text")
+    .text("Root")
+    .attr("class", class_name)
+    .attr("id", "Depvis")
+    .attr("x", Root_position)
+    .attr("y", inputtext_height-20)
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "blue")//steelblue
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+    .on("mouseover", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 0.25)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 0.25)
+                    d3.selectAll("."+class_name)
+                        .attr("opacity", 1)
+            })
+    .on("mouseout", function () {
+                    d3.selectAll("#Depvis")
+                        .attr("opacity", 1)
+                    d3.selectAll("#Depvis_pos")
+                    .attr("opacity", 1)
+            })
+
+};
+
+//디펜던시 그래프 생성을 위한 함수1
+function createDependency (source,target,tag) {
+var t_position = 0;
+var s_position = 0;
+var direction = 0;
+var target = target;
+var source = source;
+var tag = tag;
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==target){
+        t_position = t_position + i;
+    }
+}
+for(var i = 0; i < inputtext_array.length; i++){
+    if(inputtext_array[i]==source){
+        s_position = s_position + i;
+    }
+}
+if(s_position<=t_position){
+    direction = direction + 1;
+}
+
+createlink(s_position,direction,t_position,tag,source,target);
+
+
+// <form>
+// <label class="bar-label" style="left: 1%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="unigram" checked> Uni-gram</label>
+// <label class="bar-label" style="left: 8%; top: 15px; position: absolute";><input class="bar-input" type="radio" name="mode" value="bigram"> Bi-gram</label>
+// </form>
+// d3.selectAll(".bar-input").on("change", change);
+
+// function change() {
+//     if (this.value == "unigram") {createlink_s(s_position,direction,t_position,tag,source,target);}
+//     else if (this.value == "bigram") {createlink_t(s_position,direction,t_position,tag,source,target);}
+// }
+
+};
+
+//디펜던시 그래프 생성을 위한 함수2
+function createlink (s_p,direction,t_p,tag,text_s,text_t) {
+
+var class_name = text_s;
+for(var i = 0; i < punc.length; i++){
+    if(punc[i]==class_name){
+        class_name = "PunC"
+    }
+}
+if(class_name.includes(" ")){
+    class_name = class_name.replace(/ /gi, "_");
+}
+
+var start = (margin_left+(s_p*range));
+
+var end = (margin_left+(t_p*range))
+
+  var curve_path = "M"+start+","+direction_height+" A15,10 0 0,"+direction+" "+end+","+direction_height+"";//d", "M75,300 A125,125 0 0,1 325,300"
+
+  var tag_height = (Math.abs((start-end)))/range;
+
+
+  var marker = svg.append("defs").append("marker")
+      .attr({
+        'id': "arrowhead_stan",
+        'refX': 0,
+        'refY': 2,
+        'markerWidth': 4,
+        'markerHeight': 4,
+        'orient': "auto"
+      });
+
+  marker.append("path")
+      .attr({
+        d: "M 0,0 V 4 L4,2 Z",
+        fill: "steelblue"
+      });
+
+var curve = svg.append("path") 
+            .attr("id", "Depvis")
+            .attr("class", class_name) 
+            .attr("d",curve_path)  
+            .attr("fill","white")  
+            .attr("stroke","steelblue")  
+            .attr("stroke-width",2)   
+            .attr("marker-end","url(#arrowhead_stan)");  
+
+svg.append("text")
+    .text(tag)
+    .attr("id", "Depvis")
+    .attr("class", class_name) 
+    .attr("x", (start+end)/2)
+    .attr("y", direction_height-(Dep_tag_height*tag_height))
+    .attr("font-family", "Open Sans")
+    .attr("font-size", "1em")
+    .attr("fill", "rgb(51,51,51)")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "middle")
+
+
+
+};
+document.color.details.checked = true;
+
+})
+}
+})
+</script>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

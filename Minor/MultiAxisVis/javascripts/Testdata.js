@@ -1,0 +1,6 @@
+var Dariable0 = [0,1]
+var Dariable1 = [2,3]
+var Dariable2 = [4,5]
+var Dariable3 = [6,7]
+var Dariable4 = [8,9]
+var Dariable5 = [10,11]

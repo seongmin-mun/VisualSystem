@@ -1,0 +1,1 @@
+{"sentence":"Fruit flies","range":50,"root":"flies","morpheme":["Fruit","flies"],"pos":["NN","NNS"],"links":[{"source":"flies","target":"Fruit","tag":"nn"}]}

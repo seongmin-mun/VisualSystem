@@ -1,0 +1,2244 @@
+
+<!DOCTYPE html><html><head><title>Rhapsodie</title><link rel="stylesheet" href="./stylesheets/Rapsody.css"><script src="./javascripts/d3.v3.min.js" charset="utf-8"></script><script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script><script src="./data/Rhapsodie_data.js" charset="utf-8"></script></head><body><div id="header"></div><div id="left"></div><div id="section"><script>$(document).ready(function () {
+
+    var width = $(window).width()
+
+    var height = $(window).height()
+
+    //상단쪽 디폴트 디자인
+
+    var div = d3.select("#section").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+    var svgheader = d3.select("#header")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 50)
+
+    svgheader.append("text")
+            .text("Rhapsodie")
+            .attr("x", (width * 0.02))
+            .attr("y", 40)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "35px")
+            .attr("fill", "white")
+            .attr("font-weight", "bold")
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/download_circle.png")
+            .attr("x", width * 0.85)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.848)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.85)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            }).on("click", Show_popup_down)
+
+    function Show_popup_down() {
+        window.open("/data/Rhap-synt-txt.zip");
+    }
+
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/person_circle.png")
+            .attr("x", width * 0.88)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.878)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.88)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_personal)
+
+    //Show_popup()
+
+    function Show_popup_personal() {
+        window.open("http://ressources.modyco.fr/sm/Seongmin/");
+    }
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/info_circle.png")
+            .attr("x", width * 0.91)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.908)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "pointer")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.91)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+            .on("click", Show_popup_info)
+
+    function Show_popup_info() {
+        window.open("http://www.projet-rhapsodie.fr/");
+    }
+
+
+    svgheader.append("image")
+            .attr("xlink:href", "images/button/mail_circle.png")
+            .attr("x", width * 0.94)
+            .attr("y", 12)
+            .attr("width", 60)
+            .attr("height", 27)
+            .style("cursor", "default")
+            .on("mouseover", function () {
+                d3.select(this)
+                        .attr("x", width * 0.938)
+                        .attr("y", 11)
+                        .attr("width", 66)
+                        .attr("height", 29)
+                        .style("cursor", "default")
+            })
+            .on("mouseout", function () {
+                d3.select(this)
+                        .attr("x", width * 0.94)
+                        .attr("y", 12)
+                        .attr("width", 60)
+                        .attr("height", 27)
+                        .style("cursor", "default")
+            })
+
+    var svgright_up = d3.select("#right_up")
+            .append("svg")
+            .attr("width", width * 0.18)
+            .attr("height", 40)
+
+    svgright_up.append("text")
+            .text("Select node color")
+            .attr("class", "svgleft_title")
+            .attr("x", 17)
+            .attr("y", 33)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", (width * 0.021) + 'px')
+            .attr("fill", "#717171")
+
+
+    var svgleft = d3.select("#left")
+            .append("svg")
+            .attr("width", width * 0.18)
+            .attr("height", 630)
+
+    svgleft.append("text")
+            .text("Select axis")
+            .attr("class", "svgleft_title")
+            .attr("x", 17)
+            .attr("y", 33)
+            .attr("text-anchor", "right")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", (width * 0.021) + 'px')
+            .attr("fill", "#717171")
+
+    svgleft.append("rect")
+            .attr("class", "axis_rect")
+            .attr("x", (width * 0.01))
+            .attr("y", 50)
+            .attr("width", (width * 0.16))
+            .attr("height", 565)
+            .attr("fill", "white")
+
+    //메인 부분
+
+    var zoomrange = 7;
+
+    var circle_rightleft = (width * 0.58) / 2
+
+    var circle_updown = 315;
+
+    var svgsection = d3.select('#section').append('svg')
+            .attr('width', width * 0.58)
+            .attr('height', 600)
+            .call(d3.behavior.zoom().scaleExtent([0.5, zoomrange]).on("zoom", function () {
+                svgsection.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+            }))
+            .append("g");
+
+
+    var number = 0;
+
+    var AddData = new Array;
+    var LineName = new Array;
+
+    var preClick = [];
+    var preClick_rec = [];
+
+
+    makeSelection(0, 'Layer', "#Layer_rect", Layer_data, 'Layer_rect');
+    makeSelection(1, 'IU', "#IU_rect", IU_data, 'IU_rect');
+    makeSelection(2, 'Nucleus', "#Nucleus_rect", Nucleus_data, 'Nucleus_rect');
+    makeSelection(3, 'Prenucleus', "#Prenucleus_rect", Prenucleus_data, 'Prenucleus_rect');
+    makeSelection(4, 'Gov_nucleus', "#Gov_nucleus_rect", Gov_nucleus_data, 'Gov_nucleus_rect');
+    makeSelection(5, 'Innucleus', "#Innucleus_rect", Innucleus_data, 'Innucleus_rect');
+    makeSelection(6, 'Gov_innucleus', "#Gov_innucleus_rect", Gov_innucleus_data, 'Gov_innucleus_rect');
+    makeSelection(7, 'Postnucleus', "#Postnucleus_rect", Postnucleus_data, 'Postnucleus_rect');
+    makeSelection(8, 'Gov_postnucleus', "#Gov_postnucleus_rect", Gov_postnucleus_data, 'Gov_postnucleus_rect');
+    makeSelection(9, 'IU_parenthesis', "#IU_parenthesis_rect", IU_parenthesis_data, 'IU_parenthesis_rect');
+    makeSelection(10, 'IU_graft', "#IU_graft_rect", IU_graft_data, 'IU_graft_rect');
+    makeSelection(11, 'IU_embedded', "#IU_embedded_rect", IU_embedded_data, 'IU_embedded_rect');
+    makeSelection(12, 'Associated_nucleus', "#Associated_nucleus_rect", Associated_nucleus_data, 'Associated_nucleus_rect');
+    makeSelection(13, 'Intro_IU', "#Intro_IU_rect", Intro_IU_data, 'Intro_IU_rect');
+    makeSelection(14, 'Period', "#Period_rect", Period_data, 'Period_rect');
+
+
+    function makeSelection(i, text, recid, data, ctid) { // 0, 'Layer', "#Layer_rect", Layer_data, 'Layer_rect'
+
+        var group_left = svgleft.append("g").on("click", function () {
+            if (preClick['#' + text] == true) {
+                preClick['#' + text] = false;
+                preClick_rec[recid] = false;
+                d3.select('#' + text).attr('font-size', (width * 0.014) + 'px').style("font-weight", "");
+                d3.select(recid).attr("fill", "gray");
+                number = number - 2;
+                LineName.splice(LineName.indexOf(text), 1);
+                AddData.splice(AddData.indexOf(data), 1);
+
+                makeLine(number, LineName)
+                makeData(number, AddData, Document_data)
+
+            }
+            else {
+                preClick['#' + text] = true;
+                preClick_rec[recid] = true;
+                d3.select('#' + text).attr('font-size', (width * 0.014) + 'px').style("font-weight", "bold");
+                d3.select(recid).attr("fill", "#58D3F7");
+                number = number + 2;
+                LineName.push(text)
+                AddData.push(data)
+
+                makeLine(number, LineName)
+                makeData(number, AddData, Document_data, LineName)
+
+            }
+        });
+
+        group_left.append("text")
+                .attr("class", "axis_variable")
+                .attr("id", text)
+                .attr("x", width * 0.045)
+                .attr("y", ((565 / 15) * i) + 70)
+                .attr("dy", ".35em")
+                .attr('font-size', (width * 0.014) + 'px')
+                .text(text)
+                .style("font-weight", "")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .style("cursor", "pointer")
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .style("cursor", "default")
+                })
+
+
+        group_left.append("rect")
+                .attr("class", "axis_rect")
+                .attr("id", ctid)
+                .attr("x", (width * 0.022))
+                .attr("y", ((565 / 15) * i) + 60)
+                .attr("width", (width * 0.014))
+                .attr("height", (220 / 12))
+                .attr("fill", "gray")
+                .attr("stroke", "rgb(51,51,51)")
+                .attr("stroke-width", "2px")
+                .style("cursor", "default")
+                .on("mouseover", function () {
+                    d3.select(this)
+                            .style("cursor", "pointer")
+                })
+                .on("mouseout", function () {
+                    d3.select(this)
+                            .style("cursor", "default")
+                })
+    }
+
+
+    function makeLine(num, line) {
+
+
+        svgsection.selectAll(".svgsection_round_Circle").remove();
+        svgsection.selectAll(".svgsection_inner_Line").remove();
+        svgsection.selectAll(".svgsection_inner_Line_index").remove();
+        svgsection.selectAll(".svgsection_round_Text").remove();
+
+
+        var linename = line
+
+        var spot = [];
+        var spotLength = num;
+
+        function makeSpot() {
+            var radius = 250;
+
+            for (var i = 0; i < spotLength; i++) {
+                var x = Math.cos(Math.PI * 2 / spotLength * i) * radius + circle_rightleft;
+                var y = Math.sin(Math.PI * 2 / spotLength * i) * radius + circle_updown;
+                spot.push({
+                    x: x,
+                    y: y,
+                })
+            }
+        }
+
+
+        makeSpot();
+
+        function makeText_Line() {
+            svgsection.append("text").attr("class", "svgsection_inner_Line_index").attr("x", spot[j].x + 15).attr("y", spot[j].y + 5).attr("dy", ".35em").attr('font-size', (width * 0.01) + 'px').text(linename[j] + ' (+)')
+            svgsection.append("text").attr("class", "svgsection_inner_Line_index").attr("x", spot[j + (spotLength / 2)].x + 15).attr("y", spot[j + (spotLength / 2)].y - 15).attr("dy", ".35em").attr('font-size', (width * 0.01) + 'px').text(linename[j] + ' (-)')
+            svgsection.append("line").attr('class', "svgsection_inner_Line").attr("x1", spot[j].x).attr("y1", spot[j].y).attr("x2", spot[j + (spotLength / 2)].x).attr("y2", spot[j + (spotLength / 2)].y).attr("stroke-width", 1).attr("stroke", "black").style("stroke-dasharray", ("9,8"));
+        }
+
+        if (spotLength == 2) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 4) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 6) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 8) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 10) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 12) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 14) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 16) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 18) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 20) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 22) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 24) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 26) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 28) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 30) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        } else if (spotLength == 32) {
+            for (var j = 0; j < (spotLength / 2); j++) {
+                makeText_Line()
+            }
+        }
+
+
+        for (var i = 0; i < spot.length; i++) {
+
+            if (i < (spot.length * 0.5)) {
+
+                svgsection.append('circle')
+                        .attr('class', "svgsection_round_Circle")
+                        .attr('cx', spot[i].x)
+                        .attr('cy', spot[i].y)
+                        .attr('fill', '#27AE60')
+                        .attr('r', 5)
+                        .attr("id", 'Variable' + i)
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                console.log(this.id)
+                            })
+                        })(i))
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "1px")
+                        .attr("opacity", 0.9)
+
+            } else {
+
+                svgsection.append('circle')
+                        .attr('class', "svgsection_round_Circle")
+                        .attr('cx', spot[i].x)
+                        .attr('cy', spot[i].y)
+                        .attr('fill', '#CD5C5C')
+                        .attr('r', 5)
+                        .attr("id", 'Variable' + i)
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                console.log(this.id)
+                            })
+                        })(i))
+                        .attr("stroke", "black")
+                        .attr("stroke-width", "1px")
+                        .attr("opacity", 0.9)
+
+            }
+
+        }
+
+    }
+
+
+    function makeData(num, arr, doc, line) {
+
+
+        var spotLength = num;
+
+        var document = doc;
+
+        var linename = line;
+
+        if (spotLength == 0) {
+
+            svgsection.selectAll(".svgsection_inner_Text").remove();
+            svgsection.selectAll(".svgsection_inner_Circle").remove();
+
+        } else {
+            if (spotLength == 2) {
+                var arr1 = arr[0]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr1[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+
+                        //반환된 결과는 다음번 콜백의 첫번째 파라메터로 다시 전달된다.
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+
+                    //console.log(weight);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr1[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 4) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr1[i].minus, arr2[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+
+                        //반환된 결과는 다음번 콜백의 첫번째 파라메터로 다시 전달된다.
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr1[i].minus, arr2[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 6) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+
+                        //반환된 결과는 다음번 콜백의 첫번째 파라메터로 다시 전달된다.
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+
+            } else if (spotLength == 8) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+
+                        //반환된 결과는 다음번 콜백의 첫번째 파라메터로 다시 전달된다.
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 10) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 12) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 14) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 16) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 18) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 20) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 22) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+                var arr11 = arr[10]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 24) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+                var arr11 = arr[10]
+                var arr12 = arr[11]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 26) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+                var arr11 = arr[10]
+                var arr12 = arr[11]
+                var arr13 = arr[12]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 28) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+                var arr11 = arr[10]
+                var arr12 = arr[11]
+                var arr13 = arr[12]
+                var arr14 = arr[13]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr14[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus, arr14[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr14[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus, arr14[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+
+            } else if (spotLength == 30) {
+
+                var arr1 = arr[0]
+                var arr2 = arr[1]
+                var arr3 = arr[2]
+                var arr4 = arr[3]
+                var arr5 = arr[4]
+                var arr6 = arr[5]
+                var arr7 = arr[6]
+                var arr8 = arr[7]
+                var arr9 = arr[8]
+                var arr10 = arr[9]
+                var arr11 = arr[10]
+                var arr12 = arr[11]
+                var arr13 = arr[12]
+                var arr14 = arr[13]
+                var arr15 = arr[14]
+
+                var finalarray = [];
+                var finalarray_orignal = [];
+
+                for (var i = 0; i < arr1.length; i++) {
+                    var weight = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr14[i].plus, arr15[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus, arr14[i].minus, arr15[i].minus];
+                    var result = weight.reduce(function (previousItem, currentItem, index, array) {
+                        return previousItem + currentItem;
+                    }, 0);
+
+                    function replaceElement(element, index, array) {
+                        return array[index] = element / result;
+                    }
+
+                    weight.forEach(replaceElement);
+                    finalarray.push(weight)
+
+                    var weight_orignal = [arr1[i].plus, arr2[i].plus, arr3[i].plus, arr4[i].plus, arr5[i].plus, arr6[i].plus, arr7[i].plus, arr8[i].plus, arr9[i].plus, arr10[i].plus, arr11[i].plus, arr12[i].plus, arr13[i].plus, arr14[i].plus, arr15[i].plus, arr1[i].minus, arr2[i].minus, arr3[i].minus, arr4[i].minus, arr5[i].minus, arr6[i].minus, arr7[i].minus, arr8[i].minus, arr9[i].minus, arr10[i].minus, arr11[i].minus, arr12[i].minus, arr13[i].minus, arr14[i].minus, arr15[i].minus];
+
+                    function replaceElement_orignal(element, index, array) {
+                        return array[index] = element;
+                    }
+
+                    weight_orignal.forEach(replaceElement_orignal);
+                    finalarray_orignal.push(weight_orignal)
+
+                }
+
+                drawinnercircle(finalarray, document, linename, finalarray_orignal)
+            }
+        }
+
+
+    }
+
+
+    function drawinnercircle(weight_data, doc_data, line, original) {
+
+
+        svgsection.selectAll(".svgsection_inner_Text").remove();
+        svgsection.selectAll(".svgsection_inner_Circle").remove();
+
+
+        var nodes = [];
+        var texts = [];
+        var spot = [];
+
+        var spotLength = weight_data[0].length;
+
+        function makeSpot() {
+            var radius = 250;
+
+            for (var i = 0; i < spotLength; i++) {
+                var x = Math.cos((Math.PI * 2 / spotLength * i)) * radius + circle_rightleft;
+                var y = Math.sin((Math.PI * 2 / spotLength * i)) * radius + circle_updown;
+                spot.push({
+                    x: x,
+                    y: y,
+                })
+            }
+        }
+
+
+        function makeNodes() {
+            for (var i = 0; i < weight_data.length; i++) {
+                var each = {
+                    gravity_original: [],
+                    gravity: [],
+                    size: (doc_data[i].Sentence / 4 ),
+                    label: doc_data[i].Name,
+                    genre: doc_data[i].Genre,
+                    subgenre: doc_data[i].Subgenre,
+                    interactivity: doc_data[i].Interactivity,
+                    social_context: doc_data[i].Social_context,
+                    event_structure: doc_data[i].Event_structure,
+                    channel: doc_data[i].Channel,
+                    planning_type: doc_data[i].Planning_type,
+                    task: doc_data[i].Task,
+                    x: 0,
+                    y: 0,
+                    svg: null,
+                };
+
+
+                each.svg = drawPersonCircle(0, 0, each.size * (width * 0.001));
+
+                for (var j = 0; j < spotLength; j++) {
+                    var value = weight_data[i][j];
+                    each.gravity.push(value);
+                    var value_original = original[i][j];
+                    each.gravity_original.push(value_original);
+                }
+                nodes.push(each);
+            }
+        }
+
+        function makeTexts() {
+            for (var i = 0; i < weight_data.length; i++) {
+                var each = {
+                    gravity_original: [],
+                    gravity: [],
+                    size: (doc_data[i].Sentence / 4 ),
+                    label: doc_data[i].Name,
+                    genre: doc_data[i].Genre,
+                    subgenre: doc_data[i].Subgenre,
+                    interactivity: doc_data[i].Interactivity,
+                    social_context: doc_data[i].Social_context,
+                    event_structure: doc_data[i].Event_structure,
+                    channel: doc_data[i].Channel,
+                    planning_type: doc_data[i].Planning_type,
+                    task: doc_data[i].Task,
+                    x: 0,
+                    y: 0,
+                    svg: null,
+                };
+
+
+                each.svg = drawPersonText(each.label, 0, 0, i, doc_data, each.gravity, each.gravity_original);
+                for (var j = 0; j < spotLength; j++) {
+                    var value = weight_data[i][j];
+                    each.gravity.push(value);
+                    var value_original = original[i][j];
+                    each.gravity_original.push(value_original);
+                }
+                texts.push(each);
+            }
+        }
+
+
+        makeSpot();
+        makeNodes();
+        makeTexts();
+
+
+        function drawPersonCircle(x, y, size) {
+            return svgsection.append('circle')
+                    .attr('class', "svgsection_inner_Circle")
+                    .attr('cx', x)
+                    .attr('cy', y)
+                    .attr('fill', "#00BFFF")
+                    .attr("r", function () {
+                        if (size <= 2) {
+                            return size = 2
+                        }
+                        else if (size >= 12) {
+                            return size = 12
+                        } else {
+                            return size
+                        }
+                    })
+                    .attr("stroke", "black")
+                    .attr("stroke-width", "1px")
+                    .style("cursor", "pointer")
+                    .attr("opacity", 0.6)
+
+        }
+
+        function drawPersonText(text, x, y, index, doc_data, weight_value, origi) {
+            return svgsection.append('text')
+                    .text(text)
+                    .attr('x', x)
+                    .attr('y', y)
+                    .attr('class', "svgsection_inner_Text")
+                    .attr("text-anchor", "middle")
+                    .attr("dominant-baseline", "middle")
+                    .attr("font-size", "10px")
+                    .attr('fill', '#717171')
+                    .style("font-weight", "")
+                    .attr("opacity", 0.4)
+                    .style("cursor", "default")
+                    .on("mouseover", (function (index) {
+                        return (function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .data(nodes)
+                                    .attr("opacity", function (d) {
+                                        if (d.label == doc_data[index].Name) {
+                                            return 0.95
+                                        } else {
+                                            return 0.2
+                                        }
+                                    });
+                            d3.select(this)
+                                    .attr("font-size", "13px")
+                                    .style("font-weight", "bold")
+                                    .style("cursor", "pointer")
+                                    .attr('fill', 'rgb(51,51,51)')
+                                    .attr("opacity", 0.9)
+                        })
+                    })(index))
+                    .on("mouseout", function () {
+                        d3.selectAll(".svgsection_inner_Circle")
+                                .attr("opacity", 0.6)
+                        d3.select(this)
+                                .attr("font-size", "10px")
+                                .style("font-weight", "")
+                                .style("cursor", "default")
+                                .attr('fill', '#717171')
+                                .attr("opacity", 0.4)
+                    })
+                    .on("click", function () {
+                        drawSizeSpot(weight_value, origi)
+                    })
+
+        }
+
+        function drawNodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                var posX = 0;
+                var posY = 0;
+
+                for (var j = 0; j < nodes[i].gravity.length; j++) {
+                    var idf = nodes[i].gravity[j];
+                    posX += spot[j].x * idf;
+                    posY += spot[j].y * idf;
+
+                }
+                nodes[i]['x'] = posX;
+                nodes[i]['y'] = posY;
+
+                nodes[i]['svg'].attr('cx', posX);
+                nodes[i]['svg'].attr('cy', posY);
+
+            }
+        }
+
+        function drawTexts() {
+            for (var i = 0; i < texts.length; i++) {
+                var posX = 0;
+                var posY = 0;
+
+                for (var j = 0; j < texts[i].gravity.length; j++) {
+                    var idf = texts[i].gravity[j];
+                    posX += spot[j].x * idf;
+                    posY += spot[j].y * idf;
+
+                }
+                texts[i]['x'] = posX;
+                texts[i]['y'] = posY;
+
+                texts[i]['svg'].attr('x', posX);
+                texts[i]['svg'].attr('y', posY);
+
+            }
+        }
+
+        var critaria = 15;
+
+
+        function flok_nodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                for (var j = 0; j < nodes.length; j++) {
+                    if (i == j) continue;
+
+                    if (distance(nodes[i], nodes[j]) < critaria) {
+                        // flok
+
+                        var diffX = nodes[i].x - nodes[j].x;
+                        var diffY = nodes[i].y - nodes[j].y;
+
+                        nodes[i].x += diffX * 0.25;
+                        nodes[i].y += diffY * 0.25;
+
+                        nodes[j].x -= diffX * 0.25;
+                        nodes[j].y -= diffY * 0.25;
+
+                    }
+
+
+                }
+            }
+            function distance(from, to) {
+                return Math.pow(Math.pow(from.x - to.x, 2)
+                        + Math.pow(from.y - to.y, 2),
+                        0.5);
+            }
+
+        }
+
+        function flok_texts() {
+            for (var i = 0; i < texts.length; i++) {
+                for (var j = 0; j < texts.length; j++) {
+                    if (i == j) continue;
+
+                    if (distance(texts[i], texts[j]) < critaria) {
+                        // flok
+
+                        var diffX = texts[i].x - texts[j].x;
+                        var diffY = texts[i].y - texts[j].y;
+
+                        texts[i].x += diffX * 0.25;
+                        texts[i].y += diffY * 0.25;
+
+                        texts[j].x -= diffX * 0.25;
+                        texts[j].y -= diffY * 0.25;
+
+                    }
+
+
+                }
+            }
+            function distance(from, to) {
+                return Math.pow(Math.pow(from.x - to.x, 2)
+                        + Math.pow(from.y - to.y, 2),
+                        0.5);
+            }
+
+        }
+
+        function updateNodes() {
+            for (var i = 0; i < nodes.length; i++) {
+                nodes[i]['svg'].attr('cx', nodes[i]['x']);
+                nodes[i]['svg'].attr('cy', nodes[i]['y']);
+            }
+        }
+
+        function updateTexts() {
+            for (var i = 0; i < texts.length; i++) {
+                texts[i]['svg'].attr('x', texts[i]['x']);
+                texts[i]['svg'].attr('y', texts[i]['y']);
+            }
+        }
+
+        setInterval(function () {
+            flok_nodes();
+            flok_texts();
+            updateNodes();
+            updateTexts();
+        }, 100);
+
+        drawNodes();
+        drawTexts();
+
+
+        function drawSizeSpot(weight_data, origi) {
+
+            svgsection.selectAll(".svgsection_round_Circle").remove();
+            svgsection.selectAll(".svgsection_round_Text").remove();
+
+            for (var i = 0; i < spot.length; i++) {
+
+                var size = origi[i];
+
+                if (i < (spot.length * 0.5)) {
+                    svgsection.append('circle')
+                            .attr('class', "svgsection_round_Circle")
+                            .attr('cx', spot[i].x)
+                            .attr('cy', spot[i].y)
+                            .attr('fill', '#27AE60')
+                            .attr("r", function () {
+                                if (size <= 5) {
+                                    return size = 5
+                                } else if (6 <= size && size <= 30) {
+                                    return size = 7.5
+                                } else if (31 <= size && size <= 50) {
+                                    return size = 10
+                                } else if (51 <= size && size <= 70) {
+                                    return size = 12.5
+                                } else if (size >= 71) {
+                                    return size = 15
+                                }
+                            })
+                            .attr("id", 'variable' + i)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "1px")
+                            .attr("opacity", 0.9)
+
+                } else {
+                    svgsection.append('circle')
+                            .attr('class', "svgsection_round_Circle")
+                            .attr('cx', spot[i].x)
+                            .attr('cy', spot[i].y)
+                            .attr('fill', '#CD5C5C')
+                            .attr("r", function () {
+                                if (size <= 5) {
+                                    return size = 5
+                                } else if (6 <= size && size <= 30) {
+                                    return size = 7.5
+                                } else if (31 <= size && size <= 50) {
+                                    return size = 10
+                                } else if (51 <= size && size <= 70) {
+                                    return size = 12.5
+                                } else if (size >= 71) {
+                                    return size = 15
+                                }
+                            })
+                            .attr("id", 'variable' + i)
+                            .attr("stroke", "black")
+                            .attr("stroke-width", "1px")
+                            .attr("opacity", 0.9)
+
+                }
+
+                svgsection.append("text")
+                        .attr("class", "svgsection_round_Text")
+                        .attr("x", spot[i].x)
+                        .attr("y", spot[i].y)
+                        .text(origi[i])
+                        .attr("text-anchor", "middle")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", function () {
+                            if (size <= 5) {
+                                return "6px"
+                            }
+                            else if (size >= 15) {
+                                return "12px"
+                            } else {
+                                return "10px"
+                            }
+                        })
+                        .attr('fill', 'black')
+                        .style("font-weight", "bold")
+                        .attr("opacity", 0.9)
+                        .on("mouseover", function () {
+                            d3.select(this)
+                                    .attr("font-size", "20px")
+                                    .attr("opacity", 1)
+                        })
+                        .on("mouseout", function () {
+                            d3.select(this)
+                                    .attr("font-size", function () {
+                                        if (size <= 5) {
+                                            return "6px"
+                                        }
+                                        else if (size >= 15) {
+                                            return "12px"
+                                        } else {
+                                            return "10px"
+                                        }
+                                    })
+                                    .attr("opacity", 0.9)
+                        })
+
+
+            }
+        }
+
+        d3.selectAll(".accordion-section-title").on("click", change);
+
+        function change() {
+
+            if (this.id == "Genre") transitionGenre(Genre_name, Genre_color);
+            else if (this.id === "Subgenre") transitionSubgenre(Subgenre_name, Subgenre_color);
+            else if (this.id === "Interactivity") transitionInteractivity(Interactivity_name, Interactivity_color);
+            else if (this.id === "Social_context") transitionSocial_context(Social_context_name, Social_context_color);
+            else if (this.id === "Event_structure") transitionEvent_structure(Event_structure_name, Event_structure_color);
+            else if (this.id === "Channel") transitionChannel(Channel_name, Channel_color);
+            else if (this.id === "Planning_type") transitionPlanning_type(Planning_type_name, Planning_type_color);
+            else if (this.id === "Task") transitionTask(Task_name, Task_color);
+
+        }
+
+
+        function transitionGenre(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.genre == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.genre == name[1]) {
+                            return color[1]
+                        }
+                    })
+        }
+
+        function transitionSubgenre(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.subgenre == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.subgenre == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.subgenre == name[2]) {
+                            return color[2]
+                        }
+                        else if (d.subgenre == name[3]) {
+                            return color[3]
+                        }
+                        else if (d.subgenre == name[4]) {
+                            return color[4]
+                        }
+                        else if (d.subgenre == name[5]) {
+                            return color[5]
+                        }
+                        else if (d.subgenre == name[6]) {
+                            return color[6]
+                        }
+                    })
+        }
+
+        function transitionInteractivity(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.interactivity == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.interactivity == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.interactivity == name[2]) {
+                            return color[2]
+                        }
+                    })
+        }
+
+        function transitionSocial_context(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.social_context == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.social_context == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.social_context == name[2]) {
+                            return color[2]
+                        }
+                    })
+        }
+
+        function transitionEvent_structure(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.event_structure == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.event_structure == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.event_structure == name[2]) {
+                            return color[2]
+                        }
+                    })
+        }
+
+        function transitionChannel(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.channel == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.channel == name[1]) {
+                            return color[1]
+                        }
+                    })
+        }
+
+        function transitionPlanning_type(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.planning_type == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.planning_type == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.planning_type == name[2]) {
+                            return color[2]
+                        }
+                    })
+        }
+
+        function transitionTask(name, color) {
+            d3.selectAll(".svgsection_inner_Circle")
+                    .data(nodes)
+                    .attr("fill", function (d) {
+                        if (d.task == name[0]) {
+                            return color[0]
+                        }
+                        else if (d.task == name[1]) {
+                            return color[1]
+                        }
+                        else if (d.task == name[2]) {
+                            return color[2]
+                        }
+                        else if (d.task == name[3]) {
+                            return color[3]
+                        }
+                        else if (d.task == name[4]) {
+                            return color[4]
+                        }
+                        else if (d.task == name[5]) {
+                            return color[5]
+                        }
+                        else if (d.task == name[6]) {
+                            return color[6]
+                        }
+                        else if (d.task == name[7]) {
+                            return color[7]
+                        }
+                        else if (d.task == name[8]) {
+                            return color[8]
+                        }
+                        else if (d.task == name[9]) {
+                            return color[9]
+                        }
+                        else if (d.task == name[10]) {
+                            return color[10]
+                        }
+                        else if (d.task == name[11]) {
+                            return color[11]
+                        }
+                        else if (d.task == name[12]) {
+                            return color[12]
+                        }
+                        else if (d.task == name[13]) {
+                            return color[13]
+                        }
+                        else if (d.task == name[14]) {
+                            return color[14]
+                        }
+                        else if (d.task == name[15]) {
+                            return color[15]
+                        }
+                        else if (d.task == name[16]) {
+                            return color[16]
+                        }
+                        else if (d.task == name[17]) {
+                            return color[17]
+                        }
+                        else if (d.task == name[18]) {
+                            return color[18]
+                        }
+
+                    })
+        }
+
+
+    }
+
+    //var color2 = d3.scale.linear().domain([0, 2]).range(["#DD004B", "#E1008F"]);
+
+    //for(var k = 0 ; k < 3 ; k++){
+    //console.log("color2  "+color2(k))
+    //}
+
+
+    drawLegend(Genre_name, Genre_color, "accordion-1")
+    drawLegend(Subgenre_name, Subgenre_color, "accordion-2"/*, subgenre*/)
+    drawLegend(Interactivity_name, Interactivity_color, "accordion-3"/*, interactivity*/)
+    drawLegend(Social_context_name, Social_context_color, "accordion-4"/*, social_context*/)
+    drawLegend(Event_structure_name, Event_structure_color, "accordion-5"/*, event_structure*/)
+    drawLegend(Channel_name, Channel_color, "accordion-6"/*, channel*/)
+    drawLegend(Planning_type_name, Planning_type_color, "accordion-7"/*, planning_type*/)
+    drawLegend(Task_name, Task_color, "accordion-8"/*, task*/)
+
+
+    function drawLegend(name, color, divid) {  // Genre_name,  Genre_color, "accordion-1", genre
+
+        var variable_name = name;
+
+        var variable_color = color;
+
+        var container = d3.select('#' + divid)
+
+
+        if (divid == "accordion-1") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.genre == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+                                d3.selectAll(".svgsection_inner_Text")
+                                        .attr("opacity", function (d) {
+                                            if (d.genre == variable_name[index]) {
+                                                return 0.9
+                                            } else {
+                                                return 0.4
+                                            }
+                                        })
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+
+                        })
+            }
+
+        } else if (divid == "accordion-2") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.subgenre == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-3") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.interactivity == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-4") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.social_context == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-5") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.event_structure == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-6") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.channel == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-7") {
+
+            var size = variable_name.length;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 8 + (10 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 6.5)
+                        .attr("height", 6.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 11 + (10 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "7.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.planning_type == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        } else if (divid == "accordion-8") {
+
+            var size = 16;
+            var scroll = container.append("div")
+                    .append("svg")
+                    .attr("viewBox", "14,5,100," + size + "0");
+
+            for (var j = 0; j < variable_name.length; j++) {
+
+                scroll.append("rect")
+                        .attr("class", "right_legend_rect")
+                        .attr("x", 18)
+                        .attr("y", 9 + (8.1 * j))
+                        .attr("stroke", "")
+                        .attr("stroke-width", "0.7px")
+                        .attr("rx", 1)
+                        .attr("ry", 1)
+                        .attr("width", 5.5)
+                        .attr("height", 5.5)
+                        .attr("fill", variable_color[j])
+
+                scroll.append("text")
+                        .attr("x", 27)
+                        .attr("y", 12 + (8 * j))
+                        .attr("class", "right_legend")
+                        .text(variable_name[j])
+                        .attr("text-anchor", "start")
+                        .attr("font-family", "Open Sans")
+                        .attr("dominant-baseline", "middle")
+                        .attr("font-size", "6.5px")
+                        .attr("fill", "black")
+                        .style("font-weight", "")
+                        .style("cursor", "default")
+                        .on("mouseover", (function (index) {
+                            return (function () {
+                                d3.selectAll(".svgsection_inner_Circle")
+                                        .attr("opacity", function (d) {
+                                            if (d.task == variable_name[index]) {
+                                                return 0.95
+                                            } else {
+                                                return 0.2
+                                            }
+                                        });
+
+
+                            })
+                        })(j))
+                        .on("mouseout", function () {
+                            d3.selectAll(".svgsection_inner_Circle")
+                                    .attr("opacity", 0.6)
+
+                        })
+            }
+
+        }
+
+    }
+
+
+})
+
+
+
+</script></div><div id="right_up"></div><div id="right"><div class="accordion" value="Genre">
+<div class="accordion-section" >
+<a class="accordion-section-title" id="Genre" href="#accordion-1">Genre</a>
+<div id="accordion-1" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Subgenre" href="#accordion-2"  >Subgenre</a>
+<div id="accordion-2" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Interactivity" href="#accordion-3">Interactivity</a>
+<div id="accordion-3" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Social_context" href="#accordion-4">Social_context</a>
+<div id="accordion-4" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Event_structure" href="#accordion-5">Event_structure</a>
+<div id="accordion-5" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Channel" href="#accordion-6">Channel</a>
+<div id="accordion-6" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Planning_type" href="#accordion-7">Planning_type</a>
+<div id="accordion-7" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion-->
+<div class="accordion">
+<div class="accordion-section">
+<a class="accordion-section-title" id="Task" href="#accordion-8">Task</a>
+<div id="accordion-8" class="accordion-section-content">
+<p></p>
+</div><!--end .accordion-section-content-->
+</div><!--end .accordion-section-->
+</div><!--end .accordion--><script>$(document).ready(function () {
+    function close_accordion_section() {
+        $('.accordion .accordion-section-title').removeClass('active');
+        $('.accordion .accordion-section-content').slideUp(300).removeClass('open');
+    }
+
+    $('.accordion-section-title').click(function (e) {
+        // Grab current anchor value
+        var currentAttrValue = $(this).attr('href');
+
+        if ($(e.target).is('.active')) {
+            close_accordion_section();
+        } else {
+            close_accordion_section();
+
+            // Add active class to section title
+            $(this).addClass('active');
+            // Open up the hidden content panel
+            $('.accordion ' + currentAttrValue).slideDown(300).addClass('open');
+        }
+
+        e.preventDefault();
+    });
+});
+
+</script></div></body><div id="bottomdown"><p><p>&copy; 2017 Mun, SeongMin. All rights reserved.</p></p></div></html>

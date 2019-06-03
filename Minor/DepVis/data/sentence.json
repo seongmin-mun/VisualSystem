@@ -1,0 +1,1 @@
+{"sentence":"Fruit flies like a banana.","range":110,"root":"like","morpheme":["Fruit flies","like","a","banana","."],"pos":["MWE","VB","DT","NN","SYM"],"links":[{"source":"like","target":"banana","tag":"dobj"},{"source":"banana","target":"a","tag":"det"},{"source":"like","target":"Fruit flies","tag":"dep"}]}
