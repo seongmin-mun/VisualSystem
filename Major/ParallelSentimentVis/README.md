@@ -21,7 +21,7 @@ Machine Learning & NLP & Statistics
 - Language : R, Python
 - DataBase : MySQL
 - Machine Learning : Decision Tree (CART (Classification And Regression Trees)), Logistic Regression
-- NLP : Morpheme analysis, Pre-Processing (tokenization, lemetazation, N-gram, window size), Sentiment analysis, TF-IDF (Term Frequency - Inverse Document Frequency), etc.
+- NLP : Sentiment analysis, Morpheme analysis, TF-IDF (Term Frequency - Inverse Document Frequency), Pre-Processing (tokenization, lemetazation, N-gram, window size), etc.
 - Statistics : Decision Tree Anlaysis
 - Tool : RStudio, PyCharm, Jupyter notebook
 
