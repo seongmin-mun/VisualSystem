@@ -16,7 +16,7 @@ Word can be divided into two types: those whose meaning can be described in one 
 
 ### Skills
 -------
- Machine Learning & NLP
+Machine Learning & NLP
 
 - Language : Java, Python
 - DataBase : MySQL
