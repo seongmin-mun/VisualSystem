@@ -16,7 +16,7 @@ In this research project, I investigate polysemy of postpositions in Korean. As 
 
 ### Skills
 -------
-Data Analysis
+Statistics & Machine Learning
 
 - Language : R, Python
 - DataBase : MySQL
@@ -27,11 +27,11 @@ Server (Back-end)
 
 - Language : Java, Python, PHP
 - DataBase : MySQL
-- Library : Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
+- Library : Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon)), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
 - Tool : IntelliJ IDEA, PyCharm
 
 Client (Front-end)
 
-- Language : html, javascript (d3.js, jquery.js, bootstrap.js), css
+- Language : javascript (d3.js, jquery.js, bootstrap.js), html/css
 - DataBase : json
 - Tool : Atom, WebStorm
