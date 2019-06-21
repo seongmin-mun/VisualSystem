@@ -4,7 +4,7 @@
 [![Java](https://img.shields.io/badge/Java-Used-red.svg)](https://shields.io/#/) [![Python](https://img.shields.io/badge/Python-Used-blue.svg)](https://shields.io/#/) [![JavaScript](https://img.shields.io/badge/JavaScript-Used-brightgreen.svg)](https://shields.io/#/) [![SQL](https://img.shields.io/badge/SQL-Used-9cf.svg)](https://shields.io/#/) [![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-Used-yellow.svg)](https://shields.io/#/)
 
 ## Abstract
-Word can be divided into two types: those whose meaning can be described in one word and those whose meaning in expressed through a recurring combination of words, also known as multiword expressions (MWEs). These MWEs create problems in many language recognition systems (Stanford CoreNLP, Google Translator, etc) because they are difficult to accurately recognize. Through this visualization, we compared the accuracy of algorithms that recognize MWEs with those that do not recognize MWEs.
+Word can be divided into two types: those whose meaning can be described in one word and those whose meaning in expressed through a recurring combination of words, also known as multiword expressions (MWEs). These MWEs create problems in many language recognition systems (Stanford CoreNLP, Google Translator, etc.) because they are difficult to accurately recognize. Through this visualization, we compared the accuracy of algorithms that recognize MWEs with those that do not recognize MWEs.
 
 ### Screenshots
 -----------
