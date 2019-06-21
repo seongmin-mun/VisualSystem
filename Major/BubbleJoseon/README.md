@@ -24,6 +24,10 @@ Machine Learning & Statistics
 - Statistics : Reliability Analysis, Independence T-test
 - Tool : RStudio
 
+Visual Technique
+
+- Visual Method : Bubble Heap Network
+
 Server (Back-end)
 
 - Language : Python, PHP
