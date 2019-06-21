@@ -25,6 +25,10 @@ Statistics & Machine Learning & NLP
 - NLP : Morpheme analysis, Pre-Processing (tokenization, lemetazation, N-gram, window size), Sentiment analysis, TF-IDF (Term Frequency - Inverse Document Frequency), etc.
 - Tool : RStudio, PyCharm, Jupyter notebook
 
+Visual Technique
+
+- Visual Method : Parallel Coordinates
+
 Server (Back-end)
 
 - Language : Java, Python, PHP
@@ -37,10 +41,6 @@ Client (Front-end)
 - Language : javascript (d3.js, jquery.js), html/css
 - DataBase : json
 - Tool : Atom, WebStorm
-
-Visual Technique
-
-- Visual Method : Parallel Coordinates
 
 ### Related works
 -------
