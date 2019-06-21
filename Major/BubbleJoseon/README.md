@@ -16,13 +16,14 @@ History studies involve the discovery of new facts based upon the records as wel
 
 ### Skills
 -------
-Machine Learning & Statistics
+Machine Learning & NLP & Statistics
 
-- Language : R
-- DataBase : MySQL
+- Language : Java, R
+- DataBase : MySQL, MongoDB
 - Machine Learning : Phi coefficient, Correlation
+- NLP : Syntactic analysis, Morpheme analysis, Pre-Processing (tokenization, lemetazation, N-gram, window size), etc.
 - Statistics : Reliability Analysis, Independence T-test
-- Tool : RStudio
+- Tool : IntelliJ IDEA, RStudio
 
 Visual Technique
 
@@ -30,10 +31,10 @@ Visual Technique
 
 Server (Back-end)
 
-- Language : Python, PHP
-- DataBase : MySQL
-- Library : Python (numpy, sklearn, pandas, nltk, gensim, scipy)
-- Tool : PyCharm
+- Language : Java, Python, PHP
+- DataBase : MySQL, MongoDB
+- Library : Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon)), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
+- Tool : IntelliJ IDEA, PyCharm
 
 Client (Front-end)
 
