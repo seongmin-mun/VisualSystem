@@ -15,14 +15,22 @@ Korean is a Subject-Object-Verb language, which has case marking by dedicated po
 
 ### Skills
 -------
-Server(Back-end)
+Data Analysis
 
-- Language : Java, Python
+- Language : R, Python
 - DataBase : MySQL
-- Library : Java(KKMA(org.snu.ids.ha), Eunjeon(org.bitbucket.eunjeon.seunjeon)), Python(numpy, sklearn, pandas, nltk, gensim, scipy)
+- Machine Learning Algorithm : PPMI (Positive Pointwise Mutual Information), SVD (Singular Value Decomposition), SGNS (Skip-Gram with Negative Sampling), TSNE (t-Distributed Stochastic Neighbor Embedding)
+- Tool : RStudio, PyCharm, Jupyter notebook
+
+Server (Back-end)
+
+- Language : Java, Python, PHP
+- DataBase : MySQL
+- Library : Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
 - Tool : IntelliJ IDEA, PyCharm
 
-Client(Front-end)
+Client (Front-end)
 
-- Language : html, javascript(d3.js, jquery.js), css
+- Language : html, javascript (d3.js, jquery.js, bootstrap.js), css
 - DataBase : json
+- Tool : Atom, WebStorm
