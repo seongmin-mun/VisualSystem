@@ -16,12 +16,17 @@ In this research project, I investigate polysemy of postpositions in Korean. As 
 
 ### Skills
 -------
-Statistics & Machine Learning
+Statistics & Machine Learning & NLP
 
 - Language : R, Python
 - DataBase : MySQL
 - Machine Learning Algorithm : PPMI (Positive Pointwise Mutual Information), SVD (Singular Value Decomposition), SGNS (Skip-Gram with Negative Sampling), TSNE (t-Distributed Stochastic Neighbor Embedding)
+- NLP : Morpheme analysis, Pre-Processing (tokenization, lemetazation, N-gram, window size) etc.
 - Tool : RStudio, PyCharm, Jupyter notebook
+
+Visual Technique
+
+- Visual Method : Distribution Map, Force Directed Network
 
 Server (Back-end)
 
