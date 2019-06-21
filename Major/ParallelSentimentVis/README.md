@@ -16,13 +16,13 @@ Predictive analysis is based on a probabilistic learning algorithm called patter
 
 ### Skills
 -------
-Statistics & Machine Learning & NLP
+Machine Learning & NLP & Statistics
 
 - Language : R, Python
 - DataBase : MySQL
-- Machine Learning Algorithm : Decision Tree (CART (Classification And Regression Trees)), Logistic Regression
-- Statistics Method : Decision Tree Anlaysis
+- Machine Learning : Decision Tree (CART (Classification And Regression Trees)), Logistic Regression
 - NLP : Morpheme analysis, Pre-Processing (tokenization, lemetazation, N-gram, window size), Sentiment analysis, TF-IDF (Term Frequency - Inverse Document Frequency), etc.
+- Statistics : Decision Tree Anlaysis
 - Tool : RStudio, PyCharm, Jupyter notebook
 
 Visual Technique
