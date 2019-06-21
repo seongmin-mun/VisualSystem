@@ -16,11 +16,12 @@ History studies involve the discovery of new facts based upon the records as wel
 
 ### Skills
 -------
-Data Analysis
+Statistics & Machine Learning
 
 - Language : R
 - DataBase : MySQL
-- Machine Learning Algorithm : Phi coefficient, Correlation analysis, Reliability Analysis, Independence T-test
+- Machine Learning Algorithm : Phi coefficient, Correlation
+- Statistics Method : Reliability Analysis, Independence T-test
 - Tool : RStudio
 
 Server (Back-end)
