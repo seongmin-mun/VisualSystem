@@ -16,12 +16,12 @@ History studies involve the discovery of new facts based upon the records as wel
 
 ### Skills
 -------
-Statistics & Machine Learning
+Machine Learning & Statistics
 
 - Language : R
 - DataBase : MySQL
-- Machine Learning Algorithm : Phi coefficient, Correlation
-- Statistics Method : Reliability Analysis, Independence T-test
+- Machine Learning : Phi coefficient, Correlation
+- Statistics : Reliability Analysis, Independence T-test
 - Tool : RStudio
 
 Server (Back-end)
@@ -39,4 +39,10 @@ Client (Front-end)
 
 ### Related works
 -------
+Paper
 
+- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
+
+Video
+
+- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
