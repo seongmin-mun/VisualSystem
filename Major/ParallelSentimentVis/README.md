@@ -47,6 +47,7 @@ Client (Front-end)
 Paper
 
 - <strong>S. Mun</strong>, and K. Lee, <i>Data analysis by Integrating statistics and visualization: Visual verification for the prediction model</i>, Journal of Society of Design Convergence, vol.15, no.6, pp. 195-214, Dec 2016 , [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/2.Publicated%20Papers/KCI/Journal%20of%20Society%20of%20Design%20Convergence/Data%20analysis%20by%20Integrating%20statistics%20and%20visualization/Data%20analysis%20by%20Integrating%20statistics%20and%20visualization.pdf)
+
 Video
 
 - [Video](https://youtu.be/Sk-tziklLQ8)
