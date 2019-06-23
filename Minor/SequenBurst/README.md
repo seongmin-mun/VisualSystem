@@ -41,13 +41,3 @@ Client (Front-end)
 - DataBase : json
 - Tool : Atom, WebStorm
 
-### Related works
--------
-Paper
-
-- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
-
-Video
-
-- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
-
