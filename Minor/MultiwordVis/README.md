@@ -46,9 +46,9 @@ Client (Front-end)
 -------
 Paper
 
-- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
+- <strong>S. Mun</strong>, G. Desagulier, and K. Lee, <i>A visual approach for text analysis using multiword topics</i>, IEEE, EuroVis 2017, 19th EG/VGTC Conference on Visualization, Jun 2017, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Posters/Eurovis2017/A%20visual%20approach%20for%20text%20analysis%20using%20multiword%20topics.pdf)
 
 Video
 
-- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
+- [Video](https://youtu.be/Mk7lLTaj4c0)
 
