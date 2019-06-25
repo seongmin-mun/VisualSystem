@@ -46,7 +46,7 @@ Client (Front-end)
 -------
 Paper
 
-- <strong>S. Mun</strong>, G. Desagulier, and K. Lee, <i>A visual approach for text analysis using multiword topics</i>, IEEE, EuroVis 2017, 19th EG/VGTC Conference on Visualization, Jun 2017, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Posters/Eurovis2017/A%20visual%20approach%20for%20text%20analysis%20using%20multiword%20topics.pdf)
+- <strong>S. Mun</strong>, G. Desagulier, and K. Lee, <i>A visual approach for text analysis using multiword topics</i>, IEEE, EuroVis 2017, 19th EG/VGTC Conference on Visualization, Jun 2017, [PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Posters/Eurovis2017/A%20visual%20approach%20for%20text%20analysis%20using%20multiword%20topics.pdf)
 
 Video
 
