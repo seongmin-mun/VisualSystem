@@ -46,5 +46,5 @@ Client (Front-end)
 -------
 Paper
 
-- H. Ha, <strong>S. Mun</strong>, G. Choi, E. Hong, S. Lee, and K. Lee, <i>Visual Analysis on the Political Orientation of Historical Characters in the Joseon Dynasty: Focusing on Seo, Geojeong</i>, Archives of Design Research, vol.32, no.1, pp. 147-161, Feb 2019, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/2.Publicated%20Papers/SCOPUS/Archives%20of%20Design%20Research/Visual%20Analysis%20on%20the%20Political%20Orientation%20of%20Historical%20Characters%20in%20the%20Joseon%20Dynasty.pdf)
+- H. Ha, <strong>S. Mun</strong>, G. Choi, E. Hong, S. Lee, and K. Lee, <i>Visual Analysis on the Political Orientation of Historical Characters in the Joseon Dynasty: Focusing on Seo, Geojeong</i>, Archives of Design Research, vol.32, no.1, pp. 147-161, Feb 2019, [PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/2.Publicated%20Papers/SCOPUS/Archives%20of%20Design%20Research/Visual%20Analysis%20on%20the%20Political%20Orientation%20of%20Historical%20Characters%20in%20the%20Joseon%20Dynasty.pdf)
 
