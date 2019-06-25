@@ -45,7 +45,7 @@ Client (Front-end)
 -------
 Paper
 
-- <strong>S. Mun</strong>, G. Choi, G. Desagulier, and K. Lee, <i>PreechVis: Visual Profiling using Multiple-word Combinations</i>, Proceedings of the 13th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications (IVAPP2018), pp. 97-107, Jan 2018, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Fullpapers/IVAPP2018/Visual%20Profiling%20using%20Multiple-word%20Combinations.pdf)
+- <strong>S. Mun</strong>, G. Choi, G. Desagulier, and K. Lee, <i>PreechVis: Visual Profiling using Multiple-word Combinations</i>, Proceedings of the 13th International Joint Conference on Computer Vision, Imaging and Computer Graphics Theory and Applications (IVAPP2018), pp. 97-107, Jan 2018, [PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Fullpapers/IVAPP2018/Visual%20Profiling%20using%20Multiple-word%20Combinations.pdf)
 
 Video
 
