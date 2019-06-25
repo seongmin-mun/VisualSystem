@@ -45,7 +45,7 @@ Client (Front-end)
 -------
 Paper
 
-- G. Desagulier, A. Lacheret-Dujour, F. Isel, and <strong>S. Mun</strong>, <i>Characterizing discourse genres with prosodic features in a reference treebank of spoken French</i>, Aflicojet2018, Corpora and Representativeness, Nanterre ,France, 3-4 May 2018, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Invitedtalks/AFLiCoJET2018/Characterizing%20discourse%20genres%20with%20prosodic%20features%20in%20a%20reference%20treebank%20of%20spoken%20French.pdf)
+- G. Desagulier, A. Lacheret-Dujour, F. Isel, and <strong>S. Mun</strong>, <i>Characterizing discourse genres with prosodic features in a reference treebank of spoken French</i>, Aflicojet2018, Corpora and Representativeness, Nanterre ,France, 3-4 May 2018, [PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Invitedtalks/AFLiCoJET2018/Characterizing%20discourse%20genres%20with%20prosodic%20features%20in%20a%20reference%20treebank%20of%20spoken%20French.pdf)
 
 Video
 
