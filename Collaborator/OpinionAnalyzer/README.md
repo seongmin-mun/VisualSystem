@@ -46,7 +46,7 @@ Client (Front-end)
 Paper
 
 - <strong>S. Mun</strong>, G. Kim, R. M. Karim, and K. Lee, <i>Internet Review Opinion Mining and Data Visualization</i>, Symposium on Visualization in Data Science (VDS at IEEE VIS 2015), Oct 2015,
-[PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Posters/WBC2016/Visual%20Trend%20Analysis%20Method%20for%20Ontology%20based%20Opinion%20Mining%20on%20Movie%20Review.pdf)
+[PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Posters/WBC2016/Visual%20Trend%20Analysis%20Method%20for%20Ontology%20based%20Opinion%20Mining%20on%20Movie%20Review.pdf)
 
 Video
 
