@@ -45,7 +45,7 @@ Client (Front-end)
 -------
 Paper
 
-- <strong>S. Mun</strong>, I. Wang, G. Desagulier, G. Choi, and K. Lee, <i>Time flies like an arrow and fruit flies like a banana; parsing multiword constructions with DepVis</i>, The 10th International Conference on Construction Grammar(ICCG10), 16-20 Jul, 2018, [PDF](http://localhost:8080/Web/MyWebsite-master/Seongmin/Resources/3.Conferences/Invitedtalks/ICCG10/Time%20flies%20like%20an%20arrow%20and%20fruit%20flies%20like%20a%20banana;%20parsing%20multiword%20constructions%20with%20DepVis.pdf)
+- <strong>S. Mun</strong>, I. Wang, G. Desagulier, G. Choi, and K. Lee, <i>Time flies like an arrow and fruit flies like a banana; parsing multiword constructions with DepVis</i>, The 10th International Conference on Construction Grammar(ICCG10), 16-20 Jul, 2018, [PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Invitedtalks/ICCG10/Time%20flies%20like%20an%20arrow%20and%20fruit%20flies%20like%20a%20banana;%20parsing%20multiword%20constructions%20with%20DepVis.pdf)
 
 Video
 
