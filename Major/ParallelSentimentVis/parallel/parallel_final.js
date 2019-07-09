@@ -334,7 +334,7 @@ function highlight(d) {
 }
 
 function click(d) {
-  window.open("https://sensortower.com/ios/us/publisher/app/name/" + d.id)
+  window.open("https://movie.naver.com/movie/search/result.nhn?query="+ d.name +"&section=all")
 }
 
 
