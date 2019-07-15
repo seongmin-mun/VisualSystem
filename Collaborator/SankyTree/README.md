@@ -11,7 +11,7 @@ A decision tree is one of the predictive models in data mining and has been wide
   <img src="../Screenshot/SankeyTree.png" class="img-rounded" style="width:100%;"></img>
 </div>
 
-- [Try to use SankeyTree](https://seongmin-mun.github.io/VisualSystem/Collaborator/SankeyTree/index.html)
+- [Try to use SankeyTree](https://seongmin-mun.github.io/VisualSystem/Collaborator/SankyTree/index.html)
 
 ### Skills
 -------
