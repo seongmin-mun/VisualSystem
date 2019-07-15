@@ -1,0 +1,117 @@
+.info{
+    position : absolute;
+    right : 5px;
+    top: 3px;
+    font-size: 20px !important;
+    cursor: pointer;
+    color: #eee;
+    z-index: 99;
+}
+.info.index > .infoMsg{
+    position: fixed;
+    right: 330px;
+    top: 120px;
+    width: 300px;
+    height: 100px;
+    background-color: #f7f6f5;
+    border: solid 1px #9f9f9f;
+    border-radius: 6px;
+    opacity: 0;
+    font-size: 12px;
+    padding: 10px;
+    color: #000;
+    transition-duration: 0.3s;
+    white-space: pre-line;
+    line-height: 20px;
+}
+
+.info.index:hover > .infoMsg{
+    opacity: 1;
+}
+
+.info.index > .infoMsg:after, .info.index > .infoMsg:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.info.index > .infoMsg:after {
+    border-left-color: #f7f6f5;
+    border-width: 10px;
+    margin-top: -10px;
+}
+.info.index > .infoMsg:before {
+    border-left-color: #626262;
+    border-width: 11px;
+    margin-top: -11px;
+}
+
+
+.info.sort > .infoMsg{
+    position: fixed;
+    right: 330px;
+    top: 376px;
+    width: 300px;
+    height: 100px;
+    background-color: #f7f6f5;
+    border: solid 1px #9f9f9f;
+    border-radius: 6px;
+    opacity: 0;
+    font-size: 12px;
+    padding: 10px;
+    color: #000;
+    transition-duration: 0.3s;
+    white-space: pre-line;
+    line-height: 17px;
+}
+
+.info.sort:hover > .infoMsg{
+    opacity: 1;
+}
+
+.info.sort > .infoMsg:after, .info.sort > .infoMsg:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.info.sort > .infoMsg:after {
+    border-left-color: #f7f6f5;
+    border-width: 10px;
+    margin-top: -10px;
+}
+.info.sort > .infoMsg:before {
+    border-left-color: #626262;
+    border-width: 11px;
+    margin-top: -11px;
+}
+.infoBg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    opacity: 0;
+    z-index: 9;
+    pointer-events: none;
+    transition-duration: 0.3s;
+}
+
+.infoBg.show{
+    opacity: 0.6;
+    pointer-events: all;
+}
+
+
+

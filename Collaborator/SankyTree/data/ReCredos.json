@@ -1,0 +1,144 @@
+{
+  "nodes": [
+    {"id":"all_0","group":"all","depth":0},
+    {"id":"KDSQScore >=2.7403_1","group":"KDSQScore","depth":1},
+    {"id":"KDSQScore <2.7403_1","group":"KDSQScore","depth":1},
+
+    {"id":"K-MMSEScore <3.1568_1","group":"K-MMSEScore","depth":2},
+    {"id":"K-MMSEScore <3.0678_1","group":"K-MMSEScore","depth":2},
+    {"id":"K-MMSEScore >=3.0678_1","group":"K-MMSEScore","depth":2},
+
+    {"id":"SIADL-Finances 0/1_1","group":"SIADL-Finances","depth":3},
+    {"id":"SIADL-Finances 2/3_1","group":"SIADL-Finances","depth":3},
+    {"id":"SNSB-StroopTest <3.2526_1","group":"SNSB-StroopTest","depth":3},
+    {"id":"SNSB-StroopTest >=3.2526_1","group":"SNSB-StroopTest","depth":3},
+    {"id":"SIADL-Going out 1/2/3_1","group":"SIADL-Going out","depth":3},
+    {"id":"0","group":"0","depth":3},
+    {"id":"SIADL-Going out 0_3","group":"SIADL-Going out","depth":3},
+
+
+    {"id":"SNSB-StroopTest <3.1985_1","group":"SNSB-StroopTest","depth":4},
+    {"id":"SNSB-StroopTest >=3.1985_1","group":"SNSB-StroopTest","depth":4},
+    {"id":"SIADL-Cooking 1/2/3_1","group":"SIADL_Cooking","depth":4},
+    {"id":"SIADL-Cooking 0_1","group":"SIADL_Cooking","depth":4},
+    {"id":"KDSQ-Difficulty in changing clothes 0_1","group":"KDSQ","depth":4},
+    {"id":"KDSQ-Difficulty in changing clothes 1/2_1","group":"KDSQ","depth":4},
+    {"id":"K-MMSEScore <3.1568_2","group":"K-MMSEScore","depth":4},
+    {"id":"K-MMSEScore <2.8029_1","group":"K-MMSEScore","depth":4},
+    {"id":"K-MMSEScore >=2.8029_1","group":"K-MMSEScore","depth":4},
+    {"id":"SIADL-Talking about recent events 2/3_1","group":"SIADL-Talking about recent events","depth":4},
+    {"id":"SIADL-Talking about recent events 0/1_1","group":"SIADL-Talking about recent events","depth":4},
+    {"id":"SIADL-Finances 2/3_2","group":"SIADL-Finances","depth":4},
+
+
+    {"id":"SIADL-Medications 1/2/3_1","group":"SIADL-Medications","depth":5},
+    {"id":"SNSB-PraxisIdeomotor <1.3962_1","group":"SNSB-PraxisIdeomotor","depth":5},
+    {"id":"SNSB-Rey CFT score <3.5409_1","group":"SNSB-Rey CFT score","depth":5},
+    {"id":"SIADL-Transportation 1/2/3_1","group":"SIADL-Transportation","depth":5},
+    {"id":"SIADL-Finances 0_5","group":"SIADL-Finances","depth":5},
+    {"id":"SIADL-Finances 1_5","group":"SIADL-Finances","depth":5},
+    {"id":"SIADL-Finances 2_5","group":"SIADL-Finances","depth":5},
+    {"id":"SIADL-Finances 3_5","group":"SIADL-Finances","depth":5},
+    {"id":"SIADL-Household chores 1/2/3_1","group":"SIADL_Household chores","depth":5},
+    {"id":"K-MMSEScore <3.277_1","group":"K-MMSEScore","depth":5},
+
+    {"id":"K-MMSE-Country, town 0_1","group":"K-MMSE-Country","depth":6},
+    {"id":"A-SIADL-P5 1/2/3_6","group":"A-SIADL-P5","depth":6},
+    {"id":"SIADL-Leisure/hobbies 2/3_1","group":"SIADL-Leisure/hobbies","depth":6},
+    {"id":"KDSQ-Difficulty in wearing costume 1_1","group":"KDSQ_Difficulty in wearing costume","depth":6},
+    {"id":"SIADL-Shopping 2/3_1","group":"SIADL-Shopping","depth":6}
+
+  ],
+  "edges": [
+    {"from":"all_0","to":"KDSQScore >=2.7403_1","path":0,"color_0":539,"color_1":4216},
+    {"from":"all_0","to":"KDSQScore <2.7403_1","path":0,"color_0":10220,"color_1":1698},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","path":79,"color_0":70,"color_1":71},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest >=3.2526_1","path":79,"color_0":70,"color_1":71},
+    {"from":"SNSB-StroopTest >=3.2526_1","to":"SIADL-Talking about recent events 2/3_1","path":79,"color_0":70,"color_1":71},
+    {"from":"SIADL-Talking about recent events 2/3_1","to":"SIADL-Finances 0_5","path":79,"color_0":22,"color_1":21},
+    {"from":"SIADL-Talking about recent events 2/3_1","to":"SIADL-Finances 1_5","path":79,"color_0":48,"color_1":50},
+    {"from":"SIADL-Finances 0_5","to":"A-SIADL-P5 1/2/3_6","path":79,"color_0":22,"color_1":21},
+    {"from":"SIADL-Finances 1_5","to":"A-SIADL-P5 1/2/3_6","path":79,"color_0":48,"color_1":53},
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore <3.1568_1","path":24,"color_0":98,"color_1":344},
+    {"from":"K-MMSEScore <3.1568_1","to":"SIADL-Finances 0/1_1","path":24,"color_0":98,"color_1":344},
+    {"from":"SIADL-Finances 0/1_1","to":"SNSB-StroopTest <3.1985_1","path":24,"color_0":98,"color_1":344},
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore <3.1568_1","path":27,"color_0":232,"color_1":3391},
+    {"from":"K-MMSEScore <3.1568_1","to":"SIADL-Finances 2/3_1","path":27,"color_0":232,"color_1":3391},
+    {"from":"SIADL-Finances 2/3_1","to":"SIADL-Cooking 1/2/3_1","path":27,"color_0":232,"color_1":3391},
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore <3.1568_1","path":52,"color_0":14,"color_1":110},
+    {"from":"K-MMSEScore <3.1568_1","to":"SIADL-Finances 2/3_1","path":52,"color_0":14,"color_1":110},
+    {"from":"SIADL-Finances 2/3_1","to":"SIADL-Cooking 0_1","path":52,"color_0":14,"color_1":110},
+    {"from":"SIADL-Cooking 0_1","to":"SNSB-PraxisIdeomotor <1.3962_1","path":52,"color_0":14,"color_1":110},
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore >=3.0678_1","width":98,"path":58,"color_0":45,"color_1":53},
+    {"from":"K-MMSEScore >=3.0678_1","to":"SIADL-Finances 2/3_1","width":98,"path":58,"color_0":45,"color_1":53},
+    {"from":"SIADL-Finances 2/3_1","to":"KDSQ-Difficulty in changing clothes 0_1","width":98,"path":58,"color_0":45,"color_1":53},
+    {"from":"KDSQ-Difficulty in changing clothes 0_1","to":"SNSB-Rey CFT score <3.5409_1","width":98,"path":58,"color_0":45,"color_1":53},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore >=3.0678_1","width":87,"path":80,"color_0":17,"color_1":70},
+    {"from":"K-MMSEScore >=3.0678_1","to":"SIADL-Going out 1/2/3_1","width":87,"path":80,"color_0":17,"color_1":70},
+    {"from":"SIADL-Going out 1/2/3_1","to":"SIADL-Finances 2/3_2","width":87,"path":80,"color_0":17,"color_1":70},
+    {"from":"SIADL-Finances 2/3_2","to":"K-MMSEScore <3.277_1","width":87,"path":80,"color_0":17,"color_1":70},
+    {"from":"K-MMSEScore <3.277_1","to":"SIADL-Shopping 2/3_1","width":87,"path":80,"color_0":17,"color_1":70},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","width":85,"path":70,"color_0":156,"color_1":185},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest <3.2526_1","width":85,"path":70,"color_0":156,"color_1":185},
+    {"from":"SNSB-StroopTest <3.2526_1","to":"K-MMSEScore <3.1568_2","width":85,"path":70,"color_0":156,"color_1":185},
+    {"from":"K-MMSEScore <3.1568_2","to":"SIADL-Finances 0_5","width":85,"path":70,"color_0":105,"color_1":132},
+    {"from":"K-MMSEScore <3.1568_2","to":"SIADL-Finances 1_5","width":85,"path":70,"color_0":51,"color_1":53},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","width":728,"path":33,"color_0":123,"color_1":605},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest <3.2526_1","width":728,"path":33,"color_0":123,"color_1":605},
+    {"from":"SNSB-StroopTest <3.2526_1","to":"K-MMSEScore <2.8029_1","width":728,"path":33,"color_0":123,"color_1":605},
+    {"from":"K-MMSEScore <2.8029_1","to":"SIADL-Finances 0_5","width":728,"path":33,"color_0":59,"color_1":248},
+    {"from":"K-MMSEScore <2.8029_1","to":"SIADL-Finances 2_5","width":728,"path":33,"color_0":56,"color_1":220},
+    {"from":"K-MMSEScore <2.8029_1","to":"SIADL-Finances 3_5","width":728,"path":33,"color_0":8,"color_1":137},
+
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore >=3.0678_1","width":168,"path":56,"color_0":51,"color_1":117},
+    {"from":"K-MMSEScore >=3.0678_1","to":"SIADL-Finances 2/3_1","width":228,"path":56,"color_0":51,"color_1":177},
+    {"from":"SIADL-Finances 2/3_1","to":"KDSQ-Difficulty in changing clothes 1/2_1","width":228,"path":56,"color_0":51,"color_1":177},
+    {"from":"KDSQ-Difficulty in changing clothes 1/2_1","to":"SIADL-Transportation 1/2/3_1","width":228,"path":56,"color_0":51,"color_1":177},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","width":262,"path":68,"color_0":60,"color_1":202},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest <3.2526_1","width":262,"path":68,"color_0":60,"color_1":202},
+    {"from":"SNSB-StroopTest <3.2526_1","to":"K-MMSEScore >=2.8029_1","width":262,"path":68,"color_0":60,"color_1":202},
+    {"from":"K-MMSEScore >=2.8029_1","to":"SIADL-Finances 2_5","width":262,"path":68,"color_0":54,"color_1":139},
+    {"from":"K-MMSEScore >=2.8029_1","to":"SIADL-Finances 3_5","width":262,"path":68,"color_0":6,"color_1":63},
+    {"from":"SIADL-Finances 2_5","to":"SIADL-Leisure/hobbies 2/3_1","width":262,"path":68,"color_0":54,"color_1":139},
+    {"from":"SIADL-Finances 3_5","to":"SIADL-Leisure/hobbies 2/3_1","width":262,"path":68,"color_0":6,"color_1":63},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","width":85,"path":73,"color_0":32,"color_1":53},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest >=3.2526_1","width":85,"path":73,"color_0":32,"color_1":53},
+    {"from":"SNSB-StroopTest >=3.2526_1","to":"SIADL-Talking about recent events 0/1_1","width":85,"path":73,"color_0":32,"color_1":53},
+    {"from":"SIADL-Talking about recent events 0/1_1","to":"SIADL-Household chores 1/2/3_1","width":85,"path":73,"color_0":32,"color_1":53},
+    {"from":"SIADL-Household chores 1/2/3_1","to":"KDSQ-Difficulty in wearing costume 1_1","width":85,"path":73,"color_0":32,"color_1":53},
+
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore <3.1568_1","width":213,"path":99,"color_0":62,"color_1":151},
+    {"from":"K-MMSEScore <3.1568_1","to":"SIADL-Finances 0/1_1","width":213,"path":99,"color_0":62,"color_1":151},
+    {"from":"SIADL-Finances 0/1_1","to":"SNSB-StroopTest >=3.1985_1","width":213,"path":99,"color_0":62,"color_1":151},
+    {"from":"SNSB-StroopTest >=3.1985_1","to":"SIADL-Medications 1/2/3_1","width":213,"path":99,"color_0":62,"color_1":151},
+    {"from":"SIADL-Medications 1/2/3_1","to":"K-MMSE-Country, town 0_1","width":213,"path":99,"color_0":62,"color_1":151},
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore <3.0678_1","width":231,"path":38,"color_0":71,"color_1":160},
+    {"from":"K-MMSEScore <3.0678_1","to":"SNSB-StroopTest >=3.2526_1","width":231,"path":38,"color_0":71,"color_1":160},
+    {"from":"SNSB-StroopTest >=3.2526_1","to":"SIADL-Talking about recent events 2/3_1","width":231,"path":38,"color_0":71,"color_1":160},
+    {"from":"SIADL-Talking about recent events 2/3_1","to":"SIADL-Finances 2_5","width":231,"path":38,"color_0":54,"color_1":116},
+    {"from":"SIADL-Talking about recent events 2/3_1","to":"SIADL-Finances 3_5","width":231,"path":38,"color_0":17,"color_1":44},
+
+
+    {"from":"KDSQScore >=2.7403_1","to":"K-MMSEScore >=3.0678_1","path":60,"color_0":37,"color_1":50},
+    {"from":"K-MMSEScore >=3.0678_1","to":"SIADL-Going out 1/2/3_1","path":60,"color_0":37,"color_1":50},
+
+
+    {"from":"KDSQScore <2.7403_1","to":"K-MMSEScore >=3.0678_1","path":11,"color_0":9691,"color_1":352},
+    {"from":"K-MMSEScore >=3.0678_1","to":"SIADL-Going out 0_3","path":11,"color_0":9691,"color_1":352}
+
+
+  ]
+}
