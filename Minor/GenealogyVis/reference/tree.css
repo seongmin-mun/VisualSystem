@@ -1,0 +1,38 @@
+.node circle { /*노드(써클)에 대한 정보*/
+    cursor: pointer;
+    fill: #fff; /*노드 체우기*/
+    stroke: steelblue; /*노트 테두리 색상*/
+    stroke-width: 1.5px; /*노드 테두리 굵기*/
+}
+
+.node { /*노드 폰트에 대한 정보*/
+    font: 10px sans-serif; /*폰트사이즈*/
+}
+
+.link { /*링크에 대한 정보*/
+    fill: none; /*체우기 없음*/
+    stroke: #ccc; /*선의 색상*/
+    stroke-width: 1.5px; /*선의 굵기*/
+}
+.link-blue { /*링크에 대한 정보*/
+    fill: none; /*체우기 없음*/
+    stroke: #4d4dff; /*선의 색상*/
+    stroke-width: 1.5px; /*선의 굵기*/
+}
+.link-red { /*링크에 대한 정보*/
+    fill: none; /*체우기 없음*/
+    stroke: #ff4d4d; /*선의 색상*/
+    stroke-width: 1.5px; /*선의 굵기*/
+}
+
+div.tooltip { /* 툴팁 스타일 */
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font-size: 15px;
+    background-color: #efefef;
+    border: solid 1px #cecece;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 #dfdfdf;
+    pointer-events: none;
+}

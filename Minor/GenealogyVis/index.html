@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="reference/tree.css" />
+<script src="reference/d3.min.js"></script>
+<script src="reference/d3.v3.min.js"></script>
+<script src="reference/jquery-1.12.0.min.js"></script>
+<script src="reference/select2.js"></script>
+<link href="reference/select2.css" rel="stylesheet"/>
+<script src="data/depth15_data_re.js"></script>
+<script src="data/Info1to22.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<!--<script src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>&ndash;&gt;-->
+</head>
+<body>
+<style type="text/css">
+
+body {
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+#header{
+    position:relative;
+    width:100%;
+    height:50px;
+    background-color:#DF7401;
+    background-clip: content-box;
+}
+
+p#header_p {
+    text-align: left;
+    font-family: Open Sans;
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 1%;
+    margin: 0;
+}
+
+p#option {
+    text-align: left;
+    font-family: Open Sans;
+    font-size: 1.6em;
+    color: #666666;
+    font-weight: bold;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 5%;
+    margin: 0;
+}
+
+img#header_img{
+    padding-top: 0.2%;
+    padding-left: 0.35%;
+    width: 35px;
+    height: 32px;
+    position: relative;
+    right:1%;
+    cursor: pointer;
+}
+
+#section_left {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:14%;
+    height:900px;
+    padding: 0.5%;
+    background-color:whitesmoke;
+    background-clip: content-box;
+}
+
+#section {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:67%;
+    height:900px;
+    padding: 0.5%;
+    background-color:whitesmoke;
+    background-clip: content-box;
+}
+
+#right {
+    position:relative;
+    float:right;
+    overflow:hidden;
+    width:19%;
+    height:900px;
+    padding: 0.5%;
+    background-color:whitesmoke;
+    background-clip: content-box;
+}
+
+#footer {
+    height:10px;
+    background-color:#717171;
+    clear:both;
+}
+
+
+</style>
+        <div id="header">
+            <div id="header_in">
+                <p id="header_p">GenealogyVis
+                <img src="images/impact.png" id="header_img" align="right"><img src="images/question.png" alt="question" id="header_img" align="right"><img src="images/person.png" alt="person" id="header_img" alt="Developer_homepage" align="right" onclick="javascript:newin=window.open('about:blank');newin.location.href='https://seongmin-mun.github.io/MyWebsite/Seongmin/index.html';"></p>
+            </div>
+        </div>
+<div id="section_left">
+  <p id="option">15대 인물선택</p>
+  <label class="bar-label" id="select_person_label" style="left: 5%; position:relative; font-size: 1em;";><select id="select_person" class="select_p" style="width:60%;"></select></label>
+  <p id="option">색상 기준 선택</p>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><button type="button" class="btn btn-warning" onclick="btnclickcolor1()">Color(Node)</button></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><button type="button" class="btn btn-warning" onclick="btnclickcolor2()">Color(Line)</button></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><button type="button" class="btn btn-warning" onclick="btnclickcolor3()">Color(First_Son)</button></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><button type="button" class="btn btn-warning" onclick="btnclickcolor4()">Color(Highst_Greade)</button></label></br>
+  <p id="option">노드 사이즈 조정</p>
+  <label class="custom-control-label" style="left: 5%; position:relative; font-size: 1em;";><input class="custom-control-input" type="radio" id="node_input" name="CircleSize" value="DefaultNode" onchange="btnclick4()" checked>Nodes Size Off</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="Mygrade" onchange="btnclick1()">My grade On</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="Parent" onchange="btnclick2()">Parent On</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="GrandParent" onchange="btnclick3()">Grand Parent On</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="MeanSize" onchange="btnclick5()" >Mean of Generation</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="MeanMygrade" onchange="btnclick6()" >Mean - My grade</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="MygradeParent" onchange="btnclick7()" >My grade-Parent</input></label></br>
+  <label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><input type="radio" id="node_input" name="CircleSize" value="MygradeGrandParent" onchange="btnclick8()">My grade-GrandParent</input></label></br>
+
+<!-- <br>
+<input type="radio" name="CircleSize" value="My grade-Parent" onchange="btnclick6()" checked>My grade-Parent</input>
+<br>
+<input type="radio" name="CircleSize" value="My grade-Grend Parent" onchange="btnclick7()">My grade-Grend Parent</input>
+<br>
+<input type="radio" name="CircleSize" value="My grade-Biggest Uncle" onchange="btnclick8()">My grade-Biggest Uncle</input> -->
+
+<p id="option">시조 기준 족보 생성</p>
+<label class="bar-label" style="left: 5%; position:relative; font-size: 1em;";><button type="button" class="btn btn-warning" onclick="btnclickperson1()">권행(Ego)</button></label></br>
+
+
+
+</div>
+<div id="section"></div>
+<div id="right">
+  <p id="option">세대별 통계정보 보기</p>
+  <label class="bar-label" id="select_stat_label" style="left: 5%; position:relative; font-size: 1em;";><select id="select_stat" class="select_s"></select></label></br>
+  <p id="option">세대별 통계 요약 테이블</p>
+</div>
+<script>
+	//$(document).ready(function () {
+
+console.log(list_15_re.length)
+
+for(var k = 0 ; k < list_15_re.length; k++){
+    $( "#select_person" ).append("<option value='"+list_15_re[k].key+"'>"+list_15_re[k].name+"("+list_15_re[k].size+","+list_15_re[k].key+")"+"</option>");
+}
+
+var Depth1to22 = ['1대','2대','3대','4대','5대','6대','7대','8대','9대','10대','11대','12대','13대','14대','15대','16대','17대','18대','19대','20대','21대','22대']
+
+for(var k = 0 ; k < Depth1to22.length; k++){
+    $( "#select_stat" ).append("<option value='"+Depth1to22[k]+"'>"+Depth1to22[k]+"</option>");
+}
+
+$(document).ready(function() {
+    $('.select_p').select2();
+});
+
+
+
+// var target = document.getElementById("select2");
+ 
+// var select2_s =  target.options[target.selectedIndex].value;
+
+// console.log(select2_s)
+
+
+
+
+
+var diameter = 860;
+/*계층 시각화의 원 크기*/
+
+var tree = d3.layout.tree()
+    .size([360, diameter / 2 - 120])      /*원에서 360도를 다 사용하기*/
+    .separation(function (a, b) {
+        return (a.parent == b.parent ? 1 : 2) / a.depth;
+    });
+/*날려도 상관 없음...(?)*/
+
+var diagonal = d3.svg.diagonal.radial()
+    .projection(function (d) {
+        return [d.y, d.x / 180 * Math.PI];
+    });
+/*선의 번들링 퍼지는 정도에 대한 기능*/
+
+
+var sectionleftwidth = $("#section_left").width()
+
+var sectionwidth = $("#section").width()
+
+var sectionheight = $("#section").height()
+
+var rightwidth = $("#right").width()
+
+var svgright = d3.select("#right").append("svg")   
+    .attr("width", rightwidth)          
+    .attr("height", sectionheight) 
+
+var rightdiv = d3.select("right").append("div")
+    .style("opacity", 0);
+
+var svg = d3.select("#section").append("svg")    
+    .attr("width", sectionwidth)        
+    .attr("height", sectionheight)  
+    .call(d3.behavior.zoom().on("zoom", function () {    
+        console.log("clicked!");
+        svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+    })) 
+    .append("g")
+    .attr("transform", "translate(" + diameter*0.7 + "," + 400 + ")")
+    .attr("pointer-events", "path");    
+
+// var svg = d3.select("#section").append("svg")    
+//     .attr("width", sectionwidth)        
+//     .attr("height", sectionheight)  
+//     .call(d3.behavior.zoom().on("zoom", function () {    
+//         console.log("clicked!");
+//         svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+//     })) 
+//     .append("g")
+//     .attr("transform", "translate(" + diameter / 2 + "," + 335 + ")")
+//     .attr("pointer-events", "path");
+
+// var svgSection = d3.select('#section_top').append('svg')
+//             .attr('width', width * 0.655)
+//             .attr('height', (section_top_height*0.935))
+//             .call(d3.zoom().on("zoom", function () {
+//                svgSection.attr("transform", d3.event.transform)
+//             }))
+//             .append("g");
+
+  
+var svgleft = d3.select("#section_left")
+            .append("svg")
+            .attr("width", sectionleftwidth)
+            .attr("height", 900)
+
+//     svgleft.append("text")
+//             .text("분석")
+//             .attr("class", "svgleft_text")
+//             .attr("x", (sectionleftwidth * 0.05))
+//             .attr("y", 35)
+//             .attr("text-anchor", "right")
+//             .attr("font-family", "Open Sans")
+//             .attr("font-size", "20px")
+//             .attr("fill", "rgb(51,51,51)")
+//             .attr("font-weight", "bold")
+
+//     svgleft.append("text")
+//             .text("15대 인물선택")
+//             .attr("class", "svgleft_text")
+//             .attr("x", (sectionleftwidth * 0.05))
+//             .attr("y",90)
+//             .attr("text-anchor", "right")
+//             .attr("font-family", "Open Sans")
+//             .attr("font-size", "20px")
+//             .attr("fill", "rgb(51,51,51)")
+//             .attr("font-weight", "bold")
+
+//     svgleft.append("text")
+//             .text("직계색상")
+//             .attr("class", "svgleft_text")
+//             .attr("x", (sectionleftwidth * 0.05))
+//             .attr("y",165)
+//             .attr("text-anchor", "right")
+//             .attr("font-family", "Open Sans")
+//             .attr("font-size", "20px")
+//             .attr("fill", "rgb(51,51,51)")
+//             .attr("font-weight", "bold")
+
+//     svgleft.append("text")
+//             .text("노드 사이즈")
+//             .attr("class", "svgleft_text")
+//             .attr("x", (sectionleftwidth * 0.05))
+//             .attr("y",285)
+//             .attr("text-anchor", "right")
+//             .attr("font-family", "Open Sans")
+//             .attr("font-size", "20px")
+//             .attr("fill", "rgb(51,51,51)")
+//             .attr("font-weight", "bold")
+
+//     svgleft.append("rect")
+//             .attr("class", "svgleft_rect")
+//             .attr("x", (sectionleftwidth * 0.02))
+//             .attr("y", 300)
+//             .attr("width", (sectionleftwidth * 0.96))
+//             .attr("height", 220)
+//             .attr("fill", "white")
+
+//     svgleft.append("text")
+//             .text("시조기준족보생성")
+//             .attr("class", "svgleft_text")
+//             .attr("x", (sectionleftwidth * 0.05))
+//             .attr("y",550)
+//             .attr("text-anchor", "right")
+//             .attr("font-family", "Open Sans")
+//             .attr("font-size", "20px")
+//             .attr("fill", "rgb(51,51,51)")
+//             .attr("font-weight", "bold")
+
+// svgright.append("text")
+//                     .text('세대별 통계 요약 테이블')
+//                     .attr("class", "svgright_text_title")
+//                     .attr("x", 10)
+//                     .attr("y", 40)
+//                     .attr("font-family", "Open Sans")
+//                     .attr("font-size", "20px")
+//                     .attr("fill", "rgb(51,51,51)")
+//                     .attr("font-weight", "bold")
+
+svgright.append("rect")
+            .attr("class", "svgleft_rect")
+            .attr("x", (rightwidth * 0.02))
+            .attr("y", 0)
+            .attr("width", (rightwidth * 0.96))
+            .attr("height", 210)
+            .attr("fill", "white")
+    
+changeselect2()
+
+d3.selectAll("#select_stat").on("change", changeselect2);
+
+function changeselect2() {
+svgright.selectAll(".svgright_text").remove();
+var target = document.getElementById("select_stat");
+var select2_s =  target.options[target.selectedIndex].value;
+for(var i = 0; i < Depth1to22.length; i++){
+	if(select2_s==Depth1to22[i]){
+
+		svgright.append("text")
+                    .text('세대 : '+Info1to22[i].depth)
+                    .attr("class", "svgright_text")
+                    .attr("x", 10)
+                    .attr("y", 35)
+                    .attr("font-family", "Open Sans")
+                    .attr("font-size", "20px")
+                    .attr("fill", "rgb(51,51,51)")
+                    .append('svg:tspan')
+					.attr('x', 10)
+					.attr('dy', 30)
+					.text('최댓값 : '+Info1to22[i].max)
+					.append('svg:tspan')
+					.attr('x', 10)
+					.attr('dy', 30)
+					.text('최솟값 : '+Info1to22[i].min)
+					.append('svg:tspan')
+					.attr('x', 10)
+					.attr('dy', 30)
+					.text('계급의 총합 : '+Info1to22[i].total)
+					.append('svg:tspan')
+					.attr('x', 10)
+					.attr('dy', 30)
+					.text('세대 인물 총합 : '+Info1to22[i].num)
+					.append('svg:tspan')
+					.attr('x', 10)
+					.attr('dy', 30)
+					.text('계급 평균 : '+Info1to22[i].mean)
+		}
+	}
+}
+
+var out_nodes;
+
+var out_data;
+
+var checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+
+function btnclick1() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', function (d) {     //transition()은 노드크기가 변화할때의 애니메이션기능임
+            return 2.5 + d.size / 2;                   //기본값으로 1이 들어가고 데이터 사이즈를 2로나누어 더하기
+        });
+    }
+}
+function btnclick2() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', function (d) {
+            return 2.5 + d.parent_size / 2;
+        });
+    }
+}
+function btnclick3() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', function (d) {
+            return 2.5 + d.grand_size / 2;
+        });
+    }
+}
+//삼촌 계급  
+// function btnclick4() {
+//     console.log('on press button');
+//     console.log(out_nodes);
+//     for (var i = 0; i < out_nodes.length; i++) {
+//         out_nodes.transition().attr('r', function (d) {
+//             return 1 + d.biggest_uncle_size / 2;
+//         });
+//     }
+// }
+function btnclick4() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', 2.5);
+    }
+}
+
+function btnclick5(){
+   console.log('on press button');
+   console.log(out_nodes);
+   checked = $( "input#node_input:checked" ).val();
+   console.log(checked);
+   for(var i = 0 ; i < out_nodes.length ; i ++){
+       out_nodes.transition().attr('r',function(d){
+           if (d.key.length==14) {
+           	return 2.5+ (3.8596492);
+           } else if (d.key.length==15) {
+           	return 2.5+(4.564935);
+           } else if (d.key.length==16) {
+           	return 2.5+(4.5944443);
+           } else if (d.key.length==17) {
+           	return 2.5+(3.512067);
+           } else if (d.key.length==18) {
+           	return 2.5+(3.0285857);
+           } else if (d.key.length==19) {
+           	return 2.5+(2.4777303);
+           } else if (d.key.length==20) {
+           	return 2.5+(2.2060342);
+           } else if (d.key.length==21) {
+           	return 2.5+(1.3202531);
+           } else if (d.key.length==22) {
+            return 2.5+(0.92727274);
+           }
+       } );
+   }
+}
+
+function btnclick6(){
+   console.log('on press button');
+   console.log(out_nodes);
+   checked = $( "input#node_input:checked" ).val();
+   console.log(checked);
+   for(var i = 0 ; i < out_nodes.length ; i ++){
+       out_nodes.transition().attr('r',function(d){
+           if (d.key.length==14) {
+           	var nodesize = (d.size-3.8596492)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-3.8596492) * 1.3  ;
+           	}
+           } else if (d.key.length==15) {
+           	var nodesize = (d.size-4.564935)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-4.564935) * 1.3  ;
+           	}
+           } else if (d.key.length==16) {
+           	var nodesize = (d.size-4.5944443)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-4.5944443) * 1.3 ;
+           	}
+           } else if (d.key.length==17) {
+           	var nodesize = (d.size-3.512067)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-3.512067) * 1.3  ;
+           	}
+           } else if (d.key.length==18) {
+           	var nodesize = (d.size-3.0285857)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-3.0285857) * 1.3  ;
+           	}
+           } else if (d.key.length==19) {
+           	var nodesize = (d.size-2.4777303)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-2.4777303) * 1.3  ;
+           	}
+           } else if (d.key.length==20) {
+           	var nodesize = (d.size-2.2060342)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-2.2060342) * 1.3 ;
+           	}
+           } else if (d.key.length==21) {
+           	var nodesize = (d.size-1.3202531)
+           	if(nodesize<2.5){
+           		return 2.5
+           	} else {
+           		return (d.size-1.3202531) * 1.3  ;
+           	}
+           } else if (d.key.length==22) {
+            var nodesize = (d.size-0.92727274)
+            if(nodesize<2.5){
+              return 2.5
+            } else {
+              return (d.size-0.92727274) * 1.3  ;
+            }
+           }
+       } );
+   }
+}
+
+//My grade-Parent
+function btnclick7() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', function (d) {
+            if ((d.size - d.parent_size) > 0) {
+                return (((d.size - d.parent_size) + 2.5) * 1.5) * ((d.size + d.parent_size) / 20);
+            } else {
+                return 2.5;
+            }
+        });
+    }
+}
+
+//My grade-Grend Parent
+function btnclick8() {
+    console.log('on press button');
+    console.log(out_nodes);
+    checked = $( "input#node_input:checked" ).val();
+    console.log(checked);
+    for (var i = 0; i < out_nodes.length; i++) {
+        out_nodes.transition().attr('r', function (d) {
+            if ((d.size - d.grand_size) > 0) {
+                return (((d.size - d.grand_size) + 2.5) * 1.5) * ((d.size + d.grand_size) / 20);
+            } else {
+                return 2.5;
+            }
+
+//                return (d.size - d.grand_size)  ;
+        });
+    }
+}
+
+//My grade-Biggest Uncle
+// function btnclick8() {
+//     console.log('on press button');
+//     console.log(out_nodes);
+//     for (var i = 0; i < out_nodes.length; i++) {
+//         out_nodes.transition().attr('r', function (d) {
+
+//             if ((d.size - d.biggest_uncle_size) > 0) {
+//                 return (((d.size - d.biggest_uncle_size) + 2.5) * 1.3) * ((d.size + d.biggest_uncle_size) / 20);
+//             } else {
+//                 return 2.5;
+//             }
+
+//         });
+//     }
+// }
+
+var is_selected = false;
+function btnclickcolor1() {
+    console.log(is_selected);
+    if (is_selected == false) {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr('r', 2.5);
+            out_nodes.transition().style("fill", function (d) {
+                if (d.line == 0) {
+                    return "#4d4dff";  //blue
+                } else {
+                    return "#ff4d4d";  //red
+                }
+            });
+        }
+        is_selected = true;
+    } else {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr("r", 2.5);
+            out_nodes.transition().style("fill", '#ffffff');
+        }
+        is_selected = false;
+    }
+}
+
+var is_selected2 = false;
+function btnclickcolor2() {
+    if (is_selected2 == false) {
+        var link = svg.selectAll("path")
+            .attr("class", function (d) {
+                if (d.target.line == 0) {
+                    return 'link-blue';
+                } else {
+                    return 'link-red';
+                }
+            })
+            .attr("d", diagonal);
+        is_selected2 = true;
+    } else {
+        var link = svg.selectAll("path")
+            .attr("class", 'link')
+            .attr("d", diagonal);
+        is_selected2 = false;
+    }
+}
+
+var is_selected3 = false;
+function btnclickcolor3() {
+    console.log(is_selected3);
+    if (is_selected3 == false) {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr('r', 2.5);
+            out_nodes.transition().style("fill", function (d) {
+              var keyString = d.key;
+              var lastChar = keyString.charAt(keyString.length-1);
+                if (lastChar == 1) {
+                    return "#32CD32";  //green
+                } else {
+                    return "#ffffff";  //white
+                }
+            });
+        }
+        is_selected3 = true;
+    } else {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr("r", 2.5);
+            out_nodes.transition().style("fill", '#ffffff');
+        }
+        is_selected3 = false;
+    }
+}
+
+
+
+var is_selected4 = false;
+function btnclickcolor4() {
+    
+    var correntdepth = [];
+    var maxgrade = [];
+    for (var i = 0; i < out_data.length; i++) {
+          //console.log(out_data[i].key.length); 
+          var checkedin = false;
+          for (var j = 0; j < correntdepth.length; j++) {
+            if(correntdepth[j]==out_data[i].key.length){
+              checkedin = true;
+            }
+          }
+          if(checkedin == false){
+            correntdepth.push(out_data[i].key.length);
+            maxgrade.push(0);
+          }
+    }
+
+    for (var j = 0; j < correntdepth.length; j++) {
+      for (var i = 0; i < out_data.length; i++) {
+        if(out_data[i].key.length==correntdepth[j]){
+          if(maxgrade[j] < out_data[i].size){
+            maxgrade[j] = out_data[i].size;
+          }
+        }
+      }
+    }
+
+    console.log(maxgrade); 
+    console.log(correntdepth);  
+
+
+    console.log(is_selected4);
+    if (is_selected4 == false) {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr('r', 2.5);
+            out_nodes.transition().style("fill", function (d) {
+              var twocondition = false;
+              for (var j = 0; j < correntdepth.length; j++) {
+                if(d.key.length==correntdepth[j]&&d.size==maxgrade[j]){
+                  twocondition = true;
+                }
+              }
+              if (twocondition == true) {
+                  return "orange";  //green
+              } else {
+                  return "#ffffff";  //white
+              }
+            });
+        }
+        is_selected4 = true;
+    } else {
+        for (var i = 0; i < out_nodes.length; i++) {
+            out_nodes.transition().attr("r", 2.5);
+            out_nodes.transition().style("fill", '#ffffff');
+        }
+        is_selected4 = false;
+    }
+}
+
+function btnclickperson1() {
+d3.json("data/Ann_json_re.json", function (error, root) {
+
+    if (error) {
+        console.log(error);
+        return;
+
+    }
+
+    Draw_genealogy(root)
+
+    function Draw_genealogy(data) {
+      /*에러일때 에러를 던져줘라*/
+
+      svg.selectAll(".link").remove();
+      svg.selectAll(".node").remove();
+      //div.selectAll(".tooltip").remove();
+
+      console.log(data);
+
+        var nodes = tree.nodes(data);
+        links = tree.links(nodes);
+
+
+
+        /*시각화 전체가 사리짐 */
+    //        var link = svg.selectAll(".link")
+    //                .data(links)
+    //                .enter().append("path")
+    //                .attr("class", "link")
+    //                .attr("d", diagonal);
+
+        var link = svg.selectAll(".link")    //위의 코드가 원래의 시각화 라인 코드
+            .data(links)
+            .enter().append("path")
+            .attr("class", 'link')
+            .attr("d", diagonal);
+
+        // 툴팁 표시를 위한 div 오브젝트 생성//마우스 호버시 정보 나타내기
+        
+
+        var node = svg.selectAll(".node")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function (d) {
+                return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
+            })
+            
+        
+            
+
+
+        out_nodes = node.append("circle")     //버튼과의 연동을 하기위해서 out_nodes를 만들어줌
+            .attr("class", "node_circle")
+            .attr("r", 2.5);      //노드 데이터의 크기 지정
+
+        out_data = nodes; 
+
+
+        node.append("text")
+            .attr("dy", ".31em")   /*텍스트의 방향과 가운데로부터 퍼지는 정도 조절*/
+            .attr("text-anchor", function (d) {
+                return d.x < 180 ? "start" : "end";
+            })  /*오른쪽 12시 방향->6시방향 텍스트 띄우기*/
+            .attr("transform", function (d) {
+                return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+            })
+            //                .style("fill", "#3182bd")     //글자색상지정
+            /*텍스트 방향 로테이션시키기(대칭)*/
+            .text(function (d) {
+                return d.name;
+            });
+    }
+  })
+}
+
+
+var root;
+var links;
+
+
+//d3.json("data/Data(+parent).json", function (error, root) {
+d3.json("data/Ann_json_re.json", function (error, root) {
+
+    if (error) {
+        console.log(error);
+        return;
+
+    }
+
+    changeselect_first();
+
+
+    function changeselect_first() {
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              var myObj = JSON.parse(this.responseText);
+              //var result = findperson(myObj,"권행",10,1)
+              var result = findperson(myObj,"권렴",9,111111111111111)
+              console.log(result[0])
+              Draw_genealogy_includeclicked(result[0])
+              
+              //console.log(myObj.length)
+              //console.log(myObj.children[0].children[0].children[0].children[0].children[0].children[0].children[0])
+
+          }
+      };
+
+      function findperson(data,name,size,key){
+        var genealogy_data = [];
+        search(genealogy_data,data,name,size,key);
+        function search(genealogy_data,data,name,size,key)
+        {
+            // If the number is less than 0, reject it.
+            var i = data.children.length+1;
+            for(var j = 0; j < i; j++){
+                if (data.children[j]!=null) {
+                    if (data.children[j].name==name&&data.children[j].size==size&&data.children[j].key==key){
+                      //console.log(data.children[j])
+                      genealogy_data.push(data.children[j]);
+                        // return data.children[j]
+                    }
+                    search(genealogy_data,data.children[j],name,size,key);
+                }
+            }
+        }
+        return genealogy_data;
+      }
+
+
+      xmlhttp.open("GET", "./data/Ann_json_re.json", true);
+      xmlhttp.send();
+      
+    }
+    
+
+
+
+
+    $('#select_person').on('change', changeselect_re);
+
+    function changeselect_re() {
+
+      is_selected = true;
+      btnclickcolor1()
+      is_selected2 = true;
+      btnclickcolor2()
+      is_selected3 = true;
+      btnclickcolor3()
+      is_selected4 = true;
+      btnclickcolor4()
+
+      var var_name = document.getElementsByClassName("select2-chosen")[0].innerText;
+
+      var person_text_split = var_name.split("(");
+      var person_text_split2 = person_text_split[1].split(",");
+     
+      var keynum = person_text_split2[1].replace(")","");
+      var person_name = person_text_split[0];
+      var person_size = person_text_split2[0]
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              var myObj = JSON.parse(this.responseText);
+              // search(myObj,'한안경',11,111111111411182)
+              console.log(myObj.length)
+              var result = findperson(myObj,person_name,person_size,keynum)
+              console.log(result[0])
+              Draw_genealogy_includeclicked(result[0])
+              
+              //console.log(myObj.length)
+              //console.log(myObj.children[0].children[0].children[0].children[0].children[0].children[0].children[0])
+
+          }
+      };
+
+
+      
+
+      function findperson(data,name,size,key){
+        var genealogy_data = [];
+        search(genealogy_data,data,name,size,key);
+        function search(genealogy_data,data,name,size,key)
+        {
+            // If the number is less than 0, reject it.
+            var i = data.children.length+1;
+            for(var j = 0; j < i; j++){
+                if (data.children[j]!=null) {
+                    if (data.children[j].name==name&&data.children[j].size==size&&data.children[j].key==key){
+                      //console.log(data.children[j])
+                      genealogy_data.push(data.children[j]);
+                        // return data.children[j]
+                    }
+                    search(genealogy_data,data.children[j],name,size,key);
+                }
+            }
+        }
+        return genealogy_data;
+      }
+
+
+      xmlhttp.open("GET", "./data/Ann_json_re.json", true);
+      xmlhttp.send();
+      
+
+
+    }
+
+
+
+
+    function Draw_genealogy_includeclicked(data2) {
+
+      //$("input[value='DefaultNode']").attr('checked', true);
+      $("#node_input").filter('[value="DefaultNode"]').prop("checked", true)
+
+      // if (checked == "DefaultNode") {
+      //     btnclick4()
+      // } else if (checked == "Mygrade"){
+      //     btnclick1()
+      // } else if (checked == "Parent"){
+      //     btnclick2()
+      // } else if (checked == "GrandParent"){
+      //     btnclick3()
+      // } else if (checked == "MeanSize"){
+      //     btnclick5()
+      // } else if (checked == "MeanMygrade"){
+      //     btnclick6()
+      // } else if (checked == "MygradeParent"){
+      //     btnclick7()
+      // } else if (checked == "MygradeGrandParent"){
+      //     btnclick8()
+      // }
+
+      Draw_genealogy(data2);
+
+      var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+
+    svg.selectAll(".node").on("click", function (d){
+      div.transition()
+                    .duration(100)
+                    .style('opacity', 0);
+
+      console.log(d.name+d.key)
+      is_selected = true;
+      btnclickcolor1()
+      is_selected2 = true;
+      btnclickcolor2()
+      is_selected3 = true;
+      btnclickcolor3()
+      is_selected4 = true;
+      btnclickcolor4()
+
+      var keynum = d.key;
+      var person_name = d.name;
+      var person_size = d.size;
+      
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              var myObj = JSON.parse(this.responseText);
+              // search(myObj,'한안경',11,111111111411182)
+              var result = findperson(myObj,person_name,person_size,keynum)
+              console.log(result[0])
+              Draw_genealogy_includeclicked(result[0])
+              
+              //console.log(myObj.length)
+              //console.log(myObj.children[0].children[0].children[0].children[0].children[0].children[0].children[0])
+
+          }
+      };
+
+
+      
+
+      function findperson(data,name,size,key){
+        var genealogy_data = [];
+        search(genealogy_data,data,name,size,key);
+        function search(genealogy_data,data,name,size,key)
+        {
+            // If the number is less than 0, reject it.
+            var i = data.children.length+1;
+            for(var j = 0; j < i; j++){
+                if (data.children[j]!=null) {
+                    if (data.children[j].name==name&&data.children[j].size==size&&data.children[j].key==key){
+                      //console.log(data.children[j])
+                      genealogy_data.push(data.children[j]);
+                        // return data.children[j]
+                    }
+                    search(genealogy_data,data.children[j],name,size,key);
+                }
+            }
+        }
+        return genealogy_data;
+      }
+
+
+      xmlhttp.open("GET", "./data/Ann_json_re.json", true);
+      xmlhttp.send();
+    
+    })
+
+
+
+
+
+
+    function Draw_genealogy(data) {
+      /*에러일때 에러를 던져줘라*/
+
+      svg.selectAll(".link").remove();
+      svg.selectAll(".node").remove();
+      //div.selectAll(".tooltip").remove();
+
+      console.log(data);
+
+        var nodes = tree.nodes(data);
+        links = tree.links(nodes);
+
+
+
+        /*시각화 전체가 사리짐 */
+    //        var link = svg.selectAll(".link")
+    //                .data(links)
+    //                .enter().append("path")
+    //                .attr("class", "link")
+    //                .attr("d", diagonal);
+
+        var link = svg.selectAll(".link")    //위의 코드가 원래의 시각화 라인 코드
+            .data(links)
+            .enter().append("path")
+            .attr("class", 'link')
+            .attr("d", diagonal);
+
+        // 툴팁 표시를 위한 div 오브젝트 생성//마우스 호버시 정보 나타내기
+        
+
+        var node = svg.selectAll(".node")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function (d) {
+                return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")";
+            })
+            .on("mouseenter", function (d) {     // .node에 mouseenter 이벤트 핸들러 등록
+              var keyString = d.key;
+              //var numnumnum = numnum.toString();
+              var lastChar = keyString.charAt(keyString.length-1);
+                div.transition()
+                    .duration(100)
+                    .style('opacity', .9);
+                div.html('<strong>' + d.name + '</strong>' + '(' + (d.sex == 0 ? '남' : '여') + ','+d.key.length+'대)' + '<br/>'    
+                        + '계급 : ' + d.size + ' ' + '<br/>'     
+                        + '계급이름 : ' + d.title + ' ' + '<br/>'
+                        + '형제서열 : ' + lastChar+ ' ' + '<br/>'
+                        + '본가 : ' + d.family_origin + ' ' + '<br/>'
+                        + '출생년도 : ' + d.birth + ' ' + '<br/>'
+                        + '사망년도 : ' + d.death + ' ')
+                    .style('left', (d3.event.pageX) + 'px')
+                    .style('top', (d3.event.pageY) + 'px');     // 해당 노드의 위치로 툴팁 div 오브젝트 이동
+            })
+            .on("mouseleave", function (d) {
+                div.transition()
+                    .duration(100)
+                    .style('opacity', 0);
+            })
+        
+            
+
+
+        out_nodes = node.append("circle")     //버튼과의 연동을 하기위해서 out_nodes를 만들어줌
+            .attr("class", "node_circle")
+            .attr("r", 2.5);      //노드 데이터의 크기 지정
+
+        out_data = nodes; 
+
+
+        node.append("text")
+            .attr("dy", ".31em")   /*텍스트의 방향과 가운데로부터 퍼지는 정도 조절*/
+            .attr("text-anchor", function (d) {
+                return d.x < 180 ? "start" : "end";
+            })  /*오른쪽 12시 방향->6시방향 텍스트 띄우기*/
+            .attr("transform", function (d) {
+                return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+            })
+            //                .style("fill", "#3182bd")     //글자색상지정
+            /*텍스트 방향 로테이션시키기(대칭)*/
+            .text(function (d) {
+                return d.name;
+            });
+
+
+        function mouseover() {
+            d3.select(this).select("circle").transition()
+                .duration(750)
+    //                    .attr("r", function(d) {
+    //                        return d.size + 5;
+    //                    });
+            d3.select(this).select("text").transition()
+                .duration(750)
+                .attr("dy", ".31em")
+                .attr("text-anchor", function (d) {
+                    return d.x < 180 ? "start" : "end";
+                })
+                .attr("transform", function (d) {
+                    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+                })
+                .style("stroke-width", ".5px")
+                .style("font-size", "15.2px")
+                .style("opacity", 1);
+        }
+
+        function mouseout() {
+            d3.select(this).select("circle").transition()
+                .duration(750)
+    //                    .attr("r", function(d) {
+    //                        return d.size;
+    //                    });
+            d3.select(this).select("text").transition()
+                .duration(750)
+                .attr("dy", ".31em")
+                .attr("text-anchor", function (d) {
+                    return d.x < 180 ? "start" : "end";
+                })
+                .attr("transform", function (d) {
+                    return d.x < 180 ? "translate(8)" : "rotate(180)translate(-8)";
+                })
+                //                    .style("font", "8px serif")
+                //                    .style("font", "10px sans-serif")
+                .style("font-size", "10px")
+                .style("opacity", 0.9);
+
+        }
+    }
+
+  }
+});
+
+d3.select(self.frameElement).style("height", diameter - 150 + "px");
+
+//})
+
+</script>
+<div id="footer"></div>
+
+
+</body>
+</html>
