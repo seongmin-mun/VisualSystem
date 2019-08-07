@@ -12,7 +12,7 @@ This study present a way to create visual system to analyze Genealogy of the Kwo
   <img src="../Screenshot/GenealogyVis.png" class="img-rounded" style="width:100%;"></img>
 </div>
 
-- [Try to use GenealogyVis](https://seongmin-mun.github.io/VisualSystem/Minor/GenealogyVis/index.html)
+- [Try to use GenealogyVis](https://seongmin-mun.github.io/VisualSystem/Minor/GenealogyVis/)
 
 ### Skills
 -------
