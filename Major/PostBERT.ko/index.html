@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>PostBERT.Ko</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="./javascripts/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./javascripts/d3.v4.js" charset="utf-8"></script>
+    <script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="./stylesheets/PostVis.css">-->
+
+    <!--데이터파트-->
+    <script src="./Data/Rdata/Madpdata.js" charset="utf-8"></script>
+    <script src="./Data/Rdata/Sentencedata.js" charset="utf-8"></script>
+    <script src="./Data/Rdata/Accuracydata.js" charset="utf-8"></script>
+    <!--스타일-->
+    <link rel="stylesheet" href="./stylesheets/BERTVis.css">
+
+    </head>
+    <body>
+        <div id="header">
+            <div id="header_in">
+                <p id="header_p">PostBERT.Ko
+                <img src="images/impact.png" id="header_img" align="right"><img src="images/question.png" alt="question" id="header_img" align="right"><img src="images/person.png" alt="person" id="header_img" alt="Developer_homepage" align="right" onclick="javascript:newin=window.open('about:blank');newin.location.href='https://seongmin-mun.github.io/MyWebsite/Seongmin/index.html';"></p>
+            </div>
+        </div>
+        <div id="left">
+            <div id="left_top">
+                <p id="left_option">Postposition</p>
+                <select id="op_postposition">
+                    <option value="ey" selected="selected">-에 (-ey)</option>
+                    <option value="eyse">-에서 (-eyse)</option>
+                    <option value="(u)lo">-으로 (-(u)lo)</option>
+                </select>
+                <!-- <p id="left_option">Node color</p>
+                <select id="op_node_color">
+                    <option id="class_color" value="function" selected="selected">Function</option>
+                    <option id="nomal_color" value="nomal">default</option>
+                </select> -->
+            </div>
+            <div id="left_middle">
+                <p id="left_option">Select function</p>
+                <div id="container_leftmiddle">
+                </div>
+            </div>
+            <div id="left_bottom">
+                <p id="left_option">Select sentence</p>
+                <div id="container_leftbottom">
+                </div>
+            </div>
+        </div>
+        <div id="section">
+            <div id="section_top">
+                <p id="section_top_p">t-SNE visualization of BERT sentence classification</p>
+            </div>
+            <div id="section_bottom">
+                <p id="section_bottom_p">Current epoch</p>
+                <div id="section_bottom_left">
+                    <button id="play-button">Play</button>
+                </div>
+                <div id="section_bottom_right">
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div id="right_top">
+                <p id="right_option">Overall accuracy</p>
+                <div id="tooltip_top" style='display:none'>
+                </div>
+            </div>
+            <div id="right_middle">
+                <p id="right_option">Individual accuracy</p>
+                <div id="tooltip_middle" style='display:none'>
+                </div>
+            </div>
+            <div id="right_bottom">
+                <p id="right_option">Loss</p>
+                <div id="tooltip_bottom" style='display:none'>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+        </div>
+        <!--메인코드-->
+        <script src="./javascripts/BERTVis.js" charset="utf-8"></script>
+        </script>
+
+    </body>
+</html>
