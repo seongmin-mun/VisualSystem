@@ -4,7 +4,7 @@
 [![Python](https://img.shields.io/badge/Python-Used-blue.svg)](https://shields.io/#/) [![PHP](https://img.shields.io/badge/PHP-Used-lightgrey.svg)](https://shields.io/#/) [![JavaScript](https://img.shields.io/badge/JavaScript-Used-brightgreen.svg)](https://shields.io/#/) [![SQL](https://img.shields.io/badge/SQL-Used-9cf.svg)](https://shields.io/#/) [![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-Used-yellow.svg)](https://shields.io/#/) [![R](https://img.shields.io/badge/R-Used-blueviolet.svg)](https://shields.io/#/)
 
 ## Abstract
-History studies involve the discovery of new facts based upon the records as well as understanding relationships between historic events and figures. This study presents a way to create and analyze human relationship visualizations using data from <em>Genealogy of the Kwon family</em> and <em>the Annals of the Joseon Dynasty</em> based on collaboration with historians, linguists, and statisticians. For the analysis, we used the bubble heap network visualization method, which expresses the similarities between the opinions of figures as distances between nodes. 
+PostNetwork.ko is a visualization system to see the relationships between Korean postpositions and co-occurring words.
 
 ### Screenshots
 -----------
