@@ -18,37 +18,27 @@ The rapid development of the Web 2.0 era has generated a huge amount of online w
 -------
 Machine Learning & NLP
 
-- Language : R, Python
-- DataBase : MySQL
-- Machine Learning : Correlation, Cosine similarity
-- NLP : Ontology, Morpheme analysis, TF-IDF (Term Frequency - Inverse Document Frequency), Pre-Processing (tokenization, lemetazation, N-gram, window size), etc.
-- Tool : RStudio, PyCharm, Jupyter notebook
+- Computer Languages: R, Python
+- DataBase: MySQL
+- Machine Learning: Correlation, Cosine similarity
+- NLP-based methods: Ontology, TF-IDF, POS tagger, Pre-Processing (tokenization, lemmatization, N-gram, window size), etc.
+- Statistics: Reliability Analysis, Independence t-test
+- Tools: IntelliJ IDEA, RStudio
 
-Visual Technique
+Visualization Technique
 
-- Visual Method : Distribution Map, Polar Chart
+- Visualization Methods: Distribution Map, Polar Chart
 
 Server (Back-end)
 
-- Language : Java, Python
-- DataBase : MySQL
-- Library : Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon)), Python (numpy, pandas, nltk)
-- Tool : IntelliJ IDEA, PyCharm
+- Computer Languages: Java, Python, PHP
+- DataBase: MySQL
+- Libraries: Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon)), Python (numpy, sklearn, pandas, nltk)
+- Tools: IntelliJ IDEA, PyCharm
 
 Client (Front-end)
 
-- Language : javascript (d3.js, jquery.js), html/css
-- DataBase : json
-- Tool : Atom, WebStorm
-
-### Related works
--------
-Paper
-
-- <strong>S. Mun</strong>, G. Kim, R. M. Karim, and K. Lee, <i>Internet Review Opinion Mining and Data Visualization</i>, Symposium on Visualization in Data Science (VDS at IEEE VIS 2015), Oct 2015,
-[PDF](https://seongmin-mun.github.io/MyWebsite/Seongmin/Resources/3.Conferences/Posters/WBC2016/Visual%20Trend%20Analysis%20Method%20for%20Ontology%20based%20Opinion%20Mining%20on%20Movie%20Review.pdf)
-
-Video
-
-- [Video](https://youtu.be/ESWdQwAKa7A)
+- Computer Languages: javascript (d3.js, jquery.js), html/css
+- DataBase: json
+- Tools: Atom
 
