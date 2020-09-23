@@ -13,7 +13,7 @@ PostBERT.ko was made to simulate how the BERT model interprets the polysemy of w
   <img src="../Screenshot/PostBERT.ko.png" class="img-rounded" style="width:100%;"></img>
 </div>
 
-- [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.kon/index.html)
+- [Try to use PostBERT.ko](https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/index.html)
 
 ### Skills
 -------
