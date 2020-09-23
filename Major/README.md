@@ -7,7 +7,10 @@ Here I introduce the major visualizations that I developed in regards to the res
 -----------
 <ul>
   <li>
-    PostVis.ko
+    PostBERT.ko
+  </li>
+  <li>
+    PostNetwork.ko
   </li>
   <li>
     BubbleJoseon
