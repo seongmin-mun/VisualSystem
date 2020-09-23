@@ -21,5 +21,8 @@ Here I introduce the minor visualizations that I developed in regards to the res
   <li>
     DipVis
   </li>
+  <li>
+    RhapStackVis
+  </li>
 </ul>
 
