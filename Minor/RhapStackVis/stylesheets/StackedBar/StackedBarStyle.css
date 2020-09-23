@@ -1,0 +1,94 @@
+#left {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:23%;
+    height:740px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+#section {
+    background-color:#F1F1F1;
+    position:relative;
+    float:left;
+    width:73%;
+    height:740px;
+    padding: 1%;
+    background-clip: content-box;
+}
+
+.cb-row {margin: 1px;clear:both;flex-direction: row;display:flex;}
+.cb-row label,  .cb-row input{float: none; display: inline-block; vertical-align: middle;  }
+/*.cb-row input {float: none; display: inline-block; vertical-align: middle;  }*/
+/*.input-w label, .input-w input {
+    float: none;  if you had floats before? otherwise inline-block will behave differently 
+    display: inline-block;
+    vertical-align: middle;    
+}*/
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: '\25BC';
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+div#menu {
+    position: absolute;
+    top: 55px;
+    right: 10%;
+    height: 185px;
+    width:80%;
+    background-color: white;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+div#menu2 {
+    position: absolute;
+    top: 290px;
+    right: 10%;
+    height: 185px;
+    width:80%;
+    background-color: white;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}
+
+div#menu3 {
+    position: absolute;
+    top: 525px;
+    right: 10%;
+    height: 185px;
+    width:80%;
+    background-color: white;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    scroll-behavior: smooth;
+}

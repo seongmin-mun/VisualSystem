@@ -1,0 +1,58 @@
+ID,Genre,Interactivity,Social_context,Event_structure,Channel,Planning_type,Subject
+D0001,Argumentation,interactive,Private,Dialogue,Face to Face,semi-spontaneous,interview
+D0002,Argumentation,interactive,Private,Dialogue,Face to Face,semi-spontaneous,interview
+D0003,Description,semi-interactive,Private,Dialogue,Face to Face,spontaneous,interview
+D0004,Description,interactive,Private,Dialogue,Face to Face,semi-spontaneous,interview
+D0005,Description,semi-interactive,Private,Dialogue,Face to Face,spontaneous,interview
+D0006,Argumentation,interactive,Private,Dialogue,Face to Face,semi-spontaneous,interview
+D0007,Procedural,non-interactive,Private,Dialogue,Face to Face,spontaneous,travel-planning
+D0008,Procedural,non-interactive,Private,Dialogue,Face to Face,spontaneous,travel-planning
+D0009,Description,interactive,Private,Dialogue,Face to Face,spontaneous,conversation
+D0017,Procedural,non-interactive,Private,Dialogue,Face to Face,spontaneous,travel-planning
+D0020,Procedural,non-interactive,Private,Dialogue,Face to Face,spontaneous,travel-planning
+D1001,Description,semi-interactive,Private,Dialogue,Face to Face,planned,interview
+D1002,Description,semi-interactive,Private,Dialogue,Face to Face,spontaneous,lesson
+D1003,Description,semi-interactive,Private,Dialogue,Face to Face,spontaneous,Life story
+D2001,Narrative,interactive,Public,Dialogue,Broadcasting,semi-spontaneous,interview
+D2002,Argumentation,interactive,Public,Dialogue,Broadcasting,planned,interview
+D2003,Description,semi-interactive,Public,Dialogue,Broadcasting,spontaneous,sportscasting
+D2004,Narrative,semi-interactive,Public,Dialogue,Broadcasting,spontaneous,life story
+D2005,Narrative,semi-interactive,Public,Dialogue,Broadcasting,planned,interview
+D2006,Oratory,semi-interactive,Public,Dialogue,Face to Face,planned,Political speech
+D2007,Argumentation,interactive,Public,Dialogue,Broadcasting,spontaneous,Conversation
+D2008,Argumentation,interactive,Public,Dialogue,Broadcasting,spontaneous,interview
+D2009,Argumentation,semi-interactive,Public,Dialogue,Broadcasting,planned,interview
+D2010,Narrative,interactive,Public,Dialogue,Broadcasting,spontaneous,interview
+D2011,Argumentation,semi-interactive,Public,Dialogue,Broadcasting,planned,Advertising
+D2012,Description,interactive,Public,Dialogue,Broadcasting,spontaneous,interview
+D2013,Argumentation,interactive,Public,Dialogue,Broadcasting,spontaneous,interview
+M0001,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0002,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0003,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0004,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0005,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0006,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0007,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0008,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0009,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0010,Procedural,non-interactive,Private,Dialogue,Face to Face,spontaneous,travel-planning
+M0011,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0012,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0013,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0014,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0015,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0016,Procedural,non-interactive,Private,Monologue,Face to Face,spontaneous,travel-planning
+M0018,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0019,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0021,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0022,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0023,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M0024,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,movie scene description
+M1001,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,life story
+M1003,Description,semi-interactive,Private,Monologue,Face to Face,spontaneous,professional project description
+M2001,Oratory,non-interactive,Public,Monologue,Broadcasting,planned,political speech
+M2002,Description,non-interactive,Public,Monologue,Broadcasting,planned,Talk
+M2003,Oratory,non-interactive,Public,Monologue,Broadcasting,planned,sermon
+M2004,Oratory,non-interactive,Public,Monologue,Broadcasting,planned,political speech
+M2005,Description,non-interactive,Public,Monologue,Broadcasting,planned,press review
+M2006,Description,non-interactive,Public,Monologue,Broadcasting,planned,info-kiosk

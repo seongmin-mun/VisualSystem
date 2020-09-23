@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="images/Logo.png" rel="shortcut icon">
+  <title>RhapVis</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--<link rel="stylesheet" src="stylesheets/StackedBar/style.css">-->
+  <link rel="stylesheet" href="stylesheets/Public/bootstrap.min.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="javascripts/Public/bootstrap.min.js"></script>
+  <script src="javascripts/Public/jquery.min.js"></script>
+  <script src="javascripts/Public/d3.v3.min.js" charset="utf-8"></script>
+  <script src="javascripts/Public/d3.v3.js" charset="utf-8"></script>
+  <script src="javascripts/StackedBar/d3.tip.v0.6.3.js"></script>
+
+  
+</head>
+<body>
+
+<div class="container">
+  <h1>RhapVis; </h1> <!--Find visual system with number of RhapVis1 (ex.RhapVis1)-->
+  <h3>Visualizing Textual Typology Interactively in a Corpus of Spoken French : The <a href="http://www.projet-rhapsodie.fr/" >Rhapsodie</a> Corpus</h3>
+  </br>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#stackedbar">Stacked_Bar</a></li>
+    <li><a data-toggle="tab" href="#parrallelcoordinates">Parrallel_Coordinates</a></li>
+  </ul>
+
+  <div class="tab-content">
+
+    <!--RhapVis1-->
+    <div id="stackedbar" class="tab-pane fade in active" >
+      <h3>Synchro-visualisation</h3>
+      </br>
+      <p>This visual system made by <a href="http://www.modyco.fr/fr/">MoDyCo</a>. And you can see the reason why we need Synchro-visualisation in this <a href="papers/chapter 18-Benjamins.pdf">paper</a>.</p>
+        <script src="data/StackedBar/Stacked_data.js" charset="utf-8"></script>
+        <link rel="stylesheet" href="stylesheets/StackedBar/StackedBarStyle.css">
+
+        <div id="left">
+        <div id="menu">
+            <form id="Discourse">
+            <div id="Type">
+                
+            </div>
+            </form>
+        </div>
+
+        <div id="menu2">
+            <form id="BIO">
+            <div id="Combination">
+                
+            </div>
+            </form>
+        </div>
+
+        <div id="menu3">
+            <form id="BIOLegend">
+            <div id="Legend">
+            </div>
+            </form>
+        </div>
+        </div>
+        <div id="section"></div>
+        <!--<script src="system/StackedBar/StackedBar.js" charset="utf-8"></script>-->
+        <script src="system/StackedBar/Stackedbar.js" charset="utf-8"></script>
+    </div>
+
+
+    <!--RhapVis2-->
+    <div id="parrallelcoordinates" class="tab-pane fade" >
+      <h3>Parrallel Coordinates of Rhapsodie</h3>
+      <link rel="stylesheet" href="stylesheets/ParrallelCoordinates/ParrallelCoordinatesStyle.css">
+      <!--<style type="text/css"></style>-->
+      <div id="parrallel">
+      <script src="system/ParrallelCoordinates/ParrallelCoordinates.js" ></script>
+      </div>
+      <h3>Selected Data</h3>
+      <div id="parrallelbottom">
+        <div id="parrallelbottomdiv">
+            <form id="SelectedData">
+            <div id="RawData">
+                
+            </div>
+            </form>
+        </div>
+      </div>
+      
+    </div>
+
+
+
+    
+  </div>
+</div>
+
+</body>
+</html>
