@@ -9,7 +9,7 @@ Predictive analysis is based on a probabilistic learning algorithm called patter
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/ParallelSentimentVis.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Major/ParallelSentimentVis/index.html"><img src="../Screenshot/ParallelSentimentVis.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use ParallelSentimentVis](https://seongmin-mun.github.io/VisualSystem/Major/ParallelSentimentVis/index.html)
