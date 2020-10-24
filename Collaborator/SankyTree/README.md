@@ -8,7 +8,7 @@ A decision tree is one of the predictive models in data mining and has been wide
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/SankeyTree.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Collaborator/SankyTree/index.html"><img src="../Screenshot/SankeyTree.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use SankeyTree](https://seongmin-mun.github.io/VisualSystem/Collaborator/SankyTree/index.html)
