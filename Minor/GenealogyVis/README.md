@@ -9,7 +9,7 @@ This study presents a visualization system to analyze the Genealogy of the Kwon 
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/GenealogyVis.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Minor/GenealogyVis/index.html"><img src="../Screenshot/GenealogyVis.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use GenealogyVis](https://seongmin-mun.github.io/VisualSystem/Minor/GenealogyVis/)
