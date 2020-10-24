@@ -9,7 +9,7 @@ The rapid development of the Web 2.0 era has generated a huge amount of online w
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/OpinionAnalyzer.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Collaborator/OpinionAnalyzer/movies_pie.html"><img src="../Screenshot/OpinionAnalyzer.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use OpinionAnalyzer](https://seongmin-mun.github.io/VisualSystem/Collaborator/OpinionAnalyzer/movies_pie.html)
