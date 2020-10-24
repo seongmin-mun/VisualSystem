@@ -9,7 +9,7 @@ Topics in a text corpus include features and information; visualizing these topi
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/MultiwordVis.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Minor/MultiwordVis/index.html"><img src="../Screenshot/MultiwordVis.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use MultiwordVis](https://seongmin-mun.github.io/VisualSystem/Minor/MultiwordVis/index.html)
