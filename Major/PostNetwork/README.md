@@ -9,8 +9,9 @@ PostNetwork.ko is a visualization system to see the relationships between Korean
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/PostNetwork.ko.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Major/PostNetwork/index.html"><img src="../Screenshot/PostNetwork.ko.png" style="max-width:100%;"></a>
 </div>
+
 
 - [Try to use PostNetwork.ko](https://seongmin-mun.github.io/VisualSystem/Major/PostNetwork/index.html)
 
