@@ -9,7 +9,7 @@ Rhapsodie is a 33000-word treebank of spoken French that is annotated for syntax
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/MultiAxisVis.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Minor/MultiAxisVis/index.html"><img src="../Screenshot/MultiAxisVis.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use MultiAxisVis](https://seongmin-mun.github.io/VisualSystem/Minor/MultiAxisVis/index.html)
