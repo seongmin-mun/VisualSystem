@@ -9,8 +9,9 @@ A decision tree is one of the predictive models in data mining and has been wide
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/SequenBurst.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Minor/SequenBurst/index.html"><img src="../Screenshot/SequenBurst.png" style="max-width:100%;"></a>
 </div>
+
 
 - [Try to use SequenBurst](https://seongmin-mun.github.io/VisualSystem/Minor/SequenBurst/index.html)
 
