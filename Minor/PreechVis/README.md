@@ -9,7 +9,7 @@ Word can be divided into two types: those whose meaning can be described in one 
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/PreechVis.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Minor/PreechVis/index.html"><img src="../Screenshot/PreechVis.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use PreechVis](https://seongmin-mun.github.io/VisualSystem/Minor/PreechVis/index.html)
