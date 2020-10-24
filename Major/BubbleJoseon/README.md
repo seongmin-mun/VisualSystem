@@ -9,8 +9,9 @@ History studies involve the discovery of new facts based upon the records as wel
 ### Screenshots
 -----------
 <div>
-  <img src="../Screenshot/BubbleJoseon.png" class="img-rounded" style="width:100%;"></img>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html"><img src="../Screenshot/BubbleJoseon.png" style="max-width:100%;"></a>
 </div>
+
 
 - [Try to use BubbleJoseon](https://seongmin-mun.github.io/VisualSystem/Major/BubbleJoseon/index.html)
 
