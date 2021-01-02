@@ -26,12 +26,12 @@ $(document).ready(function () {
     var textlabel = div_epoch.append("text")  
             .attr("class", "textlabel")
             .attr("text-anchor", "middle")
-            .text("Epoch 0")
+            .text("1 Epoch")
             .attr("text-anchor", "end")
             .attr("font-family", "Open Sans")
             .attr("font-size", "25px")
             .attr("fill", "#C2C1C1")
-            
+
 
     var NodeGroup = svgSection.append("g");
 
@@ -74,7 +74,7 @@ $(document).ready(function () {
     svgright_top.append("line").attr("x1",  right_top_width * 0.05).attr("y1", right_top_height*0.6).attr("x2", right_top_width * 0.95).attr("y2", right_top_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
 
     for (var k = 0; k < 6; k++) {
-        svgright_top.append("line").attr("x1", (((right_top_width * 0.8) *0.205) * k) + (right_top_width * 0.065)).attr("y1", right_top_height*0.01).attr("x2", (((right_top_width * 0.8) *0.205) * k) + (right_top_width * 0.065)).attr("y2", right_top_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+        svgright_top.append("line").attr("x1", ((right_top_width * 0.162) * k) + (right_top_width * 0.065)).attr("y1", right_top_height*0.01).attr("x2", ((right_top_width * 0.162) * k) + (right_top_width * 0.065)).attr("y2", right_top_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
     }
 
 
@@ -110,10 +110,10 @@ $(document).ready(function () {
     svgright_middle.append("line").attr("x1",  right_middle_width * 0.05).attr("y1", right_middle_height*0.6).attr("x2", right_middle_width * 0.95).attr("y2", right_middle_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
 
     for (var k = 0; k < 6; k++) {
-        svgright_middle.append("line").attr("x1", (((right_middle_width * 0.8) *0.205) * k) + (right_middle_width * 0.065)).attr("y1", right_middle_height*0.01).attr("x2", (((right_middle_width * 0.8) *0.205) * k) + (right_middle_width * 0.065)).attr("y2", right_middle_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+        svgright_middle.append("line").attr("x1", ((right_middle_width * 0.162) * k) + (right_middle_width * 0.065)).attr("y1", right_middle_height*0.01).attr("x2", ((right_middle_width * 0.162) * k) + (right_middle_width * 0.065)).attr("y2", right_middle_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
     }
 
-    
+
     var right_bottom_width = $("#right_bottom").width()
     var right_bottom_height = $("#right_bottom").height()
 
@@ -147,7 +147,7 @@ $(document).ready(function () {
     svgright_bottom.append("line").attr("x1",  right_bottom_width * 0.05).attr("y1", right_bottom_height*0.6).attr("x2", right_bottom_width * 0.95).attr("y2", right_bottom_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
 
     for (var k = 0; k < 6; k++) {
-        svgright_bottom.append("line").attr("x1", (((right_bottom_width * 0.8) *0.205) * k) + (right_bottom_width * 0.065)).attr("y1", right_bottom_height*0.01).attr("x2", (((right_bottom_width * 0.8) *0.205) * k) + (right_bottom_width * 0.065)).attr("y2", right_bottom_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+        svgright_bottom.append("line").attr("x1", ((right_bottom_width * 0.162) * k) + (right_bottom_width * 0.065)).attr("y1", right_bottom_height*0.01).attr("x2", ((right_bottom_width * 0.162) * k) + (right_bottom_width * 0.065)).attr("y2", right_bottom_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
     }
 
 
@@ -179,7 +179,7 @@ $(document).ready(function () {
     var currentEpoch = 0;
 
     var playButton = d3.select("#play-button");
-        
+
     var x = d3.scaleLinear()
         .domain([1, 49])
         .range([0, SB_width*0.9])
@@ -246,7 +246,7 @@ $(document).ready(function () {
       currentEpoch = Math.round(actual)
 
       return currentEpoch
-      
+
     }
 
     function keydowned() {
@@ -506,7 +506,7 @@ $(document).ready(function () {
         EpochCnow = updateTween()
 
         EpochNow = EpochCnow
-        
+
         svgright_top.selectAll(".righttoppath").remove();
         svgright_top.selectAll(".right_top_text").remove();
 
@@ -567,7 +567,7 @@ $(document).ready(function () {
 
 
         var right_top_x = d3.scale.linear().domain([0,50]).range([right_top_width*0.07,right_top_width*0.9])
-        var right_top_y = d3.scale.linear().domain([0.65,1]).range([right_top_height*0.72,0])
+        var right_top_y = d3.scale.linear().domain([0.625,1]).range([right_top_height*0.72,0])
 
         var line = d3.svg.line()
                      .x(function(d){ return right_top_x(d.x)})
@@ -587,17 +587,17 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-          
+
           svgright_top.selectAll()
             .data(final_data).enter()
             .append('text')
-            .html(d => d.name)
+            .html(d => (d.name+1))
             .attr('fill', d => d.color)
             .attr('alignment-baseline', 'middle')
             .attr('x', right_top_width)
             .attr('dx', '.5em')
             .attr('y', d => right_top_y(d.currentAccuracy)); 
-          
+
           tipBox = svgright_top.append('rect')
             .attr('width', right_top_width)
             .attr('height', right_top_height)
@@ -612,20 +612,20 @@ $(document).ready(function () {
         }
 
         function drawTooltip() {
-          const x = Math.floor((right_top_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-          
+          const x = Math.floor((right_top_x.invert(d3.mouse(tipBox.node())[0])+0.7));
+
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-            
+
           tooltipLine_top.attr('stroke', 'black')
-            .attr('x1', right_top_x(x)-5)
-            .attr('x2', right_top_x(x)-5)
+            .attr('x1', right_top_x(x)-1)
+            .attr('x2', right_top_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_top_height)
             .attr('opacity',0.7);
-          
-          tooltip_top.html(x)
+
+          tooltip_top.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_top_height*0.28+"px")
@@ -636,7 +636,7 @@ $(document).ready(function () {
             .style('color', d => d.color)
             .html(d => d.name + ': ' + d.history.find(h => h.x == x).y);
         }
-                      
+
 
 
   }
@@ -654,7 +654,7 @@ $(document).ready(function () {
         EpochNow = updateTween()
 
         EpochNoww = EpochNow-1
-        
+
         svgright_middle.selectAll(".rightmiddlepath").remove();
 
         var dataTotal = []
@@ -673,7 +673,7 @@ $(document).ready(function () {
         console.log(dataTotal)
 
         funcList = []
-        
+
         for (var key in dataTotal[0]){
             if((key === 'epoch')||(key === 'total')||(key === 'loss')||(key === 'correlation')){
                 continue;
@@ -704,7 +704,7 @@ $(document).ready(function () {
             }
             dataT['x'] = dataX
 
-            
+
 
             var rearrangedData = dataT.x.map(function(d,i) {
               return {x:d,y:dataT.y[i]}; 
@@ -766,7 +766,7 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-          
+
           svgright_middle.selectAll()
             .data(final_data).enter()
             .append('text')
@@ -776,7 +776,7 @@ $(document).ready(function () {
             .attr('x', right_middle_width)
             .attr('dx', '.5em')
             .attr('y', d => right_middle_y(d.currentLoss)); 
-          
+
           tipBox = svgright_middle.append('rect')
             .attr('width', right_middle_width)
             .attr('height', right_middle_height)
@@ -792,19 +792,19 @@ $(document).ready(function () {
 
         function drawTooltip() {
           const x = Math.floor((right_middle_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-          
+
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-            
+
           tooltipLine_middle.attr('stroke', 'black')
-            .attr('x1', right_middle_x(x)-5)
-            .attr('x2', right_middle_x(x)-5)
+            .attr('x1', right_middle_x(x)-1)
+            .attr('x2', right_middle_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_middle_height)
             .attr('opacity',0.7);
-          
-          tooltip_middle.html(x)
+
+          tooltip_middle.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_middle_height*0.28+"px")
@@ -820,7 +820,7 @@ $(document).ready(function () {
 
 
 
-  
+
 
 
     //correlation bar
@@ -835,7 +835,7 @@ $(document).ready(function () {
         EpochCnow = updateTween()
 
         EpochNow = EpochCnow
-        
+
         svgright_bottom.selectAll(".rightbottompath").remove();
         svgright_bottom.selectAll(".right_bottom_text").remove();
 
@@ -917,7 +917,7 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-          
+
           svgright_bottom.selectAll()
             .data(final_data).enter()
             .append('text')
@@ -927,7 +927,7 @@ $(document).ready(function () {
             .attr('x', right_bottom_width)
             .attr('dx', '.5em')
             .attr('y', d => right_bottom_y(d.currentLoss)); 
-          
+
           tipBox = svgright_bottom.append('rect')
             .attr('width', right_bottom_width)
             .attr('height', right_bottom_height)
@@ -943,19 +943,19 @@ $(document).ready(function () {
 
         function drawTooltip() {
           const x = Math.floor((right_bottom_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-          
+
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-            
+
           tooltipLine_bottom.attr('stroke', 'black')
-            .attr('x1', right_bottom_x(x)-5)
-            .attr('x2', right_bottom_x(x)-5)
+            .attr('x1', right_bottom_x(x)-1)
+            .attr('x2', right_bottom_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_bottom_height)
             .attr('opacity',0.7);
-          
-          tooltip_bottom.html(x)
+
+          tooltip_bottom.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_bottom_height*0.28+"px")
@@ -966,7 +966,7 @@ $(document).ready(function () {
             .style('color', d => d.color)
             .html(d => d.name + ': ' + d.history.find(h => h.x == x).y);
         }
-               
+
     }
 
 
@@ -974,7 +974,7 @@ $(document).ready(function () {
 
 
 
-    
+
 
 
 
@@ -982,7 +982,7 @@ $(document).ready(function () {
 
     //네트워크
 
-    
+
 
     firstdrawdata();
 
@@ -1005,14 +1005,14 @@ $(document).ready(function () {
         var indexs = indexcheckbox();
         // changedrawdata(selected_postposition,selected_node_color,functions,indexs)
         changedrawdata(selected_postposition,functions,indexs)
-        
+
     }
 
     //시각화 부분 함수 생성
     function firstdrawdata() {
 
         right_bottom_draw(0);
-    
+
         var data = {};
         for (var i = 0; i < Map_info.length ; i++) {
             if ((Map_info[i].postposition === 'ey') && (Map_info[i].epoch === 'epoch0')) {
@@ -1161,7 +1161,7 @@ $(document).ready(function () {
              //    console.log(clicked)
              //    $('.CB_leftbottom').val($(clicked).is(':checked'));
              //    op_function_change();
-                
+
              // });
 
 
@@ -1189,17 +1189,17 @@ $(document).ready(function () {
             right_middle_draw();
 
             //svgright_bottom.selectAll(".corBar").remove();
-            
-            
+
+
 
             var textlabel = div_epoch.selectAll(".textlabel")
             textlabel.enter()
                      .append("text")
                      .attr("class", "label")
-                     .text(EpochNow+" Epoch")
+                     .text((EpochNow+1)+" Epoch")
             textlabel.transition()
                      .duration(10)
-                     .text(EpochNow+" Epoch")
+                     .text((EpochNow+1)+" Epoch")
             textlabel.exit().remove();
 
             var data = {};
@@ -1217,14 +1217,14 @@ $(document).ready(function () {
                                 sentenceDic["X"] = Map_info[i].sentences[k].X
                                 sentenceDic["Y"] = Map_info[i].sentences[k].Y
                                 if((functionarray.length > 0 == true)&&(indexarray.length > 0 == true)){
-                                    
+
                                     var checked = false;
                                     for(var q = 0; q < functionarray.length ; q++){
                                         if(Sentence_info[j].sentences[k].function == functionarray[q]){
                                             checked = true;
                                         }
                                     }
-                                    
+
                                     if(checked == true){
                                         console.log(Sentence_info[j].sentences[k].index)
                                         var ichecked = false;
