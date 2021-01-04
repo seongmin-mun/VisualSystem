@@ -10,7 +10,7 @@ PostBERT.ko was made to simulate how the BERT model interprets the polysemy of w
 ### Screenshots
 -----------
 <div>
-  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/index.html"><img src="../Screenshot/PostBERT.ko.png" style="max-width:100%;"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/index.html"><img src="../Screenshot/PostBERT.ko_v3.png" style="max-width:100%;"></a>
 </div>
 
 - [Try to use PostBERT.ko](https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/index.html)
