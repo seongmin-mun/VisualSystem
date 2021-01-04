@@ -36,7 +36,7 @@ body {
     float:left;
     overflow:hidden;
     width:100%;
-    height:350px;
+    height:250px;
     padding: 0.5%;
     background-clip: content-box;
 }
@@ -46,7 +46,17 @@ body {
     float:left;
     overflow:hidden;
     width:100%;
-    height:465px;
+    height:290px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#left_bottom_bottom {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:355px;
     padding: 0.5%;
     background-clip: content-box;
 }
@@ -252,7 +262,7 @@ select#op_postposition { /*text-align-last:center;*/
 #container_leftmiddle {
     border:2px solid #ccc;
     width:88%;
-    height: 300px;
+    height: 200px;
     position: absolute;
     left: 5%;
     overflow-y: scroll;
@@ -273,7 +283,7 @@ select#op_postposition { /*text-align-last:center;*/
 #container_leftbottom {
     border:2px solid #ccc;
     width:88%;
-    height: 415px;
+    height: 240px;
     position: absolute;
     left: 5%;
     overflow-y: scroll;
