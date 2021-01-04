@@ -5,6 +5,80 @@ $(document).ready(function () {
     var function_color = ['#993366','#FF99CC','#FF00FF','#FF6600','#000080','#003300',' #0066CC','#666699','#FFCC00','#5b2e90'];
 
     //크기 설정
+    var LeftsectionWidth = $("#left_bottom_bottom").width()   //윈도우 넓이
+    var LeftsectionHeight = $("#left_bottom_bottom").height()   //윈도우 높이
+
+
+    var LeftsvgSection = d3.select('#left_bottom_bottom').append('svg')
+          .attr('width', LeftsectionWidth)
+          .attr('height', (LeftsectionHeight*0.9))
+
+
+    for (var i = 0; i < 3; i++) {
+        currentPost = ''
+        if (i === 0) {
+                currentPost = 'Ey'
+            } else if (i === 1) {
+                currentPost = 'Eyse'
+            } else if (i === 2) {
+                currentPost = 'Lo'
+        }
+        for (var j = 0; j < 50; j++) {
+            var imgs = LeftsvgSection.append("image")
+                .attr("class", "PNG")
+                .attr("id",currentPost+j)
+                .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+j+".png")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("opacity",0)
+                .attr('width', LeftsectionWidth*0.9)
+                .attr('height', LeftsectionWidth*0.9);
+        }
+
+    }
+
+
+    // LeftsvgSection.selectAll("#Ey0").transition()
+    //                  .duration(500).attr("opacity",1)
+
+    // currentPost = ''
+
+    //         if (selected_postposition === 'ey') {
+    //             currentPost = 'Ey'
+    //         } else if (selected_postposition === 'eyse') {
+    //             currentPost = 'Eyse'
+    //         } else if (selected_postposition === '(u)lo') {
+    //             currentPost = 'Lo'
+    //         }
+
+    //         LeftsvgSection.selectAll(".PNG").remove();
+
+    //         var imgs = LeftsvgSection.append("image")
+    //             .attr("class", "PNG")
+    //             .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
+    //             .attr("x", 0)
+    //             .attr("y", 0)
+    //             .attr('width', LeftsectionWidth*0.9)
+    //             .attr('height', LeftsectionWidth*0.9);
+
+    // var imgs = LeftsvgSection.append("image")
+    //             .attr("class", "PNG")
+    //             .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
+    //             .attr("x", 0)
+    //             .attr("y", 0)
+    //             .attr('width', LeftsectionWidth*0.9)
+    //             .attr('height', LeftsectionWidth*0.9);
+
+    // var imgs = LeftsvgSection.append("image")
+    //     .attr("class", "PNG")
+    //     .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/Ey_tSNE_epoch_0.png")
+    //     .attr("x", 0)
+    //     .attr("y", 0)
+    //     .attr('width', LeftsectionWidth*0.9)
+    //     .attr('height', LeftsectionWidth*0.9);
+
+
+    //크기 설정
     var sectionWidth = $("#section_top").width()   //윈도우 넓이
     var sectionHeight = $("#section_top").height()   //윈도우 높이
 
@@ -31,7 +105,7 @@ $(document).ready(function () {
             .attr("font-family", "Open Sans")
             .attr("font-size", "25px")
             .attr("fill", "#C2C1C1")
-
+            
 
     var NodeGroup = svgSection.append("g");
 
@@ -113,7 +187,7 @@ $(document).ready(function () {
         svgright_middle.append("line").attr("x1", ((right_middle_width * 0.162) * k) + (right_middle_width * 0.065)).attr("y1", right_middle_height*0.01).attr("x2", ((right_middle_width * 0.162) * k) + (right_middle_width * 0.065)).attr("y2", right_middle_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
     }
 
-
+    
     var right_bottom_width = $("#right_bottom").width()
     var right_bottom_height = $("#right_bottom").height()
 
@@ -179,7 +253,7 @@ $(document).ready(function () {
     var currentEpoch = 0;
 
     var playButton = d3.select("#play-button");
-
+        
     var x = d3.scaleLinear()
         .domain([1, 49])
         .range([0, SB_width*0.9])
@@ -246,7 +320,7 @@ $(document).ready(function () {
       currentEpoch = Math.round(actual)
 
       return currentEpoch
-
+      
     }
 
     function keydowned() {
@@ -506,7 +580,7 @@ $(document).ready(function () {
         EpochCnow = updateTween()
 
         EpochNow = EpochCnow
-
+        
         svgright_top.selectAll(".righttoppath").remove();
         svgright_top.selectAll(".right_top_text").remove();
 
@@ -587,7 +661,7 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-
+          
           svgright_top.selectAll()
             .data(final_data).enter()
             .append('text')
@@ -597,7 +671,7 @@ $(document).ready(function () {
             .attr('x', right_top_width)
             .attr('dx', '.5em')
             .attr('y', d => right_top_y(d.currentAccuracy)); 
-
+          
           tipBox = svgright_top.append('rect')
             .attr('width', right_top_width)
             .attr('height', right_top_height)
@@ -613,18 +687,18 @@ $(document).ready(function () {
 
         function drawTooltip() {
           const x = Math.floor((right_top_x.invert(d3.mouse(tipBox.node())[0])+0.7));
-
+          
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-
+            
           tooltipLine_top.attr('stroke', 'black')
             .attr('x1', right_top_x(x)-1)
             .attr('x2', right_top_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_top_height)
             .attr('opacity',0.7);
-
+          
           tooltip_top.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
@@ -636,7 +710,7 @@ $(document).ready(function () {
             .style('color', d => d.color)
             .html(d => d.name + ': ' + d.history.find(h => h.x == x).y);
         }
-
+                      
 
 
   }
@@ -654,7 +728,7 @@ $(document).ready(function () {
         EpochNow = updateTween()
 
         EpochNoww = EpochNow-1
-
+        
         svgright_middle.selectAll(".rightmiddlepath").remove();
 
         var dataTotal = []
@@ -673,7 +747,7 @@ $(document).ready(function () {
         console.log(dataTotal)
 
         funcList = []
-
+        
         for (var key in dataTotal[0]){
             if((key === 'epoch')||(key === 'total')||(key === 'loss')||(key === 'correlation')){
                 continue;
@@ -704,7 +778,7 @@ $(document).ready(function () {
             }
             dataT['x'] = dataX
 
-
+            
 
             var rearrangedData = dataT.x.map(function(d,i) {
               return {x:d,y:dataT.y[i]}; 
@@ -766,7 +840,7 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-
+          
           svgright_middle.selectAll()
             .data(final_data).enter()
             .append('text')
@@ -776,7 +850,7 @@ $(document).ready(function () {
             .attr('x', right_middle_width)
             .attr('dx', '.5em')
             .attr('y', d => right_middle_y(d.currentLoss)); 
-
+          
           tipBox = svgright_middle.append('rect')
             .attr('width', right_middle_width)
             .attr('height', right_middle_height)
@@ -792,18 +866,18 @@ $(document).ready(function () {
 
         function drawTooltip() {
           const x = Math.floor((right_middle_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-
+          
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-
+            
           tooltipLine_middle.attr('stroke', 'black')
             .attr('x1', right_middle_x(x)-1)
             .attr('x2', right_middle_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_middle_height)
             .attr('opacity',0.7);
-
+          
           tooltip_middle.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
@@ -820,7 +894,7 @@ $(document).ready(function () {
 
 
 
-
+  
 
 
     //correlation bar
@@ -835,7 +909,7 @@ $(document).ready(function () {
         EpochCnow = updateTween()
 
         EpochNow = EpochCnow
-
+        
         svgright_bottom.selectAll(".rightbottompath").remove();
         svgright_bottom.selectAll(".right_bottom_text").remove();
 
@@ -917,7 +991,7 @@ $(document).ready(function () {
             .datum(d => d.history)
             .attr('d', line)
             .attr("opacity",0.7);
-
+          
           svgright_bottom.selectAll()
             .data(final_data).enter()
             .append('text')
@@ -927,7 +1001,7 @@ $(document).ready(function () {
             .attr('x', right_bottom_width)
             .attr('dx', '.5em')
             .attr('y', d => right_bottom_y(d.currentLoss)); 
-
+          
           tipBox = svgright_bottom.append('rect')
             .attr('width', right_bottom_width)
             .attr('height', right_bottom_height)
@@ -943,18 +1017,18 @@ $(document).ready(function () {
 
         function drawTooltip() {
           const x = Math.floor((right_bottom_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-
+          
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
           })  
-
+            
           tooltipLine_bottom.attr('stroke', 'black')
             .attr('x1', right_bottom_x(x)-1)
             .attr('x2', right_bottom_x(x)-1)
             .attr('y1', 0)
             .attr('y2', right_bottom_height)
             .attr('opacity',0.7);
-
+          
           tooltip_bottom.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
@@ -966,7 +1040,7 @@ $(document).ready(function () {
             .style('color', d => d.color)
             .html(d => d.name + ': ' + d.history.find(h => h.x == x).y);
         }
-
+               
     }
 
 
@@ -974,7 +1048,7 @@ $(document).ready(function () {
 
 
 
-
+    
 
 
 
@@ -982,7 +1056,7 @@ $(document).ready(function () {
 
     //네트워크
 
-
+    
 
     firstdrawdata();
 
@@ -1005,14 +1079,14 @@ $(document).ready(function () {
         var indexs = indexcheckbox();
         // changedrawdata(selected_postposition,selected_node_color,functions,indexs)
         changedrawdata(selected_postposition,functions,indexs)
-
+        
     }
 
     //시각화 부분 함수 생성
     function firstdrawdata() {
 
         right_bottom_draw(0);
-
+    
         var data = {};
         for (var i = 0; i < Map_info.length ; i++) {
             if ((Map_info[i].postposition === 'ey') && (Map_info[i].epoch === 'epoch0')) {
@@ -1161,7 +1235,7 @@ $(document).ready(function () {
              //    console.log(clicked)
              //    $('.CB_leftbottom').val($(clicked).is(':checked'));
              //    op_function_change();
-
+                
              // });
 
 
@@ -1189,8 +1263,8 @@ $(document).ready(function () {
             right_middle_draw();
 
             //svgright_bottom.selectAll(".corBar").remove();
-
-
+            
+            
 
             var textlabel = div_epoch.selectAll(".textlabel")
             textlabel.enter()
@@ -1217,14 +1291,14 @@ $(document).ready(function () {
                                 sentenceDic["X"] = Map_info[i].sentences[k].X
                                 sentenceDic["Y"] = Map_info[i].sentences[k].Y
                                 if((functionarray.length > 0 == true)&&(indexarray.length > 0 == true)){
-
+                                    
                                     var checked = false;
                                     for(var q = 0; q < functionarray.length ; q++){
                                         if(Sentence_info[j].sentences[k].function == functionarray[q]){
                                             checked = true;
                                         }
                                     }
-
+                                    
                                     if(checked == true){
                                         console.log(Sentence_info[j].sentences[k].index)
                                         var ichecked = false;
@@ -1283,6 +1357,32 @@ $(document).ready(function () {
             }
 
             console.log(data)
+
+            currentPost = ''
+
+            if (selected_postposition === 'ey') {
+                currentPost = 'Ey'
+            } else if (selected_postposition === 'eyse') {
+                currentPost = 'Eyse'
+            } else if (selected_postposition === '(u)lo') {
+                currentPost = 'Lo'
+            }
+
+            LeftsvgSection.selectAll(".PNG").transition()
+                     .duration(800).attr("opacity",0)
+
+            LeftsvgSection.selectAll("#"+currentPost+EpochNow).transition()
+                     .duration(800).attr("opacity",1)
+
+            // LeftsvgSection.selectAll(".PNG").remove();
+
+            // var imgs = LeftsvgSection.append("image")
+            //     .attr("class", "PNG")
+            //     .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
+            //     .attr("x", 0)
+            //     .attr("y", 0)
+            //     .attr('width', LeftsectionWidth*0.9)
+            //     .attr('height', LeftsectionWidth*0.9);
 
             var w = sectionWidth;
             var h = sectionHeight;
