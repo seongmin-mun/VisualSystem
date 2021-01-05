@@ -570,7 +570,7 @@ $(document).ready(function () {
 
   op_function_change()
 
-  right_top_draw()
+  //right_top_draw()
 
 
   //line graph
@@ -699,7 +699,7 @@ $(document).ready(function () {
             .attr('y2', right_top_height)
             .attr('opacity',0.7);
           
-          tooltip_top.html(x+1)
+          tooltip_top.html(x)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_top_height*0.28+"px")
@@ -718,7 +718,7 @@ $(document).ready(function () {
 
 
 
-  right_middle_draw()
+  //right_middle_draw()
 
 
   //line graph
@@ -727,7 +727,7 @@ $(document).ready(function () {
 
         EpochNow = updateTween()
 
-        EpochNoww = EpochNow-1
+        EpochNoww = EpochNow
         
         svgright_middle.selectAll(".rightmiddlepath").remove();
 
@@ -878,7 +878,7 @@ $(document).ready(function () {
             .attr('y2', right_middle_height)
             .attr('opacity',0.7);
           
-          tooltip_middle.html(x+1)
+          tooltip_middle.html(x)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_middle_height*0.28+"px")
@@ -899,7 +899,7 @@ $(document).ready(function () {
 
     //correlation bar
 
-    right_bottom_draw();
+    //right_bottom_draw();
 
 
     function right_bottom_draw(){
@@ -1029,7 +1029,7 @@ $(document).ready(function () {
             .attr('y2', right_bottom_height)
             .attr('opacity',0.7);
           
-          tooltip_bottom.html(x+1)
+          tooltip_bottom.html(x)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_bottom_height*0.28+"px")
@@ -1270,10 +1270,10 @@ $(document).ready(function () {
             textlabel.enter()
                      .append("text")
                      .attr("class", "label")
-                     .text((EpochNow+1)+" Epoch")
+                     .text((EpochNow)+" Epoch")
             textlabel.transition()
                      .duration(10)
-                     .text((EpochNow+1)+" Epoch")
+                     .text((EpochNow)+" Epoch")
             textlabel.exit().remove();
 
             var data = {};
