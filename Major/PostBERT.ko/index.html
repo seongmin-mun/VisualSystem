@@ -15,6 +15,7 @@
     <script src="./Data/Rdata/Madpdata.js" charset="utf-8"></script>
     <script src="./Data/Rdata/Sentencedata.js" charset="utf-8"></script>
     <script src="./Data/Rdata/Accuracydata.js" charset="utf-8"></script>
+    <script src="./Data/Rdata/Clusterdata.js" charset="utf-8"></script>
     <!--스타일-->
     <link rel="stylesheet" href="./stylesheets/BERTVis.css">
 
@@ -70,7 +71,7 @@
         </div>
         <div id="right">
             <div id="right_top">
-                <p id="right_option">Overall accuracy</p>
+                <p id="right_option">Overall accuracy & Loss</p>
                 <div id="tooltip_top" style='display:none'>
                 </div>
             </div>
@@ -80,8 +81,9 @@
                 </div>
             </div>
             <div id="right_bottom">
-                <p id="right_option">Loss</p>
-                <div id="tooltip_bottom" style='display:none'>
+                <p id="right_option">Bar chart for density cluster</p>
+                <div id="tooltip_bottom" class="hidden">
+                </div>
                 </div>
             </div>
         </div>
