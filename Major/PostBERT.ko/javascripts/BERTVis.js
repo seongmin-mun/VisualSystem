@@ -13,69 +13,13 @@ $(document).ready(function () {
           .attr('width', LeftsectionWidth)
           .attr('height', (LeftsectionHeight*0.9))
 
-
-    for (var i = 0; i < 3; i++) {
-        currentPost = ''
-        if (i === 0) {
-                currentPost = 'Ey'
-            } else if (i === 1) {
-                currentPost = 'Eyse'
-            } else if (i === 2) {
-                currentPost = 'Lo'
-        }
-        for (var j = 0; j < 50; j++) {
-            var imgs = LeftsvgSection.append("image")
-                .attr("class", "PNG")
-                .attr("id",currentPost+j)
-                .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+j+".png")
-                .attr("x", 0)
-                .attr("y", 0)
-                .attr("opacity",0)
-                .attr('width', LeftsectionWidth*0.9)
-                .attr('height', LeftsectionWidth*0.9);
-        }
-
-    }
-
-
-    // LeftsvgSection.selectAll("#Ey0").transition()
-    //                  .duration(500).attr("opacity",1)
-
-    // currentPost = ''
-
-    //         if (selected_postposition === 'ey') {
-    //             currentPost = 'Ey'
-    //         } else if (selected_postposition === 'eyse') {
-    //             currentPost = 'Eyse'
-    //         } else if (selected_postposition === '(u)lo') {
-    //             currentPost = 'Lo'
-    //         }
-
-    //         LeftsvgSection.selectAll(".PNG").remove();
-
-    //         var imgs = LeftsvgSection.append("image")
-    //             .attr("class", "PNG")
-    //             .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
-    //             .attr("x", 0)
-    //             .attr("y", 0)
-    //             .attr('width', LeftsectionWidth*0.9)
-    //             .attr('height', LeftsectionWidth*0.9);
-
-    // var imgs = LeftsvgSection.append("image")
-    //             .attr("class", "PNG")
-    //             .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
-    //             .attr("x", 0)
-    //             .attr("y", 0)
-    //             .attr('width', LeftsectionWidth*0.9)
-    //             .attr('height', LeftsectionWidth*0.9);
-
-    // var imgs = LeftsvgSection.append("image")
-    //     .attr("class", "PNG")
-    //     .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/Ey_tSNE_epoch_0.png")
-    //     .attr("x", 0)
-    //     .attr("y", 0)
-    //     .attr('width', LeftsectionWidth*0.9)
-    //     .attr('height', LeftsectionWidth*0.9);
+    var imgs = LeftsvgSection.append("image")
+        .attr("class", "PNG")
+        .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/Ey_tSNE_epoch_0.png")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr('width', LeftsectionWidth*0.9)
+        .attr('height', LeftsectionWidth*0.9);
 
 
     //크기 설정
@@ -221,7 +165,7 @@ $(document).ready(function () {
     svgright_bottom.append("line").attr("x1",  right_bottom_width * 0.05).attr("y1", right_bottom_height*0.6).attr("x2", right_bottom_width * 0.95).attr("y2", right_bottom_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
 
     for (var k = 0; k < 6; k++) {
-        svgright_bottom.append("line").attr("x1", ((right_bottom_width * 0.162) * k) + (right_bottom_width * 0.065)).attr("y1", right_bottom_height*0.01).attr("x2", ((right_bottom_width * 0.162) * k) + (right_bottom_width * 0.065)).attr("y2", right_bottom_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
+        svgright_bottom.append("line").attr("x1", ((right_bottom_width * 0.1651) * k) + (right_bottom_width * 0.065)).attr("y1", right_bottom_height*0.01).attr("x2", ((right_bottom_width * 0.1651) * k) + (right_bottom_width * 0.065)).attr("y2", right_bottom_height*0.75).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
     }
 
 
@@ -312,11 +256,6 @@ $(document).ready(function () {
       if (Math.abs(diff) < 1e-3) actual = target, timer.stop();
       else actual += diff * alpha;
       handle.attr("cx", x(actual));
-      // if (currentEpoch != Math.round(actual)){
-      //   console.log(currentEpoch)
-      //   right_bottom_draw(currentEpoch);
-      // }
-      // console.log(Math.round(actual))
       currentEpoch = Math.round(actual)
 
       return currentEpoch
@@ -570,78 +509,87 @@ $(document).ready(function () {
 
   op_function_change()
 
-  //right_top_draw()
-
 
   //line graph
   function right_top_draw(){
         var selected_postposition = $( "#op_postposition" ).val();
 
-        EpochCnow = updateTween()
+        EpochNow = updateTween()
 
-        EpochNow = EpochCnow
+        EpochNoww = EpochNow
         
         svgright_top.selectAll(".righttoppath").remove();
-        svgright_top.selectAll(".right_top_text").remove();
 
-        var data = {}
+        var dataTotal = []
 
-        var dataY = [];
-        currentaccuracy = 0
         for (var i = 0; i < Accuracy_info.length ; i++) {
             if ((Accuracy_info[i].postposition === selected_postposition)) {
                 for(var j = 0; j < Accuracy_info[i].accuracy.length ; j++){
-                    if(j<=EpochNow){
-                        dataY.push(Accuracy_info[i].accuracy[j].total)
-                        currentaccuracy = Accuracy_info[i].accuracy[j].total
+                    if(j<=EpochNoww){
+                        dataTotal.push(Accuracy_info[i].accuracy[j])
                     } 
                 }
             }
         }
 
-        data['y'] = dataY
-        var dataX = [];
-        for (var i = 0; i < 50 ; i++) {
-            dataX.push(i)
+
+        funcList = []
+        
+        for (var key in dataTotal[0]){
+            if((key === 'total')||(key === 'loss')){
+                funcList.push(key)
+            } else {
+                continue;
+            }
+
         }
-        data['x'] = dataX
 
-        var rearrangedData = data.x.map(function(d,i) {
-          return {x:d,y:data.y[i]}; 
-        })
-
-        var text = svgright_top.append("text")
-                .attr("class", "right_top_text")
-                .text("Current accuracy: "+rearrangedData[EpochNow].y)
-                .attr("x", right_top_width*0.08)
-                .attr("y", right_top_height*0.1)
-                .attr("text-anchor", "start")
-                .attr("font-family", "Open Sans")
-                .attr("font-size", "20px")
-                .attr("fill", "#666666")
-
-        var re_data = {}
-        re_data['name'] = "overall"
-        re_data['show'] = true
-        re_data['color'] = "#49441F"
-        re_data['currentAccuracy'] = currentaccuracy
-        re_data['history'] = rearrangedData
-
-        var re_data_none = {}
-        re_data_none['name'] = "overall"
-        re_data_none['show'] = true
-        re_data_none['color'] = "rgba(255, 0, 0, 0)"
-        re_data_none['currentAccuracy'] = currentaccuracy
-        re_data_none['history'] = rearrangedData
 
         var final_data = [] 
-        final_data.push(re_data)
-        final_data.push(re_data_none)
 
 
+        for (var i = 0; i < funcList.length ; i++) {
+            currentFunc = funcList[i]
+            var dataT = {}
+            var dataY = [];
+            var currentaccuracy = 0
+            for (var j = 0; j < dataTotal.length ; j++) {
+                dataY.push(dataTotal[j][funcList[i]])
+                currentaccuracy = dataTotal[j][funcList[i]]
+            }
+            dataT['y'] = dataY
+            var dataX = [];
+            for (var j = 0; j < 50 ; j++) {
+                dataX.push(j)
+            }
+            dataT['x'] = dataX
+
+            
+
+            var rearrangedData = dataT.x.map(function(d,i) {
+              return {x:d,y:dataT.y[i]}; 
+            })
+
+
+
+            var re_data = {}
+            re_data['name'] = currentFunc
+            re_data['show'] = true
+            re_data['currentLoss'] = currentaccuracy
+            re_data['history'] = rearrangedData
+
+            if (currentFunc == 'total') {
+                re_data['color'] = "#49441F"
+            } else if (currentFunc == 'loss') {
+                re_data['color'] = "#003366"
+            } 
+
+            final_data.push(re_data)
+
+        }
 
         var right_top_x = d3.scale.linear().domain([0,50]).range([right_top_width*0.07,right_top_width*0.9])
-        var right_top_y = d3.scale.linear().domain([0.625,1]).range([right_top_height*0.72,0])
+        var right_top_y = d3.scale.linear().domain([-0.25,1.5]).range([right_top_height*0.7,0])
 
         var line = d3.svg.line()
                      .x(function(d){ return right_top_x(d.x)})
@@ -665,12 +613,12 @@ $(document).ready(function () {
           svgright_top.selectAll()
             .data(final_data).enter()
             .append('text')
-            .html(d => (d.name+1))
+            .html(d => d.name)
             .attr('fill', d => d.color)
             .attr('alignment-baseline', 'middle')
             .attr('x', right_top_width)
             .attr('dx', '.5em')
-            .attr('y', d => right_top_y(d.currentAccuracy)); 
+            .attr('y', d => right_top_y(d.currentLoss)); 
           
           tipBox = svgright_top.append('rect')
             .attr('width', right_top_width)
@@ -686,7 +634,7 @@ $(document).ready(function () {
         }
 
         function drawTooltip() {
-          const x = Math.floor((right_top_x.invert(d3.mouse(tipBox.node())[0])+0.7));
+          const x = Math.floor((right_top_x.invert(d3.mouse(tipBox.node())[0])+0.5));
           
           final_data.sort((a, b) => {
             return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
@@ -699,7 +647,7 @@ $(document).ready(function () {
             .attr('y2', right_top_height)
             .attr('opacity',0.7);
           
-          tooltip_top.html(x)
+          tooltip_top.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_top_height*0.28+"px")
@@ -717,8 +665,6 @@ $(document).ready(function () {
 
 
 
-
-  //right_middle_draw()
 
 
   //line graph
@@ -743,9 +689,6 @@ $(document).ready(function () {
             }
         }
 
-        console.log("data")
-        console.log(dataTotal)
-
         funcList = []
         
         for (var key in dataTotal[0]){
@@ -767,7 +710,6 @@ $(document).ready(function () {
             var dataY = [];
             var currentaccuracy = 0
             for (var j = 0; j < dataTotal.length ; j++) {
-                //console.log(dataTotal[j][funcList[i]])
                 dataY.push(dataTotal[j][funcList[i]])
                 currentaccuracy = dataTotal[j][funcList[i]]
             }
@@ -784,7 +726,6 @@ $(document).ready(function () {
               return {x:d,y:dataT.y[i]}; 
             })
 
-            console.log(rearrangedData)
 
 
             var re_data = {}
@@ -878,7 +819,7 @@ $(document).ready(function () {
             .attr('y2', right_middle_height)
             .attr('opacity',0.7);
           
-          tooltip_middle.html(x)
+          tooltip_middle.html(x+1)
             .style('display', 'block')
             .style('right', right_top_width*0.07+"px")
             .style('top', right_middle_height*0.28+"px")
@@ -894,155 +835,136 @@ $(document).ready(function () {
 
 
 
-  
+  //bar chart
 
-
-    //correlation bar
-
-    //right_bottom_draw();
-
-
-    function right_bottom_draw(){
-
+  function right_bottom_draw(){
         var selected_postposition = $( "#op_postposition" ).val();
 
-        EpochCnow = updateTween()
+        EpochNow = updateTween()
 
-        EpochNow = EpochCnow
+        EpochNoww = EpochNow
         
-        svgright_bottom.selectAll(".rightbottompath").remove();
-        svgright_bottom.selectAll(".right_bottom_text").remove();
+        svgright_bottom.selectAll(".rightbottom_bar").remove();
+        svgright_bottom.selectAll(".rightbottom_text").remove();
 
-        var data = {}
+        var dataTotal = [0]
 
-        var dataY = [];
-        currentloss = 0
-        for (var i = 0; i < Accuracy_info.length ; i++) {
-            if ((Accuracy_info[i].postposition === selected_postposition)) {
-                for(var j = 0; j < Accuracy_info[i].accuracy.length ; j++){
-                    if(j<=EpochNow){
-                        dataY.push(Accuracy_info[i].accuracy[j].loss)
-                        currentloss = Accuracy_info[i].accuracy[j].loss
+
+
+        for (var i = 0; i < Density_info.length ; i++) {
+            if ((Density_info[i].postposition === selected_postposition)) {
+                for(var j = 0; j < Density_info[i].cluster.length ; j++){
+                    if(j<=EpochNoww){
+                        dataTotal.push(Density_info[i].cluster[j].clusterNumber)
                     } 
                 }
             }
         }
 
-        data['y'] = dataY
-        var dataX = [];
-        for (var i = 0; i < 50 ; i++) {
-            dataX.push(i)
-        }
-        data['x'] = dataX
+        console.log("bardata")
+        console.log(dataTotal)
 
-        var rearrangedData = data.x.map(function(d,i) {
-          return {x:d,y:data.y[i]}; 
-        })
+        // var svgright_bottom = d3.select("#right_bottom")
+        //   .append("svg")
+        //   .attr("width", right_bottom_width*0.95)
+        //   .attr("height", (right_bottom_height*0.95))
 
-        var text = svgright_bottom.append("text")
-                .attr("class", "right_bottom_text")
-                .text("Current loss: "+rearrangedData[EpochNow].y)
-                .attr("x", right_bottom_width*0.08)
-                .attr("y", right_bottom_height*0.1)
-                .attr("text-anchor", "start")
-                .attr("font-family", "Open Sans")
-                .attr("font-size", "20px")
-                .attr("fill", "#666666")
-
-
-        var re_data = {}
-        re_data['name'] = "loss"
-        re_data['show'] = true
-        re_data['color'] = "#003366"
-        re_data['currentLoss'] = currentloss
-        re_data['history'] = rearrangedData
-
-        var re_data_none = {}
-        re_data_none['name'] = "loss"
-        re_data_none['show'] = true
-        re_data_none['color'] = "rgba(255, 0, 0, 0)"
-        re_data_none['currentLoss'] = currentloss
-        re_data_none['history'] = rearrangedData
-
-        var final_data = [] 
-        final_data.push(re_data)
-        final_data.push(re_data_none)
-
-
-
-        var right_bottom_x = d3.scale.linear().domain([0,50]).range([right_bottom_width*0.07,right_bottom_width*0.9])
-        var right_bottom_y = d3.scale.linear().domain([-0.4,2]).range([right_bottom_height*0.72,0])
-
-        var line = d3.svg.line()
-                     .x(function(d){ return right_bottom_x(d.x)})
-                     .y(function(d){return right_bottom_y(d.y)})
-                     .interpolate("linear");
-
-        const tooltip_bottom = d3.select('#tooltip_bottom');
-        const tooltipLine_bottom = svgright_bottom.append('line');
-
-        svgright_bottom.selectAll()
-            .data(final_data).enter()
-            .append('path')
-            .attr('class','rightbottompath')
-            .attr('fill', 'none')
-            .attr('stroke', d => d.color)
-            .attr('stroke-width', 2)
-            .datum(d => d.history)
-            .attr('d', line)
-            .attr("opacity",0.7);
-          
-          svgright_bottom.selectAll()
-            .data(final_data).enter()
-            .append('text')
-            .html(d => d.name)
-            .attr('fill', d => d.color)
-            .attr('alignment-baseline', 'middle')
-            .attr('x', right_bottom_width)
-            .attr('dx', '.5em')
-            .attr('y', d => right_bottom_y(d.currentLoss)); 
-          
-          tipBox = svgright_bottom.append('rect')
-            .attr('width', right_bottom_width)
-            .attr('height', right_bottom_height)
-            .attr('opacity', 0)
-            .on('mousemove', drawTooltip)
-            .on('mouseout', removeTooltip);
-
-
-        function removeTooltip() {
-          if (tooltip_bottom) tooltip_bottom.style('display', 'none');
-          if (tooltipLine_bottom) tooltipLine_bottom.attr('stroke', 'none');
+        yScaleMax = 0;
+        if(selected_postposition==="ey"){
+            yScaleMax = 7;
+        } else if (selected_postposition==="eyse"){
+            yScaleMax = 3;
+        } else {
+            yScaleMax = 7;
         }
 
-        function drawTooltip() {
-          const x = Math.floor((right_bottom_x.invert(d3.mouse(tipBox.node())[0])+0.5));
-          
-          final_data.sort((a, b) => {
-            return b.history.find(h => h.x == x).y - a.history.find(h => h.x == x).y;
-          })  
-            
-          tooltipLine_bottom.attr('stroke', 'black')
-            .attr('x1', right_bottom_x(x)-1)
-            .attr('x2', right_bottom_x(x)-1)
-            .attr('y1', 0)
-            .attr('y2', right_bottom_height)
-            .attr('opacity',0.7);
-          
-          tooltip_bottom.html(x)
-            .style('display', 'block')
-            .style('right', right_top_width*0.07+"px")
-            .style('top', right_bottom_height*0.28+"px")
-            .style('opacity',0.7)
-            .selectAll()
-            .data(final_data).enter()
-            .append('div')
-            .style('color', d => d.color)
-            .html(d => d.name + ': ' + d.history.find(h => h.x == x).y);
-        }
-               
-    }
+        console.log(yScaleMax)
 
+        var right_bottom_x = d3.scale.linear()
+                .domain([0,50])
+                .range([right_bottom_width*0.05,right_bottom_width*0.88], 0.1);
+
+        var right_bottom_y = d3.scale.linear()
+                .domain([0, yScaleMax])
+                .range([0,right_bottom_height*0.62]);
+
+
+        // var right_bottom_x = d3.scale.ordinal().domain([0,50]).range([right_bottom_width*0.07,right_bottom_width*0.9])
+        // var right_bottom_y = d3.scale.linear().domain([0, yScaleMax]).range([right_bottom_height*0.72,0])
+
+
+        //Create bars
+        svgright_bottom.selectAll("rect")
+           .data(dataTotal)
+           .enter()
+           .append("rect")
+           .attr("class","rightbottom_bar")
+           .attr("x", function(d, i) {
+                return right_bottom_x(i);
+           })
+           .attr("y", function(d) {
+                return (right_bottom_height*0.6) - right_bottom_y(d);
+           })
+           .attr("width", right_bottom_width*0.015)
+           .attr("height", function(d) {
+                return right_bottom_y(d);
+           })
+           .attr("fill", function(d) {
+                return "#666666";
+           })
+           .on("mouseover", function(d, i) {
+
+                d3.select("#tooltip_bottom")
+                    .style("right", right_bottom_width*0.07 + "px")
+                    .style("top",  right_bottom_height*0.28 + "px")                     
+                    .html("<p><strong>Selected epoch: </strong>"+i+"<br><strong>Cluster number: </strong>"+d+"</p>")
+           
+                d3.select("#tooltip_bottom").classed("hidden", false);
+
+           })
+           .on("mouseout", function() {
+           
+                d3.select("#tooltip_bottom").classed("hidden", true);
+                
+           });
+
+        //Create labels
+        svgright_bottom.append("text")
+           .attr("class","rightbottom_text")
+           .text("Current cluster number: "+dataTotal[EpochNow+1])
+            .attr("x", right_bottom_width*0.08)
+            .attr("y", right_bottom_height*0.1)
+            .attr("text-anchor", "start")
+            .attr("font-family", "Open Sans")
+            .attr("font-size", "20px")
+            .attr("fill", "#666666")
+
+        // //Create labels
+        // svgright_bottom.selectAll("text")
+        //    .data(dataTotal)
+        //    .enter()
+        //    .append("text")
+        //    .attr("class","rightbottom_text")
+        //    .text(function(d) {
+        //         return d;
+        //    })
+        //    .attr("text-anchor", "middle")
+        //    .attr("x", function(d, i) {
+        //         return (right_bottom_width*0.01)+right_bottom_x(i) + right_bottom_x.rangeBand() / 2;
+        //    })
+        //    .attr("y", function(d) {
+        //         return (right_bottom_height*0.6) - right_bottom_y(d) + 1;
+        //    })
+        //    .attr("font-family", "sans-serif")
+        //    .attr("font-size", "7px")
+        //    .attr("fill", "white");
+
+
+  }
+
+
+
+  
 
 
 
@@ -1085,7 +1007,6 @@ $(document).ready(function () {
     //시각화 부분 함수 생성
     function firstdrawdata() {
 
-        right_bottom_draw(0);
     
         var data = {};
         for (var i = 0; i < Map_info.length ; i++) {
@@ -1116,7 +1037,7 @@ $(document).ready(function () {
             }
         }
 
-        console.log(data)
+
 
         var w = sectionWidth;
         var h = sectionHeight;
@@ -1232,7 +1153,6 @@ $(document).ready(function () {
              });
              // .on("click",function(d){
              //    var clicked = d.index
-             //    console.log(clicked)
              //    $('.CB_leftbottom').val($(clicked).is(':checked'));
              //    op_function_change();
                 
@@ -1256,11 +1176,10 @@ $(document).ready(function () {
             }
 
             EpochNow = updateTween() 
-            console.log(EpochNow)
 
-            right_bottom_draw();
             right_top_draw();
             right_middle_draw();
+            right_bottom_draw();
 
             //svgright_bottom.selectAll(".corBar").remove();
             
@@ -1270,10 +1189,10 @@ $(document).ready(function () {
             textlabel.enter()
                      .append("text")
                      .attr("class", "label")
-                     .text((EpochNow)+" Epoch")
+                     .text((EpochNow+1)+" Epoch")
             textlabel.transition()
                      .duration(10)
-                     .text((EpochNow)+" Epoch")
+                     .text((EpochNow+1)+" Epoch")
             textlabel.exit().remove();
 
             var data = {};
@@ -1300,7 +1219,6 @@ $(document).ready(function () {
                                     }
                                     
                                     if(checked == true){
-                                        console.log(Sentence_info[j].sentences[k].index)
                                         var ichecked = false;
                                         for(var t = 0; t < indexarray.length ; t++){
                                             if(Sentence_info[j].sentences[k].index == indexarray[t]){
@@ -1356,7 +1274,6 @@ $(document).ready(function () {
                 }
             }
 
-            console.log(data)
 
             currentPost = ''
 
@@ -1368,21 +1285,15 @@ $(document).ready(function () {
                 currentPost = 'Lo'
             }
 
-            LeftsvgSection.selectAll(".PNG").transition()
-                     .duration(800).attr("opacity",0)
+            LeftsvgSection.selectAll(".PNG").remove();
 
-            LeftsvgSection.selectAll("#"+currentPost+EpochNow).transition()
-                     .duration(800).attr("opacity",1)
-
-            // LeftsvgSection.selectAll(".PNG").remove();
-
-            // var imgs = LeftsvgSection.append("image")
-            //     .attr("class", "PNG")
-            //     .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
-            //     .attr("x", 0)
-            //     .attr("y", 0)
-            //     .attr('width', LeftsectionWidth*0.9)
-            //     .attr('height', LeftsectionWidth*0.9);
+            var imgs = LeftsvgSection.append("image")
+                .attr("class", "PNG")
+                .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr('width', LeftsectionWidth*0.9)
+                .attr('height', LeftsectionWidth*0.9);
 
             var w = sectionWidth;
             var h = sectionHeight;
@@ -1504,7 +1415,6 @@ $(document).ready(function () {
              })
              // .on("click",function(d){
              //    var clicked = d.index
-             //    console.log(clicked)
              //    $('input.CB_leftbottom').val($(clicked).is(':checked'));
              // });
 
@@ -1609,7 +1519,6 @@ $(document).ready(function () {
              });
              // .on("click",function(d){
              //    var clicked = d.index
-             //    console.log(clicked)
              //    $('input.CB_leftbottom').val($(clicked).is(':checked'));
              // });
 
