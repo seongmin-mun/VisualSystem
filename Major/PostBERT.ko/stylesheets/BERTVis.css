@@ -390,7 +390,7 @@ div.epoch {
 
 #tooltip_top {
     position: absolute;
-    width: 140px;
+    width: 120px;
     height: auto;
     padding: 10px;
     background-color: white;
@@ -441,10 +441,13 @@ div.epoch {
     line-height: 20px;
 }
 
+.rightbottom_bar:hover {
+    fill: #f08080;
+}
 
 #tooltip_bottom {
     position: absolute;
-    width: 120px;
+    width: 160px;
     height: auto;
     padding: 10px;
     background-color: white;
@@ -455,6 +458,7 @@ div.epoch {
     -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     pointer-events: none;
+    opacity: 0.7;
 }
 
 #tooltip_bottom.hidden {
@@ -467,6 +471,8 @@ div.epoch {
     font-size: 16px;
     line-height: 20px;
 }
+
+
     
 
 h5 {
