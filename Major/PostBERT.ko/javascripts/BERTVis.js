@@ -16,7 +16,7 @@ $(document).ready(function () {
     var imgs = LeftsvgSection.append("image")
         .attr("class", "PNG")
         .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/Ey_tSNE_epoch_0.png")
-        .attr("x", 0)
+        .attr("x", LeftsectionWidth*0.05)
         .attr("y", 0)
         .attr('width', LeftsectionWidth*0.9)
         .attr('height', LeftsectionWidth*0.9);
@@ -1290,7 +1290,7 @@ $(document).ready(function () {
             var imgs = LeftsvgSection.append("image")
                 .attr("class", "PNG")
                 .attr("xlink:href", "https://seongmin-mun.github.io/VisualSystem/Major/PostBERT.ko/images/densityClusterPNG_r/"+currentPost+"_tSNE_epoch_"+EpochNow+".png")
-                .attr("x", 0)
+                .attr("x", LeftsectionWidth*0.05)
                 .attr("y", 0)
                 .attr('width', LeftsectionWidth*0.9)
                 .attr('height', LeftsectionWidth*0.9);
