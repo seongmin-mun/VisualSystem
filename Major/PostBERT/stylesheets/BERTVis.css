@@ -1,0 +1,480 @@
+body {
+        margin: 0;
+}
+
+#header{
+    position:relative;
+    width:100%;
+    height:50px;
+    background-color:#f3c623;
+    background-clip: content-box;
+}
+
+#left {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:14%;
+    height:920px;
+    padding: 0.5%;
+    background-color:whitesmoke;
+    background-clip: content-box;
+}
+
+#left_top {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:85px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#left_middle {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:250px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#left_bottom {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:290px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#left_bottom_bottom {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:355px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+
+#section {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:57%;
+    height:920px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#section_top {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:795px;
+    padding-right: : 0.5%;
+    padding-top: 0.5%;
+    padding-left: 0.5%;
+    background-clip: content-box;
+}
+
+#section_bottom {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:120px;
+    padding-right: : 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 0.5%;
+    background-clip: content-box;
+}
+
+#section_bottom_left {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:12%;
+    height:80px;
+    padding-right: : 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 0.5%;
+    background-clip: content-box;
+}
+
+#section_bottom_right {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:88%;
+    height:80px;
+    padding-right: : 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 0.5%;
+    background-clip: content-box;
+}
+
+#right {
+    position:relative;
+    float:right;
+    overflow:hidden;
+    width:29%;
+    height:920px;
+    padding: 0.5%;
+    background-color:whitesmoke;
+    background-clip: content-box;
+}
+
+#right_top {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:300px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+#right_middle {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:300px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+
+#right_bottom {
+    position:relative;
+    float:left;
+    overflow:hidden;
+    width:100%;
+    height:305px;
+    padding: 0.5%;
+    background-clip: content-box;
+}
+
+
+#footer {
+    height:10px;
+    background-color:#717171;
+    clear:both;
+}
+
+rect.legendrect {
+    
+}
+
+p#left_option {
+    text-align: left;
+    font-family: Open Sans;
+    font-size: 1.5em;
+    color: #666666;
+    font-weight: bold;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    padding-left: 5%;
+    margin: 0;
+}
+
+p#right_option {
+    text-align: left;
+    font-family: Open Sans;
+    font-size: 1.6em;
+    color: #666666;
+    font-weight: bold;
+    padding-top: 4%;
+    padding-bottom: 4%;
+    padding-left: 5%;
+    margin: 0;
+}
+
+p#section_top_p {
+    font-family: Open Sans;
+    font-size: 1.5em;
+    color: #666666;
+    font-weight: bold;
+    padding-left: 1%;
+    margin: 0;
+}
+
+p#section_bottom_p {
+    font-family: Open Sans;
+    font-size: 1.5em;
+    color: #666666;
+    font-weight: bold;
+    padding-left: 1%;
+    margin: 0;
+}
+
+p#header_p {
+    text-align: left;
+    font-family: Open Sans;
+    font-size: 2em;
+    color: white;
+    font-weight: bold;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-left: 1%;
+    margin: 0;
+}
+
+img#header_img{
+    padding-top: 0.1%;
+    padding-left: 0.35%;
+    width: 35px;
+    height: 32px;
+    position: relative;
+    right:1%;
+    cursor: pointer;
+}
+
+select#op_postposition { /*text-align-last:center;*/
+   width: 90%;
+   height: 30px;
+   font-size: 17px;
+   border-radius: 3px;
+   position: relative;
+   left:5%;
+   background: white;
+   cursor: pointer;
+}
+
+/*select#op_node_color {
+   width: 90%;
+   height: 30px;
+   font-size: 17px;
+   border-radius: 3px;
+   position: relative;
+   left:5%;
+   background: white;
+   cursor: pointer;
+}*/
+
+#container_leftmiddle {
+    border:2px solid #ccc;
+    width:88%;
+    height: 200px;
+    position: absolute;
+    left: 5%;
+    overflow-y: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 10px;
+    background: white;
+}
+
+.CB_leftmiddle {
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    left:5%;
+}
+
+
+#container_leftbottom {
+    border:2px solid #ccc;
+    width:88%;
+    height: 240px;
+    position: absolute;
+    left: 5%;
+    overflow-y: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 10px;
+    background: white;
+}
+
+.CB_leftbottom{
+    cursor: pointer;
+    position: relative;
+    font-size: 14px;
+    left:5%;
+}
+
+
+
+#play-button {
+  position: absolute;
+  top: 25%;
+  background: #f08080;
+  padding-right: 10px;
+  border-radius: 3px;
+  border: none;
+  color: white;
+  margin: 0;
+  width: 80%;
+  cursor: pointer;
+  height: 40%;
+  font: 13px sans-serif;
+}
+
+#play-button:hover {
+  background-color: #696969;
+}
+
+#play-button:active {
+  background-color: #002657;
+}
+
+
+.ticks {
+  font: 10px sans-serif;
+}
+
+.track,
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track {
+  stroke: #000;
+  stroke-opacity: 0.3;
+  stroke-width: 10px;
+}
+
+.track-inset {
+  stroke: #dcdcdc;
+  stroke-width: 8px;
+}
+
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  cursor: pointer;
+}
+
+.handle {
+  fill: #fff;
+  stroke: #000;
+  stroke-opacity: 0.5;
+  stroke-width: 1.25px;
+}
+
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    padding: 5px;
+    font-size: 17px;
+    background-color: #efefef;
+    border: solid 1px #cecece;
+    border-radius: 8px;
+    box-shadow: 0 3px 5px 0 #dfdfdf;
+    pointer-events: none;
+}
+
+div.epoch {
+    position: absolute;
+    text-align: right;
+    padding: 5px;
+    font-size: 40px;
+    background-color: white;
+    border: solid 1px white;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+#corBar:hover {
+        fill: orange;
+    }
+
+#tooltip_top {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+#tooltip_top.hidden {
+    display: none;
+}
+
+#tooltip_top p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+
+#tooltip_middle {
+    position: absolute;
+    width: 120px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+}
+
+#tooltip_middle.hidden {
+    display: none;
+}
+
+#tooltip_middle p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.rightbottom_bar:hover {
+    fill: #f08080;
+}
+
+#tooltip_bottom {
+    position: absolute;
+    width: 160px;
+    height: auto;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+#tooltip_bottom.hidden {
+    display: none;
+}
+
+#tooltip_bottom p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+
+    
+
+h5 {
+    font-size: 15px;
+}
