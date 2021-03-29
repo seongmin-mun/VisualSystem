@@ -1,10 +1,10 @@
-# PostNetwork.ko
+# PostEmbedding
 
 <!--[![Java](https://img.shields.io/badge/Java-Used-red.svg)](https://shields.io/#/) [![Python](https://img.shields.io/badge/Python-Used-blue.svg)](https://shields.io/#/) [![PHP](https://img.shields.io/badge/PHP-Used-lightgrey.svg)](https://shields.io/#/) [![JavaScript](https://img.shields.io/badge/JavaScript-Used-brightgreen.svg)](https://shields.io/#/) [![SQL](https://img.shields.io/badge/SQL-Used-9cf.svg)](https://shields.io/#/) [![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-Used-yellow.svg)](https://shields.io/#/) [![R](https://img.shields.io/badge/R-Used-blueviolet.svg)](https://shields.io/#/)-->
 [![Python](https://img.shields.io/badge/Python-Used-blue.svg)](https://shields.io/#/) [![PHP](https://img.shields.io/badge/PHP-Used-lightgrey.svg)](https://shields.io/#/) [![JavaScript](https://img.shields.io/badge/JavaScript-Used-brightgreen.svg)](https://shields.io/#/) [![SQL](https://img.shields.io/badge/SQL-Used-9cf.svg)](https://shields.io/#/) [![HTML/CSS](https://img.shields.io/badge/HTML%2FCSS-Used-yellow.svg)](https://shields.io/#/) [![R](https://img.shields.io/badge/R-Used-blueviolet.svg)](https://shields.io/#/)
 
 ## Abstract
-PostNetwork.ko is a visualization system to see the relationships between Korean postpositions and co-occurring words.
+PostEmbedding is a visualization system to see the relationships between Korean postpositions and co-occurring words.
 
 ### Screenshots
 -----------
@@ -13,7 +13,7 @@ PostNetwork.ko is a visualization system to see the relationships between Korean
 </div>
 
 
-- [Try to use PostNetwork.ko](https://seongmin-mun.github.io/VisualSystem/Major/PostEmbedding/index.html)
+- [Try to use PostEmbedding](https://seongmin-mun.github.io/VisualSystem/Major/PostEmbedding/index.html)
 
 ### Skills
 -------
