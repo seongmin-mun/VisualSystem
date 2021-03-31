@@ -86,7 +86,7 @@ $(document).ready(function () {
 
 
     for (var k = 0; k < 6; k++) {
-        svgright_top.append("text").text(epoch_right_top[k]).attr("x", (((right_top_width * 0.82) *0.205) * k) + (right_top_width * 0.085)).attr("y", right_top_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
+        svgright_top.append("text").attr("class", "rangetext").text(epoch_right_top[k]).attr("x", (((right_top_width * 0.82) *0.205) * k) + (right_top_width * 0.085)).attr("y", right_top_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
     }
 
     svgright_top.append("line").attr("x1",  right_top_width * 0.05).attr("y1", right_top_height*0.6).attr("x2", right_top_width * 0.95).attr("y2", right_top_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
@@ -122,7 +122,7 @@ $(document).ready(function () {
 
 
     for (var k = 0; k < 6; k++) {
-        svgright_middle.append("text").text(epoch_right_middle[k]).attr("x", (((right_middle_width * 0.82) *0.205) * k) + (right_middle_width * 0.085)).attr("y", right_middle_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
+        svgright_middle.append("text").attr("class", "rangetext").text(epoch_right_middle[k]).attr("x", (((right_middle_width * 0.82) *0.205) * k) + (right_middle_width * 0.085)).attr("y", right_middle_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
     }
 
     svgright_middle.append("line").attr("x1",  right_middle_width * 0.05).attr("y1", right_middle_height*0.6).attr("x2", right_middle_width * 0.95).attr("y2", right_middle_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
@@ -159,7 +159,7 @@ $(document).ready(function () {
 
 
     for (var k = 0; k < 6; k++) {
-        svgright_bottom.append("text").text(epoch_right_bottom[k]).attr("x", (((right_bottom_width * 0.82) *0.205) * k) + (right_bottom_width * 0.085)).attr("y", right_bottom_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
+        svgright_bottom.append("text").attr("class", "rangetext").text(epoch_right_bottom[k]).attr("x", (((right_bottom_width * 0.82) *0.205) * k) + (right_bottom_width * 0.085)).attr("y", right_bottom_height*0.69).attr("text-anchor", "middle").attr("font-family", "Open Sans").attr("font-size", "21px").attr("fill", "#C2C1C1")
     }
 
     svgright_bottom.append("line").attr("x1",  right_bottom_width * 0.05).attr("y1", right_bottom_height*0.6).attr("x2", right_bottom_width * 0.95).attr("y2", right_bottom_height*0.6).attr("stroke-width", "2px").attr("stroke", "#C2C1C1").style("stroke-dasharray", ("3, 3"))
