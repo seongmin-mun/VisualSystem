@@ -25,7 +25,7 @@ Machine Learning & NLP & Statistics
 - DataBase: MySQL
 - Machine Learning: Sentence-Embedding (Bidirectional Encoder Representations from Transformers), t-SNE (t-Distributed Stochastic Neighbor Embedding)
 - NLP-based methods: Dependency tagger, POS tagger, Pre-Processing (tokenization, lemmatization, N-gram, window size), etc.
-- Statistics: Density-based clustering, Independence t-test, ANOVA, Correlation
+- Statistics: Density-based clustering, Independence t-test, Correlation
 - Tools: IntelliJ IDEA, RStudio, PyCharm, bitnami
 
 Visualization Technique
