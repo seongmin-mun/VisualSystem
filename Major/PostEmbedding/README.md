@@ -24,7 +24,7 @@ Machine Learning & NLP & Statistics
 
 - Computer Languages: Java, R, Python
 - DataBase: MySQL, MongoDB
-- Machine Learning: Word-Embedding (Singular Value Decomposition, Positive Pointwise Mutual Information), t-SNE (t-Distributed Stochastic Neighbor Embedding)
+- Machine Learning: Word-Embedding (Positive Pointwise Mutual Information & Singular Value Decomposition, Skip-Gram and Negative Sampling), t-SNE (t-Distributed Stochastic Neighbor Embedding)
 - NLP-based methods: Dependency tagger, POS tagger, Pre-Processing (tokenization, lemmatization, N-gram, window size), etc.
 - Statistics: Principal Component Analysis, Independence t-test, Correlation
 - Tools: IntelliJ IDEA, RStudio, PyCharm, bitnami
