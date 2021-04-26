@@ -36,7 +36,7 @@ Server (Back-end)
 
 - Computer Languages: Java, Python, PHP
 - DataBase: MySQL
-- Libraries: Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon)), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
+- Libraries: Java (KKMA(org.snu.ids.ha), Eunjeon (org.bitbucket.eunjeon.seunjeon), Python (numpy, sklearn, pandas, nltk, gensim, scipy)
 - Tools: IntelliJ IDEA, PyCharm
 
 Client (Front-end)
