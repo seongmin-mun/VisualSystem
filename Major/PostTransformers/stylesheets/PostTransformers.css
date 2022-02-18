@@ -627,6 +627,10 @@ h5 {
        height: 28.5px;
        font-size: 16.15px;
     }
+    select#op_model {
+       height: 28.5px;
+       font-size: 16.15px;
+    }
     #container_leftmiddle {
         height: 142.50px;
         border-radius: 9.5px;
@@ -785,6 +789,10 @@ h5 {
         font-size: 0.9em;
     }
     select#op_postposition {
+       height: 27px;
+       font-size: 15.3px;
+    }
+    select#op_model {
        height: 27px;
        font-size: 15.3px;
     }
@@ -947,6 +955,10 @@ h5 {
        height: 24.6px;
        font-size: 13.94px;
     }
+    select#op_model {
+       height: 24.6px;
+       font-size: 13.94px;
+    }
     #container_leftmiddle {
         height: 123.0px;
         border-radius: 8.2px;
@@ -1105,6 +1117,10 @@ h5 {
        height: 21.6px;
        font-size: 12.24px;
     }
+    select#op_model {
+       height: 21.6px;
+       font-size: 12.24px;
+    }
     #container_leftmiddle {
         height: 108.0px;
         border-radius: 7.2px;
@@ -1260,6 +1276,10 @@ h5 {
         font-size: 0.3em;
     }
     select#op_postposition {
+       height: 13.5px;
+       font-size: 7.65px;
+    }
+    select#op_model {
        height: 13.5px;
        font-size: 7.65px;
     }
