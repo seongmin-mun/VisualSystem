@@ -6,6 +6,12 @@
 ## Abstract
 Postpositions, which are characterized as multiple form-function associations and thus polysemous, pose a challenge to automatic identification of their usage. Several studies have used contextualized word-embedding models to reveal the functions of Korean postpositions. Despite the superior classification performance of previous studies, the particular reason how these models resolve the polysemy of Korean postpositions is not enough clear. To add more interpretation, for this reason, we devised a classification model by employing two transformer-architecture models---BERT and GPT-2---and introduces a computational simulation that interactively demonstrates how these transformer-architecture models simulate human interpretation of word-level polysemy involving Korean adverbial postpositions -ey, -eyse, and -(u)lo. Results reveal that (i) the BERT model performs better than the GPT-2 model to classify the intended function of postpositions, (ii) there is an inverse relationship between the classification performance and the number of functions that each postposition manifests, (iii) model performance is affected by the corpus size of each function, (iv) the models' performance gradually improves as the epoch proceeds, and (vi) the models are affected by the scarcity of input and/or semantic closeness between the items.
 
+## Developing BERT and GPT-2 models
+In the pythonCode folder, there is entire code for this work.
+
+## Developing the visualization system
+The figure shows the interface of the developed visualization system. (a) provides options to select the postpositions or models and checkboxes to highlight and tracking interesting sentences according to the index number or the function of these postpositions. (b) shows a distributional map of the sentence-level embeddings reduced to two dimensions using t-SNE. It also allows users to see the details of each sentence (represented as points) when the users hover their cursor over the circle. This allows the user to check the information such as an index number of the selected sentence, the intended function of the postpositions used in the sentence, and the raw sentence. At the bottom of (b), there is a play button to see the changes of the model outcome in each epoch. (c) shows two different types of model information: (a) multi-line charts for its performance and (b) a bar chart for density cluster. The multi-line charts on the right side of the visualization system (see (c)) allow users to see the model performance such as overall accuracy and by-function accuracy in relation to the classification task by epoch (i.e., learning). This view also provides a hovering function to see the detailed F-score of each line in each epoch. The bar chart at the bottom of the right side of the visualization system (see (c)) is to present the number of clusters indicating how transformer model classified the sentences by their function in each epoch. This bar chart also provides a hovering function to see the actual number of clusters in each epoch.
+
 ### Screenshots
 -----------
 <div>
@@ -13,9 +19,6 @@ Postpositions, which are characterized as multiple form-function associations an
 </div>
 
 - [Try to use PostTransformers](https://seongmin-mun.github.io/VisualSystem/Major/PostTransformers/index.html)
-
-## Description
-The figure shows the interface of the developed visualization system. (a) provides options to select the postpositions or models and checkboxes to highlight and tracking interesting sentences according to the index number or the function of these postpositions. (b) shows a distributional map of the sentence-level embeddings reduced to two dimensions using t-SNE. It also allows users to see the details of each sentence (represented as points) when the users hover their cursor over the circle. This allows the user to check the information such as an index number of the selected sentence, the intended function of the postpositions used in the sentence, and the raw sentence. At the bottom of (b), there is a play button to see the changes of the model outcome in each epoch. (c) shows two different types of model information: (a) multi-line charts for its performance and (b) a bar chart for density cluster. The multi-line charts on the right side of the visualization system (see (c)) allow users to see the model performance such as overall accuracy and by-function accuracy in relation to the classification task by epoch (i.e., learning). This view also provides a hovering function to see the detailed score of each line in each epoch. The bar chart at the bottom of the right side of the visualization system (see (c)) is to present the number of clusters indicating how transformer model classified the sentences by their function in each epoch. This bar chart also provides a hovering function to see the actual number of clusters in each epoch.
 
 ### Skills
 -------
@@ -44,3 +47,24 @@ Client (Front-end)
 - Computer Languages: javascript (d3.js, jquery.js), html/css
 - DataBase: json
 - Tools: Atom, WebStorm
+
+### Reference
+If you use our code or visualization system for research, please cite:
+'''
+@inproceedings{yun-etal-2021-transformer,
+    title = "Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors",
+    author = "Yun, Zeyu  and
+      Chen, Yubei  and
+      Olshausen, Bruno  and
+      LeCun, Yann",
+    booktitle = "Proceedings of Deep Learning Inside Out (DeeLIO): The 2nd Workshop on Knowledge Extraction and Integration for Deep Learning Architectures",
+    month = jun,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.deelio-1.1",
+    doi = "10.18653/v1/2021.deelio-1.1",
+    pages = "1--10",
+    abstract = "Transformer networks have revolutionized NLP representation learning since they were introduced. Though a great effort has been made to explain the representation in transformers, it is widely recognized that our understanding is not sufficient. One important reason is that there lack enough visualization tools for detailed analysis. In this paper, we propose to use dictionary learning to open up these {`}black boxes{'} as linear superpositions of transformer factors. Through visualization, we demonstrate the hierarchical semantic structures captured by the transformer factors, e.g., word-level polysemy disambiguation, sentence-level pattern formation, and long-range dependency. While some of these patterns confirm the conventional prior linguistic knowledge, the rest are relatively unexpected, which may provide new insights. We hope this visualization tool can bring further knowledge and a better understanding of how transformer networks work. The code is available at: https://github.com/zeyuyun1/TransformerVis.",
+}
+'''
