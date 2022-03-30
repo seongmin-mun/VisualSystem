@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>PostTransformers</title><!--<link rel="stylesheet" href="./stylesheets/bubble_style.css">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script src="./javascripts/d3.v3.min.js" charset="utf-8"></script>
+    <script src="./javascripts/d3.v4.js" charset="utf-8"></script>
+    <script src="./javascripts/jquery-1.12.0.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<link rel="stylesheet" href="./stylesheets/PostVis.css">-->
+
+    <!--데이터파트-->
+    <script src="./data/Madpdata_models.js" charset="utf-8"></script>
+    <script src="./data/Sentencedata.js" charset="utf-8"></script>
+    <script src="./data/Accuracydata.js" charset="utf-8"></script>
+    <script src="./data/Clusterdata.js" charset="utf-8"></script>
+    <!--스타일-->
+    <link rel="stylesheet" href="./stylesheets/PostTransformers.css">
+    </head>
+    <body>
+        <div id="header">
+            <div id="header_left">
+                <p id="header_p_left" align="left">PostTransformers</p>
+            </div>
+            <div id="header_right" align="right">
+                <p id="header_p_right"><a id="header_a" href="https://github.com/seongmin-mun/VisualSystem/tree/master/Major/PostTransformers">GitHub</a></p>
+            </div>
+        </div>
+        <div id="left">
+            <div id="left_top">
+                <p id="left_option">Postposition</p>
+                <select id="op_postposition">
+                    <option value="ey" selected="selected">-에 (-ey)</option>
+                    <option value="eyse">-에서 (-eyse)</option>
+                    <option value="(u)lo">-으로 (-(u)lo)</option>
+                </select>
+                <p id="left_option">Model</p>
+                <select id="op_model">
+                    <option value="BERT" selected="selected">BERT</option>
+                    <option value="GPT-2">GPT-2</option>
+                </select>
+            </div>
+            <div id="left_middle">
+                <p id="left_option">Select function</p>
+                <div id="container_leftmiddle">
+                </div>
+            </div>
+            <div id="left_bottom">
+                <p id="left_option">Select sentence</p>
+                <div id="container_leftbottom">
+                </div>
+            </div>
+            <div id="left_bottom_bottom">
+                <p id="left_option">Density cluster</p>
+
+            </div>
+        </div>
+        <div id="section">
+            <div id="section_top">
+                <p id="section_top_p">t-SNE visualization of sentence classification</p>
+            </div>
+            <div id="section_bottom">
+                <p id="section_bottom_p">Current epoch</p>
+                <div id="section_bottom_left">
+                    <button id="play-button">Play</button>
+                </div>
+                <div id="section_bottom_right">
+                </div>
+            </div>
+        </div>
+        <div id="right">
+            <div id="right_top">
+                <p id="right_option">Overall <i>F</i>-score</p>
+                <div id="tooltip_top" style='display:none'>
+                </div>
+            </div>
+            <div id="right_middle">
+                <p id="right_option">Individual <i>F</i>-score</p>
+                <div id="tooltip_middle" style='display:none'>
+                </div>
+            </div>
+            <div id="right_bottom">
+                <p id="right_option">Bar chart for density cluster</p>
+                <div id="tooltip_bottom" class="hidden">
+                </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <p id="footer_p">© 2021 - 2022, <a id="footer_a" href="http://seongminmun.com/">Seongmin Mun</a>. All rights reserved.<p>
+        </div>
+        <!--메인코드-->
+        <script src="./javascripts/PostTransformers.js" charset="utf-8"></script>
+    </body>
+</html>
