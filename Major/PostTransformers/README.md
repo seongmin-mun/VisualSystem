@@ -50,7 +50,7 @@ Client (Front-end)
 
 ### Reference
 If you use our code or visualization system for research, please cite:
-'''
+```
 @inproceedings{yun-etal-2021-transformer,
     title = "Transformer visualization via dictionary learning: contextualized embedding as a linear superposition of transformer factors",
     author = "Yun, Zeyu  and
@@ -67,4 +67,4 @@ If you use our code or visualization system for research, please cite:
     pages = "1--10",
     abstract = "Transformer networks have revolutionized NLP representation learning since they were introduced. Though a great effort has been made to explain the representation in transformers, it is widely recognized that our understanding is not sufficient. One important reason is that there lack enough visualization tools for detailed analysis. In this paper, we propose to use dictionary learning to open up these {`}black boxes{'} as linear superpositions of transformer factors. Through visualization, we demonstrate the hierarchical semantic structures captured by the transformer factors, e.g., word-level polysemy disambiguation, sentence-level pattern formation, and long-range dependency. While some of these patterns confirm the conventional prior linguistic knowledge, the rest are relatively unexpected, which may provide new insights. We hope this visualization tool can bring further knowledge and a better understanding of how transformer networks work. The code is available at: https://github.com/zeyuyun1/TransformerVis.",
 }
-'''
+```
