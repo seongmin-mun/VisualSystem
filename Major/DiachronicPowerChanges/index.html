@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DiachronicPowerChanges</title>
+    <meta charset="utf-8">
+
+    <script src="./js/d3.v4.js" charset="utf-8"></script>
+    <script src="./js/jquery-1.12.0.min.js" charset="utf-8"></script>
+    <script src="./js/vis-network.min.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/d3-simple-slider"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+    <script src="https://unpkg.com/d3-delaunay@4"></script>
+    <script src="https://unpkg.com/d3-geo-voronoi@1"></script>
+
+    <script src="./data/checkBoxData.js" charset="utf-8"></script>
+    <script src="./data/visNetworkData.js" charset="utf-8"></script>
+    <script src="./data/visTableData2.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" href="./css/style.css">
+  </head>
+
+  <body>
+    <div id="allSection">
+      <div id="header">
+          <div id="header_left">
+              <p id="header_p_left" align="left">DiachronicPowerChanges</p>
+          </div>
+          <div id="header_right" align="right">
+              <p id="header_p_right"><a id="header_a" href="https://github.com/seongmin-mun/VisualSystem/tree/master/Major/DiachronicPowerChanges">GitHub</a></p>
+          </div>
+      </div>
+      <div id="left">
+          <div id="left_top">
+              <p id="left_p">Measure value</p>
+              <select id="op_measure">
+                  <option value="frequency" selected="selected">Frequency (빈도)</option>
+                  <option value="degree">Degree centrality (연결 중심성)</option>
+                  <option value="closeness">Closeness centrality (근접 중심성)</option>
+                  <option value="betweenness">Betweenness centrality (매개 중심성)</option>
+              </select>
+          </div>
+          <div id="left_bottom">
+              <p id="left_p">Select origin</p>
+              <div id="container_leftbottom">
+              </div>
+          </div>
+      </div>
+      <div id="section">
+          <div id="section_top">
+              <p id="section_top_p">Network map between origins</p>
+          </div>
+          <div id="section_bottom">
+              <p id="section_bottom_p">Current king</p>
+              <div id="section_bottom_left">
+                  <button id="play-button">Play</button>
+              </div>
+              <div id="section_bottom_right">
+              </div>
+          </div>
+      </div>
+      <div id="right">
+          <div id="right_top">
+              <p id="right_p">Social network between people</p>
+              <div id="container_righttop">
+              </div>
+          </div>
+          <div id="right_bottom">
+              <p id="right_p">Selected people in social network</p>
+              <div id="container_rightbottom">
+                <table class="table" style="margin-bottom: 0px;">
+                    <thead>
+                        <tr>
+                            <th>name</th>
+                            <th>origins</th>
+                            <th>score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="infotable">
+                      <!-- <tr><td>태조</td><td>개경</td><td>1.423</td></tr> -->
+                    </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+
+      <div id="footer">
+          <p id="footer_p">© 2022 - 2023, <a id="footer_a" href="http://www.ajoudhistory.com/">AJOU CENTER for DIGITAL HISTORY</a> Developer: <a id="footer_a" href="https://seongminmun.com/">Seongmin Mun</a>. All rights reserved. <p>
+      </div>
+    </div>
+
+    <!--메인코드-->
+    <script src="./js/DiachronicPowerChanges.js" charset="utf-8"></script>
+  </body>
+
+
+</html>
