@@ -334,7 +334,7 @@ function highlight(d) {
 }
 
 function click(d) {
-  window.open("https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query="+ d.name +"&section=all")
+  window.open("https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query="+ d.name)
 }
 
 
