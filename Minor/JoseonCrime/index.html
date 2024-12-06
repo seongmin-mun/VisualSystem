@@ -210,7 +210,8 @@
                     .call(d3.axisBottom(x))
                     .selectAll("text")
                     .attr("transform", "translate(-10,0)rotate(-45)")
-                    .style("text-anchor", "end");
+                    .style("text-anchor", "end")
+                    .style("font-size", "14px");
 
                 // Add Y axis
                 var y = d3.scaleLinear()
@@ -251,7 +252,7 @@
                     .attr("y", function(d) { return y(0); }) // Start at the bottom
                     .attr("text-anchor", "middle") // Align text in the center
                     .style("fill", "black") // Text color
-                    .style("font-size", "12px") // Font size
+                    .style("font-size", "14px") // Font size
                     .transition()
                     .duration(800)
                     .attr("y", function(d) { return y(d.value) - 5; }) // Position text above the bar
@@ -379,7 +380,8 @@
                     .call(d3.axisBottom(x))
                     .selectAll("text")
                     .attr("transform", "translate(-10,0)rotate(-45)")
-                    .style("text-anchor", "end");
+                    .style("text-anchor", "end")
+                    .style("font-size", "14px");
 
                 // Add Y axis
                 var y = d3.scaleLinear()
@@ -420,7 +422,7 @@
                     .attr("y", function(d) { return y(0); }) // Start at the bottom
                     .attr("text-anchor", "middle") // Align text in the center
                     .style("fill", "black") // Text color
-                    .style("font-size", "12px") // Font size
+                    .style("font-size", "14px") // Font size
                     .transition()
                     .duration(800)
                     .attr("y", function(d) { return y(d.value) - 5; }) // Position text above the bar
