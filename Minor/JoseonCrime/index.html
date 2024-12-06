@@ -1,0 +1,446 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Goryeo Married Network</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+
+        #allSection {
+            width: 100%;
+            height: 900px;
+            position:relative;
+            float:left;
+        }
+
+        #header{
+            position:relative;
+            width:100%;
+            height:50px;
+            background-color:#96B48F;
+            background-clip: content-box;
+        }
+
+
+        #section {
+            position:relative;
+            float:left;
+            overflow:hidden;
+            width:99%;
+            height:830px;
+            padding: 0.5%;
+            background-clip: content-box;
+        }
+
+       
+
+        
+
+
+        p#left_p {
+            text-align: left;
+            font-family: Open Sans;
+            font-size: 1.3em;
+            color: #666666;
+            font-weight: bold;
+            padding-top: 0.5%;
+            padding-bottom: 0.2%;
+            padding-left: 0.5%;
+            margin: 0;
+        }
+
+       
+
+        p#header_p_left {
+            position: relative;
+            text-align: left;
+            font-family: Open Sans;
+            font-size: 1.7em;
+            color: white;
+            font-weight: bold;
+            padding-top: 0.5%;
+            padding-bottom: 0.5%;
+            padding-left: 0.5%;
+            margin: 0;
+        }
+
+
+        select#op_measure { /*text-align-last:center;*/
+           width: 10%;
+           height: 30px;
+           font-size: 16px;
+           border-radius: 3px;
+           position: relative;
+           left:0.4%;
+           background: white;
+           cursor: pointer;
+        }
+
+        
+
+    </style>
+
+    <script src="./js/d3.v4.js" charset="utf-8"></script>
+    <script src="./js/jquery-1.12.0.min.js" charset="utf-8"></script>
+  </head>
+
+  <body>
+    <div id="allSection">
+      <div id="header">
+          
+              <p id="header_p_left" align="left">태평성전: 조선왕조실록 내 범죄 용어 빈도에 따른 조선의 사회상 살펴보기</p>
+          
+      </div>
+      
+      <div id="section">
+        <p id="left_p">사건 선택</p>
+              <select id="op_measure">
+                  <!-- <option value="1king" selected="selected">1대 태조</option>
+                  <option value="2king">2대 정종</option>
+                  <option value="3king">3대 태종</option>
+                  <option value="4king">4대 세종</option>
+                  <option value="5king">5대 문종</option>
+                  <option value="6king">6대 단종</option>
+                  <option value="7king">7대 세조</option>
+                  <option value="8king">8대 예종</option>
+                  <option value="9king">9대 성종</option>
+                  <option value="10king">10대 연산군</option>
+                  <option value="11king">11대 중종</option>
+                  <option value="12king">12대 인종</option>
+                  <option value="13king">13대 명종</option>
+                  <option value="14king">14대 선조</option>
+                  <option value="15king">15대 광해군</option>
+                  <option value="16king">16대 인조</option>
+                  <option value="17king">17대 효종</option>
+                  <option value="18king">18대 현종</option>
+                  <option value="19king">19대 숙종</option>
+                  <option value="20king">20대 경종</option>
+                  <option value="21king">21대 영조</option>
+                  <option value="22king">22대 정조</option>
+                  <option value="23king">23대 순조</option>
+                  <option value="24king">24대 현종</option>
+                  <option value="25king">25대 철종</option> -->
+                  <option value="case1" selected="selected">모반</option>
+                  <option value="case2">절도</option>
+                  <option value="case3">강탈</option>
+                  <option value="case4">공갈</option>
+                  <option value="case5">편취</option>
+                  <option value="case6">침입</option>
+                  <option value="case7">모살</option>
+                  <option value="case8">고살</option>
+                  <option value="case9">투구살</option>
+                  <option value="case10">희살</option>
+                  <option value="case11">오살</option>
+                  <option value="case12">살상</option>
+                  <option value="case13">투구</option>
+                  <option value="case14">다툼</option>
+                  <option value="case15">구타</option>
+                  <option value="case16">보고기한</option>
+                  <option value="case17">범간</option>
+                  <option value="case18">간음</option>
+                  <option value="case19">강간</option>
+                  <option value="case20">인신매매</option>
+              </select>
+              <br>
+
+      </div>
+      
+    </div>
+
+
+    <script type="text/javascript">
+
+      $(document).ready(function () {
+
+        // set the dimensions and margins of the graph
+        var margin = {top: 10, right: 30, bottom: 90, left: 40},
+            width = $(window).width() - margin.left - margin.right,
+            height = ($(window).height()*0.6) - margin.top - margin.bottom;
+
+
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#section")
+          .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform",
+                  "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+        firstdrawdata();
+
+        d3.selectAll("#op_measure").on("change", drawall);
+
+
+        //모든 함수 가동부분
+        function drawall(){
+
+            var selected_measure = $("#op_measure").val();
+            changedrawdata(selected_measure)
+
+        }
+
+
+        
+
+
+
+        function firstdrawdata() {
+            var selected_measure = $("#op_measure").val();
+            console.log(selected_measure);
+
+            var fileName = "./data/outDF_" + selected_measure + ".csv";
+
+            // Parse the Data
+            d3.csv(fileName, function(data) {
+                // X axis
+                var x = d3.scaleBand()
+                    .range([0, width])
+                    .domain(data.map(function(d) { return d.king; }))
+                    .padding(0.2);
+
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .selectAll("text")
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+                // Add Y axis
+                var y = d3.scaleLinear()
+                    .domain([0, 0.41])
+                    .range([height, 0]);
+
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                // Bars
+                svg.selectAll("mybar")
+                    .data(data)
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) { return x(d.king); })
+                    .attr("width", x.bandwidth())
+                    .attr("fill", "#69b3a2")
+                    .attr("height", function(d) { return height - y(0); }) // always equal to 0
+                    .attr("y", function(d) { return y(0); })
+                    .on("mouseover", onMouseOver)
+                    .on("mouseout", onMouseOut);
+
+                // Animation for bars and text
+                svg.selectAll("rect")
+                    .transition()
+                    .duration(800)
+                    .attr("y", function(d) { return y(d.value); })
+                    .attr("height", function(d) { return height - y(d.value); })
+                    .delay(function(d, i) { return i * 100; });
+
+                // Add value text with animation
+                svg.selectAll("text.value")
+                    .data(data)
+                    .enter()
+                    .append("text")
+                    .attr("class", "value")
+                    .attr("x", function(d) { return x(d.king) + x.bandwidth() / 2; }) // Center text on the bar
+                    .attr("y", function(d) { return y(0); }) // Start at the bottom
+                    .attr("text-anchor", "middle") // Align text in the center
+                    .style("fill", "black") // Text color
+                    .style("font-size", "12px") // Font size
+                    .transition()
+                    .duration(800)
+                    .attr("y", function(d) { return y(d.value) - 5; }) // Position text above the bar
+                    .text(function(d) { return parseFloat(d.value).toFixed(2); }) // Show value with 2 decimal places
+                    .delay(function(d, i) { return i * 100; });
+            });
+
+            function onMouseOut(d, i) {
+                d3.select(this).transition().duration(400).style("fill", "#69b3a2");
+            }
+
+            function onMouseOver(d, i) {
+                d3.select(this).transition().duration(400).style("fill", "orange");
+            }
+        }
+
+        // // 시각화 처음 생성 (초기 화면)
+        // function firstdrawdata() {
+        //   var selected_measure = $("#op_measure").val();
+        //   console.log(selected_measure);
+
+        //   fileName = "./data/outDF_" + selected_measure + ".csv"
+
+        //   // Parse the Data
+        //   d3.csv(fileName, function(data) {
+
+        //   // X axis
+        //   var x = d3.scaleBand()
+        //     .range([ 0, width ])
+        //     .domain(data.map(function(d) { return d.king; }))
+        //     .padding(0.2);
+
+        //   svg.append("g")
+        //     .attr("transform", "translate(0," + height + ")")
+        //     .call(d3.axisBottom(x))
+        //     .selectAll("text")
+        //       .attr("transform", "translate(-10,0)rotate(-45)")
+        //       .style("text-anchor", "end");
+
+        //   // Add Y axis
+        //   var y = d3.scaleLinear()
+        //     .domain([0, 0.41])
+        //     .range([ height, 0]);
+
+        //   svg.append("g")
+        //     .call(d3.axisLeft(y));
+
+        //   // Bars
+        //   svg.selectAll("mybar")
+        //     .data(data)
+        //     .enter()
+        //     .append("rect")
+        //       .attr("x", function(d) { return x(d.king); })
+        //       .attr("width", x.bandwidth())
+        //       .attr("fill", "#69b3a2")
+        //       // no bar at the beginning thus:
+        //       .attr("height", function(d) { return height - y(0); }) // always equal to 0
+        //       .attr("y", function(d) { return y(0); })
+        //       .on("mouseover", onMouseOver)
+        //       .on("mouseout", onMouseOut);
+
+        //   // Animation
+        //   svg.selectAll("rect")
+        //     .transition()
+        //     .duration(800)
+        //     .attr("y", function(d) { return y(d.value); })
+        //     .attr("height", function(d) { return height - y(d.value); })
+        //     .delay(function(d,i){console.log(i) ; return(i*100)})
+
+        //   // Add value text on bars
+        //   svg.selectAll("text.value")
+        //     .data(data)
+        //     .enter()
+        //     .append("text")
+        //     .attr("class", "value")
+        //     .attr("x", function(d) { return x(d.king) + x.bandwidth() / 2; }) // Center text on the bar
+        //     .attr("y", function(d) { return y(d.value) - 5; }) // Position text slightly above the bar
+        //     .attr("text-anchor", "middle") // Align text in the center
+        //     .text(function(d) { return d.value; }) // Set text to the value
+        //     .style("fill", "black") // Text color
+        //     .style("font-size", "12px") // Font size
+        //     .attr( "fill-opacity", 0 )
+            
+
+        //   })
+
+          
+
+        //   function onMouseOut(d, i) {
+        //     d3.select(this).transition().duration(400).style("fill", "#69b3a2");
+        //   }
+
+        //   function onMouseOver(d, i) {
+        //     d3.select(this).transition().duration(400).style("fill", "orange");
+        //   }
+
+        
+
+
+        // }
+
+
+
+
+        // 시각화 변경
+        function changedrawdata(selected_measure) {
+
+          svg.selectAll("rect").remove();
+          svg.selectAll(".value").remove();
+
+          console.log(selected_measure);
+
+          var fileName = "./data/outDF_" + selected_measure + ".csv";
+
+            // Parse the Data
+            d3.csv(fileName, function(data) {
+                // X axis
+                var x = d3.scaleBand()
+                    .range([0, width])
+                    .domain(data.map(function(d) { return d.king; }))
+                    .padding(0.2);
+
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x))
+                    .selectAll("text")
+                    .attr("transform", "translate(-10,0)rotate(-45)")
+                    .style("text-anchor", "end");
+
+                // Add Y axis
+                var y = d3.scaleLinear()
+                    .domain([0, 0.41])
+                    .range([height, 0]);
+
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                // Bars
+                svg.selectAll("mybar")
+                    .data(data)
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) { return x(d.king); })
+                    .attr("width", x.bandwidth())
+                    .attr("fill", "#69b3a2")
+                    .attr("height", function(d) { return height - y(0); }) // always equal to 0
+                    .attr("y", function(d) { return y(0); })
+                    .on("mouseover", onMouseOver)
+                    .on("mouseout", onMouseOut);
+
+                // Animation for bars and text
+                svg.selectAll("rect")
+                    .transition()
+                    .duration(800)
+                    .attr("y", function(d) { return y(d.value); })
+                    .attr("height", function(d) { return height - y(d.value); })
+                    .delay(function(d, i) { return i * 100; });
+
+                // Add value text with animation
+                svg.selectAll("text.value")
+                    .data(data)
+                    .enter()
+                    .append("text")
+                    .attr("class", "value")
+                    .attr("x", function(d) { return x(d.king) + x.bandwidth() / 2; }) // Center text on the bar
+                    .attr("y", function(d) { return y(0); }) // Start at the bottom
+                    .attr("text-anchor", "middle") // Align text in the center
+                    .style("fill", "black") // Text color
+                    .style("font-size", "12px") // Font size
+                    .transition()
+                    .duration(800)
+                    .attr("y", function(d) { return y(d.value) - 5; }) // Position text above the bar
+                    .text(function(d) { return parseFloat(d.value).toFixed(2); }) // Show value with 2 decimal places
+                    .delay(function(d, i) { return i * 100; });
+            });
+
+            function onMouseOut(d, i) {
+                d3.select(this).transition().duration(400).style("fill", "#69b3a2");
+            }
+
+            function onMouseOver(d, i) {
+                d3.select(this).transition().duration(400).style("fill", "orange");
+            }
+          }
+
+
+      })
+    </script>
+  </body>
+
+
+</html>
